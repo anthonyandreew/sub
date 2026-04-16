@@ -3,4 +3,4 @@ vless://1716f979-78ee-4e93-8a5a-f5ad4cfc75dd@85.192.31.7:443?type=tcp&encryption
 vless://2b6934b0-8bd0-4854-9f58-f59c8de65377@109.68.213.100:8443?type=tcp&encryption=none&security=reality&pbk=dRrXBpAPMoasy7gVPBmmPjqaRKkJzoFZwJAKZWle6ik&fp=chrome&sni=www.ya.ru&sid=a0&spx=%2F&flow=xtls-rprx-vision#SPB_Amsterdam_27
 vless://6bed9313-bb71-4ff6-a45a-4086bce65508@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#SPB_Amsterdam_123
 vless://d2886f7c-8347-4803-bed6-f53b499ead76@109.68.213.100:4443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#SPB_Amsterdam_124
-vless://94025de9-7fe9-4ea9-883b-ba63e930d38d@109.68.213.100:5443?type=tcp&encryption=none&security=reality&pbk=dRrXBpAPMoasy7gVPBmmPjqaRKkJzoFZwJAKZWle6ik&fp=chrome&sni=www.ya.ru&sid=a0&spx=%2F#SPB
+vless://94025de9-7fe9-4ea9-883b-ba63e930d38d@109.68.213.100:5443?type=tcp&encryption=none&security=reality&pbk=dRrXBpAPMoasy7gVPBmmPjqaRKkJzoFZwJAKZWle6ik&fp=chrome&sni=www.ya.ru&sid=a0&spx=%2F#SPB_direct
