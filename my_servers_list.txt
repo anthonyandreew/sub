@@ -1,5 +1,4 @@
 hysteria2://admin5650@185.157.212.27:443/?sni=bing.com&insecure=1#Hysteria_Amsterdam_27
-hysteria2://0twz276phs74pmm4@77.238.240.124:443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Ams_124
 hysteria2://gbsel2ytdueznff7@185.230.143.244:8443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Stockholm
 hysteria2://yluuz391nixrlbvk@186.246.19.128:443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Tmwb_USA-warp
 hysteria2://yluuz391nixrlbvk@186.246.19.128:8443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Tmwb_USA_128
