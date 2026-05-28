@@ -1,3 +1,2 @@
-vless://d2886f7c-8347-4803-bed6-f53b499ead76@109.68.213.100:4443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#СПб_Амстердам
-vless://7dda8f27-363a-42a4-9d83-b3ece125f916@109.68.213.100:9443?type=xhttp&encryption=none&path=%2F&host=&mode=auto&security=reality&pbk=Pt4Pk7o-Tu43pohJuHR_3mxMNdqUMVD1WE7zdL3vtiE&fp=chrome&sni=www.github.com&sid=d85d6875196b33&spx=%2F#СПб_Хельсинки
-hysteria2://4tt00wwbkmthjlld@85.192.31.7:8443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Хельсинки
+vless://8a0efa39-736f-4cae-9fff-b3c01996ca71@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб_Амстердам
+vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#СПб_Хельсинки
