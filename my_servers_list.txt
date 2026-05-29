@@ -1,5 +1,5 @@
 hysteria2://admin5650@185.157.212.27:443/?sni=bing.com&insecure=1#Hysteria_Amsterdam_27
-hysteria2://98nux53cvsb8acam@185.230.143.244:8443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Stockholm#Hysteria_Stockholm
+mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=default&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP
 hysteria2://yluuz391nixrlbvk@186.246.19.128:443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Tmwb_USA-warp
 hysteria2://yluuz391nixrlbvk@186.246.19.128:8443?alpn=h3&fp=chrome&security=tls&sni=bing.com&insecure=1#Hysteria_Tmwb_USA_128
 vless://8a0efa39-736f-4cae-9fff-b3c01996ca71@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб_Амстердам_1
