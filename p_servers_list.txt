@@ -1,4 +1,4 @@
-# vless://8a0efa39-736f-4cae-9fff-b3c01996ca71@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб_Амстердам_1
+vless://8a0efa39-736f-4cae-9fff-b3c01996ca71@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб_Амстердам_1
 vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#СПб_Хельсинки
 vless://b2996310-c989-4c34-a81d-4b7779abe501@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб_Стокгольм
 vless://981d402b-1e0e-49c7-ad55-840b665e674c@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб
