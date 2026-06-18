@@ -14,5 +14,5 @@ vless://22613de8-2b2e-457d-bebb-00f7817a571f@109.68.213.100:5443?type=xhttp&encr
 tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@149.33.15.213:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#TUIC_Switzerland
 mierus://anton:i3iXjcSRa4Ze48EnHHp7@149.33.15.213?profile=default&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Mieru
 hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=bing.com&insecure=1#Hysteria_Switzerland
-vless://8ea25c6d-e278-4532-9cb2-5d396c16729d@81.200.152.232:443?encryption=none&fp=chrome&pbk=KYIsT5QreShX3BB5AawKxWUjixYVYSp6qGQwwHZX_kQ&security=reality&sid=389b12b0&sni=yastatic.net&spx=%2FJQkj4yKYekvFXLs&type=tcp#SPB_2_Switzerland
+vless://8ea25c6d-e278-4532-9cb2-5d396c16729d@81.200.152.232:443?encryption=none&fp=chrome&pbk=KYIsT5QreShX3BB5AawKxWUjixYVYSp6qGQwwHZX_kQ&security=reality&sid=389b12b0&sni=yastatic.net&spx=%2FJQkj4yKYekvFXLs&type=tcp#SPB_2_Stockholm
 vless://09824616-84b5-4b86-827f-ee609980bec6@81.200.152.232:443?encryption=none&fp=chrome&pbk=KYIsT5QreShX3BB5AawKxWUjixYVYSp6qGQwwHZX_kQ&security=reality&sid=56ef67862a6a172f&sni=yastatic.net&spx=%2FrLBYvdcX7yeInIE&type=tcp#SPB_2_Switzerland_Warp
