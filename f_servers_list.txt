@@ -1,3 +1,4 @@
-# vless://8a0efa39-736f-4cae-9fff-b3c01996ca71@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#СПб_Амстердам
-vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#СПб_Хельсинки
-vless://22613de8-2b2e-457d-bebb-00f7817a571f@109.68.213.100:9443?type=tcp&encryption=none&security=reality&pbk=24Hdu5R2OvCO1ohbq91uXBVuQSZVW4Udn7WiVDZE8xo&fp=chrome&sni=www.oracle.com&sid=9bbfc743&flow=xtls-rprx-vision#СПб_Цюрих
+hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=bing.com&insecure=1#Швейцария_hy2
+
+vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#Финляндия
+vless://22613de8-2b2e-457d-bebb-00f7817a571f@109.68.213.100:9443?type=tcp&encryption=none&security=reality&pbk=24Hdu5R2OvCO1ohbq91uXBVuQSZVW4Udn7WiVDZE8xo&fp=chrome&sni=www.oracle.com&sid=9bbfc743&flow=xtls-rprx-vision#Швейцария
