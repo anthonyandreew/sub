@@ -1,5 +1,5 @@
-hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2053/?sni=www.bing.com&insecure=1#Швеция_hy2
-hysteria2://DNVd6W6v9IQfyY1qRSn15kr@85.192.31.7:9443/?sni=www.bing.com&insecure=1#Финляндия_hy2
+hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=bing.com&insecure=1#Швеция_hy2
+hysteria2://DNVd6W6v9IQfyY1qRSn15kr@85.192.31.7:2087/?sni=bing.com&insecure=1#Финляндия_hy2
 hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=bing.com&insecure=1#Швейцария_hy2
 
 vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#Финляндия
