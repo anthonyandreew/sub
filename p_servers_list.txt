@@ -2,6 +2,6 @@ hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=bing.com&insecure=
 hysteria2://DNVd6W6v9IQfyY1qRSn15kr@85.192.31.7:2087/?sni=bing.com&insecure=1#Финляндия_hy2
 hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=bing.com&insecure=1#Швейцария_hy2
 
-vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F#Финляндия
-vless://b2996310-c989-4c34-a81d-4b7779abe501@109.68.213.100:443?type=tcp&encryption=none&security=reality&pbk=irUdrKRmXNkV0TNGPHAXuxFC1UHw25xIVhg3z7qI9Rk&fp=chrome&sni=www.ya.ru&sid=3164ac&spx=%2F&flow=xtls-rprx-vision#Швеция
-vless://22613de8-2b2e-457d-bebb-00f7817a571f@109.68.213.100:9443?type=tcp&encryption=none&security=reality&pbk=24Hdu5R2OvCO1ohbq91uXBVuQSZVW4Udn7WiVDZE8xo&fp=chrome&sni=www.oracle.com&sid=9bbfc743&flow=xtls-rprx-vision#Швейцария
+vless://83a054e8-801e-448e-b5c0-f32c26c90655@109.68.213.100:443?encryption=none&extra=%7B%22mode%22%3A%22auto%22%2C%22xPaddingBytes%22%3A%22100-1000%22%7D&fp=firefox&host=&mode=auto&path=%2F&pbk=-aimR6ZiK-AreQ-aEbwF6R3-wcXIw9Q4-Ma3M1qWlGE&security=reality&sid=42246a0e&sni=yandex.net&spx=%2Fhvrb7xEgskOOMRO&type=xhttp&x_padding_bytes=100-1000#Финляндия
+vless://b2996310-c989-4c34-a81d-4b7779abe501@109.68.213.100:443?encryption=none&extra=%7B%22mode%22%3A%22auto%22%2C%22xPaddingBytes%22%3A%22100-1000%22%7D&fp=firefox&host=&mode=auto&path=%2F&pbk=-aimR6ZiK-AreQ-aEbwF6R3-wcXIw9Q4-Ma3M1qWlGE&security=reality&sid=501ab561e6182c&sni=yandex.md&spx=%2FwOlyoHMq8l3rtPx&type=xhttp&x_padding_bytes=100-1000#Швеция
+vless://22613de8-2b2e-457d-bebb-00f7817a571f@109.68.213.100:9443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=i0AgGldq1AsDwoZyTcWDfZ1-DqAJlvin8zhnr2DTy0U&security=reality&sid=bbe8&sni=urchin.com&spx=%2Fmjdhoei0YdWOjek&type=tcp#Швейцария
