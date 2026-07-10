@@ -1,5 +1,4 @@
 hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=bing.com&insecure=1#Hysteria_Switzerland
-hysteria2://uPqLUrgraEG6FXD0jNrIaLJm@185.200.196.218:443/?insecure=1#Hysteria_Estonia
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=bing.com&insecure=1#Hysteria_Sweden
 hysteria2://OrIiY0H0TWccQgynotkJ@77.238.240.124:443/?insecure=1&sni=bing.com#Hysteria_Netherlands_124
 
