@@ -1,3 +1,3 @@
-hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=bing.com&insecure=1#Швейцария_hy2
-vless://5f17564a-c424-47fe-9368-67a33b723b76@109.68.213.100:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=x5VipEKLXoYpsRZYPWH42qMXzxpTq72OVUWutvcLl2s&security=reality&sid=4768&sni=yandex.lt&spx=%2F3Qp3rfGC5bSflnP&type=tcp#Швеция
-vless://22613de8-2b2e-457d-bebb-00f7817a571f@109.68.213.100:9443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=i0AgGldq1AsDwoZyTcWDfZ1-DqAJlvin8zhnr2DTy0U&security=reality&sid=bbe8&sni=urchin.com&spx=%2Fmjdhoei0YdWOjek&type=tcp#Швейцария
+hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=proxyplankton.ru#Швейцария_hy2
+vless://5f17564a-c424-47fe-9368-67a33b723b76@proxyplankton.ru:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=x5VipEKLXoYpsRZYPWH42qMXzxpTq72OVUWutvcLl2s&security=reality&sid=4768&sni=yandex.lt&spx=%2F3Qp3rfGC5bSflnP&type=tcp#Швеция
+vless://22613de8-2b2e-457d-bebb-00f7817a571f@proxyplankton.ru:9443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=i0AgGldq1AsDwoZyTcWDfZ1-DqAJlvin8zhnr2DTy0U&security=reality&sid=bbe8&sni=urchin.com&spx=%2Fmjdhoei0YdWOjek&type=tcp#Швейцария
