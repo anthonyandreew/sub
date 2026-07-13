@@ -1,0 +1,286 @@
+# Karing / Clash-compatible profile
+# Mode: Global Direct
+# Default route: DIRECT
+# Selected services and subscribed rule sets: PROXY
+#
+# Notes:
+# 1. Karing may manage DNS separately in Settings -> DNS.
+# 2. The proxy subscription is loaded through proxy-providers.
+# 3. Rule order matters: specific rules are evaluated before broad rule sets.
+
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: strict
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  strict-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  listen: 0.0.0.0:1053
+  nameserver:
+    - https://1.1.1.1/dns-query
+    - https://1.0.0.1/dns-query
+  fallback:
+    - https://8.8.8.8/dns-query
+    - https://8.8.4.4/dns-query
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "localhost"
+    - "localhost.*"
+    - "time.*.com"
+    - "ntp.*.com"
+    - "+.pool.ntp.org"
+
+proxy-providers:
+  My-subscription:
+    type: http
+    url: "https://raw.githubusercontent.com/anthonyandreew/sub/refs/heads/main/my_servers_list.txt"
+    path: ./providers/my-subscription.yaml
+    interval: 3600
+    health-check:
+      enable: true
+      url: "http://www.gstatic.com/generate_204"
+      interval: 600
+      timeout: 5000
+      lazy: true
+
+proxy-groups:
+  - name: PROXY
+    type: url-test
+    use:
+      - My-subscription
+    url: "http://www.gstatic.com/generate_204"
+    interval: 600
+    timeout: 5000
+    tolerance: 80
+    lazy: true
+
+  - name: YouTube
+    type: url-test
+    use:
+      - My-subscription
+    filter: "(?i)vless"
+    url: "https://www.youtube.com/generate_204"
+    interval: 600
+    timeout: 5000
+    tolerance: 80
+    lazy: true
+
+rule-providers:
+  appstore:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppStore/AppStore.list"
+    path: ./rules/appstore.list
+    interval: 86400
+
+  apple:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple.list"
+    path: ./rules/apple.list
+    interval: 86400
+
+  google:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.list"
+    path: ./rules/google.list
+    interval: 86400
+
+  speedtest:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Speedtest/Speedtest.list"
+    path: ./rules/speedtest.list
+    interval: 86400
+
+  notion:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Notion/Notion.list"
+    path: ./rules/notion.list
+    interval: 86400
+
+  cloudflare:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloudflare/Cloudflare.list"
+    path: ./rules/cloudflare.list
+    interval: 86400
+
+  facebook:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Facebook/Facebook.list"
+    path: ./rules/facebook.list
+    interval: 86400
+
+  linkedin:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/LinkedIn/LinkedIn.list"
+    path: ./rules/linkedin.list
+    interval: 86400
+
+  twitter:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Twitter/Twitter.list"
+    path: ./rules/twitter.list
+    interval: 86400
+
+  gemini:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini.list"
+    path: ./rules/gemini.list
+    interval: 86400
+
+  claude:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Claude/Claude.list"
+    path: ./rules/claude.list
+    interval: 86400
+
+  instagram:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Instagram/Instagram.list"
+    path: ./rules/instagram.list
+    interval: 86400
+
+  whatsapp:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Whatsapp/Whatsapp.list"
+    path: ./rules/whatsapp.list
+    interval: 86400
+
+  openai:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OpenAI/OpenAI.list"
+    path: ./rules/openai.list
+    interval: 86400
+
+  youtube:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube.list"
+    path: ./rules/youtube.list
+    interval: 86400
+
+  telegram:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Telegram/Telegram.list"
+    path: ./rules/telegram.list
+    interval: 86400
+
+  global-proxy:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Proxy/Proxy.list"
+    path: ./rules/global-proxy.list
+    interval: 86400
+
+  selected-blocked-domains:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://iplist.opencck.org/?format=clashx&data=domains&site=aistudio.google.com&site=canva.com&site=chatgpt.com&site=claude.ai&site=copilot&site=grok.com&site=notebooklm.google&site=perplexity.ai&site=grammarly.com&site=discord.com&site=discord.gg&site=discord.media&site=ieee.org&site=flibusta.is&site=duolingo.com&site=chess.com&site=jetbrains.com&site=jetbrains%40cdn&site=jetbrains%40grazie.ai&site=messenger.com&site=signal.org&site=telegram.org&site=viber.com&site=whatsapp.com&site=zello.com&site=deezer.com&site=last.fm&site=musicbrainz.org&site=soundcloud.com&site=spotify.com&site=tidal.com&site=holod.media&site=bbc.com&site=zona.media&site=4pda.to&site=cwer.ws&site=facebook.com&site=hornet.com&site=instagram.com&site=linkedin.com&site=patreon.com&site=quora.com&site=ru-board.com&site=snapchat.com&site=tiktok.com&site=x.com&site=capcut.com&site=medium.com&site=miro.com&site=youtube.com&site=kino.pub&site=netflix.com&site=lostfilm.tv&site=hdrezka.ag&site=filmix.fm&site=kinozal.tv&site=zeflix.online"
+    path: ./rules/selected-blocked-domains.yaml
+    interval: 86400
+
+  selected-blocked-ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://iplist.opencck.org/?format=clashx&data=cidr4&site=aistudio.google.com&site=canva.com&site=chatgpt.com&site=claude.ai&site=copilot&site=grok.com&site=notebooklm.google&site=perplexity.ai&site=grammarly.com&site=discord.com&site=discord.gg&site=discord.media&site=ieee.org&site=flibusta.is&site=duolingo.com&site=chess.com&site=jetbrains.com&site=jetbrains%40cdn&site=jetbrains%40grazie.ai&site=messenger.com&site=signal.org&site=telegram.org&site=viber.com&site=whatsapp.com&site=zello.com&site=deezer.com&site=last.fm&site=musicbrainz.org&site=soundcloud.com&site=spotify.com&site=tidal.com&site=holod.media&site=bbc.com&site=zona.media&site=4pda.to&site=cwer.ws&site=facebook.com&site=hornet.com&site=instagram.com&site=linkedin.com&site=patreon.com&site=quora.com&site=ru-board.com&site=snapchat.com&site=tiktok.com&site=x.com&site=capcut.com&site=medium.com&site=miro.com&site=youtube.com&site=kino.pub&site=netflix.com&site=lostfilm.tv&site=hdrezka.ag&site=filmix.fm&site=kinozal.tv&site=zeflix.online"
+    path: ./rules/selected-blocked-ip.yaml
+    interval: 86400
+
+rules:
+  # Local/private traffic must never enter the proxy.
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,local,DIRECT
+
+  # Manual rules from the Loon profile.
+  - DOMAIN-SUFFIX,idownloadblog.com,PROXY
+  - DOMAIN-KEYWORD,slack,PROXY
+  - DOMAIN-SUFFIX,airbnbcdn.com,PROXY
+  - DOMAIN-KEYWORD,pakt,PROXY
+  - DOMAIN-SUFFIX,ip-api.com,PROXY
+  - DOMAIN,2ip.io,PROXY
+  - DOMAIN-KEYWORD,airbnb,PROXY
+
+  # More specific service rules before broad/global lists.
+  - RULE-SET,youtube,YouTube
+  - RULE-SET,telegram,PROXY
+  - RULE-SET,openai,PROXY
+  - RULE-SET,claude,PROXY
+  - RULE-SET,gemini,PROXY
+  - RULE-SET,google,PROXY
+  - RULE-SET,instagram,PROXY
+  - RULE-SET,whatsapp,PROXY
+  - RULE-SET,facebook,PROXY
+  - RULE-SET,linkedin,PROXY
+  - RULE-SET,twitter,PROXY
+  - RULE-SET,notion,PROXY
+  - RULE-SET,appstore,PROXY
+  - RULE-SET,apple,PROXY
+  - RULE-SET,speedtest,PROXY
+  - RULE-SET,cloudflare,PROXY
+
+  # User-maintained aggregate lists.
+  - RULE-SET,selected-blocked-domains,PROXY
+  - RULE-SET,selected-blocked-ip,PROXY,no-resolve
+
+  # Broad fallback proxy list from Blackmatrix7.
+  - RULE-SET,global-proxy,PROXY
+
+  # Global-direct behavior.
+  - MATCH,DIRECT
