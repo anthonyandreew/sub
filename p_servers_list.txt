@@ -8,8 +8,8 @@ wg://149.33.15.213:48382?publicKey=fvwwXEWq2rJTEJQE87y3l9a4U%2B4F8uinn19iZ7TtgAg
 mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=Mieru_Sweden&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Швеция_Mieru
 mierus://anton:srtQX2tE7KIgm0rK73xiZhCo@77.238.240.124?profile=Mieru_Netherlands_124&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Нидерланды_Mieru
 
-vless://21d59c9d-d5e8-4256-8fb1-72fcc1daa085@proxyplankton.ru:443?encryption=none&extra=%7B%22mode%22%3A%22auto%22%2C%22xPaddingBytes%22%3A%22100-1000%22%7D&fp=firefox&host=&mode=auto&path=%2F&pbk=Zt8gtcAuNtAEX_1ruAR5PAlDAOMdC72EgUsbf7ejzgo&security=reality&sid=53f93596001c&sni=yandex.lt&spx=%2Ff0dbc742ba6af60&type=xhttp&x_padding_bytes=100-1000#Швеция_Vless
-vless://22613de8-2b2e-457d-bebb-00f7817a571f@proxyplankton.ru:9443?encryption=none&flow=xtls-rprx-vision&security=reality&fp=chrome&pbk=i0AgGldq1AsDwoZyTcWDfZ1-DqAJlvin8zhnr2DTy0U&sid=c4ba3904082dca&sni=android.com&type=tcp#Швейцария_Vless
+hysteria2://c9fqcc73lx6uwbzx@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швеция_Vless
+hysteria2://1199yo4x53r19n9d@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария_Vless
 
 tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@185.230.143.244:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#Швеция_Tuic
 tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@149.33.15.213:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#Швейцария_Tuic
