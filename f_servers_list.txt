@@ -1,5 +1,7 @@
+## Автовыбор (Швеция vless / Швейцария vless)
 hysteria2://96788508bagqfyt4@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Автовыбор_Локации
-hysteria2://1j78gupbw7jj4lrk@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария_hy2
+## Швейцария_hy2
+hysteria2://1j78gupbw7jj4lrk@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария
 
 ## "hysteria2://c9fqcc73lx6uwbzx@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швеция"
 ## "hysteria2://1199yo4x53r19n9d@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария"
