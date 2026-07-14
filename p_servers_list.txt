@@ -1,12 +1,20 @@
-hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Автовыбор_локации
-hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#Швеция_hy2
-tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@149.33.15.213:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#Швейцария_Tuic
+## Автовыбор (Швеция vless / Швейцария vless / Нидерланды hy2 / Швейцария hy2)
+hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Автовыбор_локации_🚀
 
+## Швеция hy2 по ip - fallback
+hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#Швеция
+
+## Швейцария Tuic
+tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@149.33.15.213:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#Швейцария
+
+## Нидерланды AWG
 wg://149.33.15.213:48382?publicKey=fvwwXEWq2rJTEJQE87y3l9a4U%2B4F8uinn19iZ7TtgAg%3D&privateKey=54GGMmNgt%2BVSc/IiYnbM%2BsADlPKkmABbYJ4Dg93lf8g%3D&presharedKey=FacJwxgyTmcLVuQj0iipZg%2BMxEb5Ruo%2BunsvKIVQ1aY%3D&ip=10.8.1.9&dns=1.1.1.1,%201.0.0.1&udp=1&obfs=amneziawg&obfsParam=%7B%22s3%22:%2223%22,%22h1%22:%22335802424-728874971%22,%22i2%22:%22%22,%22jmax%22:%2250%22,%22h2%22:%221999956553-2040855557%22,%22s4%22:%2219%22,%22i3%22:%22%22,%22jmin%22:%2210%22,%22h3%22:%222125701567-2147287462%22,%22i4%22:%22%22,%22s1%22:%2279%22,%22jc%22:%226%22,%22h4%22:%222147377261-2147432530%22,%22i5%22:%22%22,%22s2%22:%22146%22,%22i1%22:%22%3Cr%202%3E%3Cb%200x858000010001000000000669636c6f756403636f6d0000010001c00c000100010000105a00044d583737%3E%22%7D&flag=CH#AmneziaWG_Switzerland
 
-## "mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=Mieru_Sweden&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Швеция_Mieru"
+## Нидерланды Mieru
 mierus://anton:srtQX2tE7KIgm0rK73xiZhCo@77.238.240.124?profile=Mieru_Netherlands_124&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Нидерланды_Mieru
 
+## На всякий случай
+## "mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=Mieru_Sweden&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Швеция_Mieru"
 ## "hysteria2://c9fqcc73lx6uwbzx@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швеция_Vless"
 ## "hysteria2://1199yo4x53r19n9d@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария_Vless"
 ## "hysteria2://1j78gupbw7jj4lrk@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария_hy2"
