@@ -3,9 +3,3 @@ hysteria2://96788508bagqfyt4@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tl
 
 ## Швейцария_hy2
 hysteria2://1j78gupbw7jj4lrk@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария
-
-## На всякий случай
-## "hysteria2://c9fqcc73lx6uwbzx@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швеция"
-## "hysteria2://1199yo4x53r19n9d@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#Швейцария"
-## "tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@185.230.143.244:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#Швеция_Tuic"
-## "mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=Mieru_Sweden&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#Швеция_Mieru"
