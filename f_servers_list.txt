@@ -5,4 +5,4 @@ hysteria2://96788508bagqfyt4@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tl
 hysteria2://1j78gupbw7jj4lrk@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇨🇭 Швейцария
 
 ## Только заблокированное через прокси
-vless://34ef5c5f-65c8-4823-bc18-dda3c016eb9c@proxyplankton.ru:9443?alpn=h2%2Chttp%2F1.1&ech=AGP%2BDQBfAAAgACDTO4x%2FUJor8u8ZnZbwamkLRNNlhH4upOoJTf9T%2BX1aUAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADABBwcm94eXBsYW5rdG9uLnJ1AAA%3D&encryption=none&fp=chrome&headerType=http&host=&path=%2F&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Только заблокир. через VPN
+vless://34ef5c5f-65c8-4823-bc18-dda3c016eb9c@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Только заблокир. через VPN
