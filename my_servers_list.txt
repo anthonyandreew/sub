@@ -1,5 +1,5 @@
 hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=proxyplankton.ru#🇨🇭 Switzerland · Hysteria2
-hysteria2://6gqtPwktKoNm8T2XnemX@89.191.229.189:8443/?sni=proxyplankton.ru#🔐 Switzerland · Hysteria2
+hysteria2://6gqtPwktKoNm8T2XnemX@89.191.229.189:8443/?sni=proxyplankton.ru#🏴‍☠️🔐 Switzerland · Hysteria2
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#🇸🇪 Sweden · Hysteria2
 hysteria2://OrIiY0H0TWccQgynotkJ@77.238.240.124:443/?sni=proxyplankton.ru#🇳🇱 Netherlands · Hysteria2
 ##_hysteria2://uPqLUrgraEG6FXD0jNrIaLJm@185.200.196.218:443/?sni=proxyplankton.ru#🇪🇪 Estonia · Hysteria2
