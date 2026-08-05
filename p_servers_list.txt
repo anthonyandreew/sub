@@ -2,9 +2,6 @@
 hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 Автовыбор локации
 vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Автовыбор локации резерв
 
-## Только заблокированное через прокси
-vless://34ef5c5f-65c8-4823-bc18-dda3c016eb9c@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Только заблокир. через VPN
-
 ## Швеция hy2 по ip - fallback
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#🇸🇪 Швеция · hy2
 
