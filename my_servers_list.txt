@@ -2,12 +2,12 @@ hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=proxyplankton.ru#🇨�
 hysteria2://6gqtPwktKoNm8T2XnemX@89.191.229.189:8443/?sni=proxyplankton.ru#🇨🇭 🔐 Switzerland · Hysteria2
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#🇸🇪 Sweden · Hysteria2
 hysteria2://OrIiY0H0TWccQgynotkJ@77.238.240.124:443/?sni=proxyplankton.ru#🇳🇱 Netherlands · Hysteria2
-hysteria2://df253a442fc1ef396fc32579d1fe2653e64ea49401828cb8@150.241.71.45:443/?insecure=1&sni=150.241.71.45#🇫🇮 Finland Auto · Hysteria2
+hysteria2://df253a442fc1ef396fc32579d1fe2653e64ea49401828cb8@150.241.71.45:443/?insecure=1&sni=150.241.71.45#🇫🇮 Finland · RU routes · Hysteria2
 ##_hysteria2://uPqLUrgraEG6FXD0jNrIaLJm@185.200.196.218:443/?sni=proxyplankton.ru#🇪🇪 Estonia · Hysteria2
 
-hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 Auto location · UDP
-vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Auto location · TCP
-vless://200360ec-8dce-467f-9d52-e5f52ed90dd4@proxyplankton.ru:9443?alpn=h2%2Chttp%2F1.1&ech=AGP%2BDQBfAAAgACDTO4x%2FUJor8u8ZnZbwamkLRNNlhH4upOoJTf9T%2BX1aUAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADABBwcm94eXBsYW5rdG9uLnJ1AAA%3D&encryption=none&fp=chrome&headerType=http&host=&path=%2F&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Auto location · TCP_Ech
+hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 RU → Auto · UDP
+vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 RU → Auto · TCP
+vless://200360ec-8dce-467f-9d52-e5f52ed90dd4@proxyplankton.ru:9443?alpn=h2%2Chttp%2F1.1&ech=AGP%2BDQBfAAAgACDTO4x%2FUJor8u8ZnZbwamkLRNNlhH4upOoJTf9T%2BX1aUAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADABBwcm94eXBsYW5rdG9uLnJ1AAA%3D&encryption=none&fp=chrome&headerType=http&host=&path=%2F&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 RU → Auto · TCP_Ech
 
 vless://293cbb84-c66c-45af-993c-b4fba62f5260@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Russia
 
