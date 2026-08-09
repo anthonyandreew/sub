@@ -2,7 +2,6 @@ hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=proxyplankton.ru#🇨�
 hysteria2://6gqtPwktKoNm8T2XnemX@89.191.229.189:8443/?sni=proxyplankton.ru#🇨🇭 🔐 Switzerland · Hysteria2
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#🇸🇪 Sweden · Hysteria2
 hysteria2://OrIiY0H0TWccQgynotkJ@77.238.240.124:443/?sni=proxyplankton.ru#🇳🇱 Netherlands · Hysteria2
-hysteria2://df253a442fc1ef396fc32579d1fe2653e64ea49401828cb8@150.241.71.45:443/?insecure=1&sni=150.241.71.45#🇫🇮 Finland · Hysteria2
 ##_hysteria2://uPqLUrgraEG6FXD0jNrIaLJm@185.200.196.218:443/?sni=proxyplankton.ru#🇪🇪 Estonia · Hysteria2
 
 hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 RU → Auto · UDP
