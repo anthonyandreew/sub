@@ -9,7 +9,8 @@ hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tl
 vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 RU → Auto · TCP
 vless://200360ec-8dce-467f-9d52-e5f52ed90dd4@proxyplankton.ru:9443?alpn=h2%2Chttp%2F1.1&ech=AGP%2BDQBfAAAgACDTO4x%2FUJor8u8ZnZbwamkLRNNlhH4upOoJTf9T%2BX1aUAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADABBwcm94eXBsYW5rdG9uLnJ1AAA%3D&encryption=none&fp=chrome&headerType=http&host=&path=%2F&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 RU → Auto · TCP_Ech
 
-vless://293cbb84-c66c-45af-993c-b4fba62f5260@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Russia
+vless://af4ad011-2aa2-4967-be9a-3485baf6fb83@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Russia
+
 vless://c152fd2e-64b7-4d3c-b556-3e6e378baf2c@150.241.71.45:4443?alpn=h2%2Chttp%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=150.241.71.45&type=tcp#🇫🇮 Finland · RU routes · TCP
 
 ##_wg://149.33.15.213:48382?publicKey=fvwwXEWq2rJTEJQE87y3l9a4U%2B4F8uinn19iZ7TtgAg%3D&privateKey=54GGMmNgt%2BVSc/IiYnbM%2BsADlPKkmABbYJ4Dg93lf8g%3D&presharedKey=FacJwxgyTmcLVuQj0iipZg%2BMxEb5Ruo%2BunsvKIVQ1aY%3D&ip=10.8.1.9&dns=1.1.1.1,%201.0.0.1&udp=1&obfs=amneziawg&obfsParam=%7B%22s3%22:%2223%22,%22h1%22:%22335802424-728874971%22,%22i2%22:%22%22,%22jmax%22:%2250%22,%22h2%22:%221999956553-2040855557%22,%22s4%22:%2219%22,%22i3%22:%22%22,%22jmin%22:%2210%22,%22h3%22:%222125701567-2147287462%22,%22i4%22:%22%22,%22s1%22:%2279%22,%22jc%22:%226%22,%22h4%22:%222147377261-2147432530%22,%22i5%22:%22%22,%22s2%22:%22146%22,%22i1%22:%22%3Cr%202%3E%3Cb%200x858000010001000000000669636c6f756403636f6d0000010001c00c000100010000105a00044d583737%3E%22%7D&flag=CH#🇨🇭 Switzerland · AWG
