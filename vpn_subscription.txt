@@ -1,9 +1,5 @@
-vless://8d44befc-c5d0-4127-82fc-fc7af0fb83fa@ephyr.xn--e1aatfr8bwa.online:443?encryption=none&type=xhttp&security=reality&sni=www.microsoft.com&fp=chrome&pbk=awih_0eUdNQO7MUVsysJFc-AfcGVdcEcP3nI15dOGn0&sid=902e51e9b9f66b57&host=www.microsoft.com&path=/&mode=auto#pxy-vless
+vless://f02928c5-2c6d-444c-8328-afc0b3ed557b@zephyr.xn--e1aatfr8bwa.online:443?encryption=none&type=xhttp&security=reality&sni=www.microsoft.com&fp=chrome&pbk=X4icoo8iYjRiTVISQTOy2EHov8bf-LHRMWka84jZrlE&sid=a72604c2ae298890&host=www.microsoft.com&path=/&mode=auto#pxy-vless
 
-hysteria2://7d2dbfde40d69cead6d866ae@ephyr.xn--e1aatfr8bwa.online:9443/?obfs=salamander&obfs-password=7f4fbb3158203af8fec6b9974f390488#pxy-hy2
+hysteria2://533106d0e7afd901695c3f3e@zephyr.xn--e1aatfr8bwa.online:9443/?obfs=salamander&obfs-password=b44642dadf3d804a1fce5d83620ca985#pxy-hy2
 
-mieru tcp ephyr.xn--e1aatfr8bwa.online ports 444-448 user pxy93d9 pass 6641323ee4
-
-naive+https://pxya1bd:5b97621b5f@ephyr.xn--e1aatfr8bwa.online:8443#pxy-naive
-
-olcrtc://jitsi?datachannel@https://meet.egovm.ru/pxy-ephyr.xn--e1aatfr8bwa.online#ae0d52c821a39f818a4105fae3260e848d82b82d7ac83b2e6a2658f3db798f12$pxy-olcrtc
+wg://zephyr.xn--e1aatfr8bwa.online:39743?publicKey=SgtJU0Yp7G4vA9oqe6RsxXrYsOVi8HDhSdiNOEOFQAo%3D&privateKey=WDRLStg/SJU2hyv/g6GOm8NUvWt2X7jQN9FehDyB4Es%3D&ip=10.9.9.2&mtu=1280&dns=1.1.1.1,%201.0.0.1&udp=1&obfs=amneziawg&obfsParam=%7B%22s3%22:%229%22,%22h1%22:%22168771320-311865390%22,%22jmax%22:%22157%22,%22h2%22:%22404210777-749860699%22,%22s4%22:%2212%22,%22jmin%22:%2262%22,%22h3%22:%22974164843-1203785257%22,%22s1%22:%2249%22,%22jc%22:%223%22,%22h4%22:%221253151579-2031452500%22,%22s2%22:%2254%22,%22i1%22:%22%3Cr%20150%3E%22%7D&flag=NL
