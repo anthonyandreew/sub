@@ -1,1 +1,9 @@
-https://149.33.15.213:2096/sub/7gq9pk5d4atoply2
+vless://8d44befc-c5d0-4127-82fc-fc7af0fb83fa@ephyr.xn--e1aatfr8bwa.online:443?encryption=none&type=xhttp&security=reality&sni=www.microsoft.com&fp=chrome&pbk=awih_0eUdNQO7MUVsysJFc-AfcGVdcEcP3nI15dOGn0&sid=902e51e9b9f66b57&host=www.microsoft.com&path=/&mode=auto#pxy-vless
+
+hysteria2://7d2dbfde40d69cead6d866ae@ephyr.xn--e1aatfr8bwa.online:9443/?obfs=salamander&obfs-password=7f4fbb3158203af8fec6b9974f390488#pxy-hy2
+
+mieru tcp ephyr.xn--e1aatfr8bwa.online ports 444-448 user pxy93d9 pass 6641323ee4
+
+naive+https://pxya1bd:5b97621b5f@ephyr.xn--e1aatfr8bwa.online:8443#pxy-naive
+
+olcrtc://jitsi?datachannel@https://meet.egovm.ru/pxy-ephyr.xn--e1aatfr8bwa.online#ae0d52c821a39f818a4105fae3260e848d82b82d7ac83b2e6a2658f3db798f12$pxy-olcrtc
