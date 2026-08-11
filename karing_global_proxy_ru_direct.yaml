@@ -1,0 +1,160 @@
+# Karing / Clash-compatible profile
+# Mode: Global Proxy with Russia/Yandex/VK Direct
+#
+# Routing:
+#   1. Local/private networks -> DIRECT
+#   2. Russian services/domains/IPs -> DIRECT
+#   3. Yandex and VK ecosystems -> DIRECT
+#   4. Everything else -> PROXY
+#
+# Proxy nodes are loaded automatically from:
+#   https://submaster.proxyplankton.ru:2097/
+#
+# OpenCCK rule sets are refreshed automatically once per day.
+
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: strict
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  strict-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  listen: 0.0.0.0:1053
+
+  nameserver:
+    - https://1.1.1.1/dns-query
+    - https://1.0.0.1/dns-query
+
+  fallback:
+    - https://8.8.8.8/dns-query
+    - https://8.8.4.4/dns-query
+
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "localhost"
+    - "localhost.*"
+    - "time.*.com"
+    - "ntp.*.com"
+    - "+.pool.ntp.org"
+
+proxy-providers:
+  ProxyPlankton:
+    type: http
+    url: "https://submaster.proxyplankton.ru:2097/"
+    path: ./providers/proxyplankton.yaml
+    interval: 3600
+    health-check:
+      enable: true
+      url: "http://www.gstatic.com/generate_204"
+      interval: 600
+      timeout: 5000
+      lazy: true
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    use:
+      - ProxyPlankton
+
+rule-providers:
+  # General Russian services from the OpenCCK Russia portal.
+  ru-domains:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://russia.iplist.opencck.org/?format=clashx&data=domains&group=russia"
+    path: ./rules/ru-domains.yaml
+    interval: 86400
+
+  ru-ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://russia.iplist.opencck.org/?format=clashx&data=cidr4&group=russia"
+    path: ./rules/ru-ip.yaml
+    interval: 86400
+
+  # VK ecosystem.
+  vk-domains:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://russia.iplist.opencck.org/?format=clashx&data=domains&group=vk"
+    path: ./rules/vk-domains.yaml
+    interval: 86400
+
+  vk-ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://russia.iplist.opencck.org/?format=clashx&data=cidr4&group=vk"
+    path: ./rules/vk-ip.yaml
+    interval: 86400
+
+  # Yandex ecosystem.
+  yandex-domains:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://russia.iplist.opencck.org/?format=clashx&data=domains&group=yandex"
+    path: ./rules/yandex-domains.yaml
+    interval: 86400
+
+  yandex-ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://russia.iplist.opencck.org/?format=clashx&data=cidr4&group=yandex"
+    path: ./rules/yandex-ip.yaml
+    interval: 86400
+
+rules:
+  # Private/local networks must never go through the proxy.
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,local,DIRECT
+
+  # Explicit Russian TLD fallback.
+  # These catch .ru/.su/.рф domains even if they are not yet present in OpenCCK.
+  - DOMAIN-SUFFIX,ru,DIRECT
+  - DOMAIN-SUFFIX,su,DIRECT
+  - DOMAIN-SUFFIX,xn--p1ai,DIRECT
+
+  # Yandex -> DIRECT
+  - RULE-SET,yandex-domains,DIRECT
+  - RULE-SET,yandex-ip,DIRECT,no-resolve
+
+  # VK -> DIRECT
+  - RULE-SET,vk-domains,DIRECT
+  - RULE-SET,vk-ip,DIRECT,no-resolve
+
+  # Other Russian services -> DIRECT
+  - RULE-SET,ru-domains,DIRECT
+  - RULE-SET,ru-ip,DIRECT,no-resolve
+
+  # Everything else -> selected proxy.
+  - MATCH,PROXY
