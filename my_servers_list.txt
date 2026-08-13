@@ -2,10 +2,12 @@ hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=proxyplankton.ru#🇨�
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#🇸🇪 Sweden · hy2
 hysteria2://OrIiY0H0TWccQgynotkJ@77.238.240.124:443/?sni=proxyplankton.ru#🇳🇱 Netherlands · hy2
 hysteria2://9bij8jwg89xh0b96@pekka.proxyplankton.ru:4443?alpn=http%2F1.1%2Ch3%2Ch2&fp=firefox&security=tls&sni=pekka.proxyplankton.ru#🇫🇮 Finland → RU · hy
+hysteria2://deqpxa4diwtcvspj@my.proxyplankton.ru:443?alpn=h3&fp=firefox&obfs=salamander&obfs-password=kp3fnw1st0rk7ppj&security=tls&sni=my.proxyplankton.ru#%F0%9F%87%A9%F0%9F%87%AA%20Germany · hy2
 
 hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 RU → Autolocation · hy2
 vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 RU → Autolocation · vless
-vless://8a3bcbc4-ff3c-441b-815b-b3b2df8c03a7@pekka.proxyplankton.ru:9443?alpn=h2%2Chttp%2F1.1&authority=&encryption=none&fp=chrome&security=tls&serviceName=grpc&sni=pekka.proxyplankton.ru&type=grpc#🇫🇮 Finland → RU · vless
+
+vless://92e8c5a3-5224-4135-9d49-95e5c40e8309@my.proxyplankton.ru:8443?alpn=http%2F1.1&encryption=none&fp=chrome&security=tls&sni=my.proxyplankton.ru&type=tcp#🇩🇪 Germany → RU · vless
 
 mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=Mieru_Sweden&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#🇸🇪 Sweden · Mieru
 
