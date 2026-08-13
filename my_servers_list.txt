@@ -1,8 +1,10 @@
 hysteria2://6gqtPwktKoNm8T2XnemX@149.33.15.213:8443/?sni=proxyplankton.ru#🇨🇭 Switzerland · hy2
 hysteria2://Ac3iXRRyFvlMUCfrBJR0ebO@185.230.143.244:2087/?sni=proxyplankton.ru#🇸🇪 Sweden · hy2
 hysteria2://OrIiY0H0TWccQgynotkJ@77.238.240.124:443/?sni=proxyplankton.ru#🇳🇱 Netherlands · hy2
+hysteria2://deqpxa4diwtcvspj@my.proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=my.proxyplankton.ru#🇩🇪 Germany · hy2
 
 hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 RU → Autolocation · hy2
+
 vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 RU → Autolocation · vless
 
 vless://92e8c5a3-5224-4135-9d49-95e5c40e8309@my.proxyplankton.ru:8443?alpn=http%2F1.1&encryption=none&fp=chrome&security=tls&sni=my.proxyplankton.ru&type=tcp#🇩🇪 Germany → RU · vless
