@@ -1,5 +1,5 @@
 ## Автовыбор (Швеция vless / Швейцария vless)
-hysteria2://96788508bagqfyt4@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 Автовыбор локации
+vless://4167aa5c-a81a-4265-89c2-46260c5eaf0b@proxyplankton.ru:8443?alpn=http%2F1.1&authority=&encryption=none&fm=%7B%22tcp%22%3A%5B%7B%22settings%22%3A%7B%22delays%22%3A%5B%5D%2C%22lengths%22%3A%5B%22100-200%22%5D%2C%22maxSplit%22%3A%22%22%2C%22packets%22%3A%221-3%22%7D%2C%22type%22%3A%22fragment%22%7D%5D%7D&fp=chrome&security=tls&serviceName=grpc&sni=proxyplankton.ru&type=grpc#🇷🇺 Автовыбор локации
 
 ## Швейцария_hy2
-hysteria2://1j78gupbw7jj4lrk@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇨🇭 Швейцария
+vless://3b313883-2e4b-438b-a160-ef4e360177f8@proxyplankton.ru:8443?alpn=http%2F1.1&authority=&encryption=none&fm=%7B%22tcp%22%3A%5B%7B%22settings%22%3A%7B%22delays%22%3A%5B%5D%2C%22lengths%22%3A%5B%22100-200%22%5D%2C%22maxSplit%22%3A%22%22%2C%22packets%22%3A%221-3%22%7D%2C%22type%22%3A%22fragment%22%7D%5D%7D&fp=chrome&security=tls&serviceName=grpc&sni=proxyplankton.ru&type=grpc#🇨🇭 Швейцария
