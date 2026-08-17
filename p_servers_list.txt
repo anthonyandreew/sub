@@ -1,5 +1,5 @@
 ## Автовыбор (Швеция vless / Швейцария vless / Нидерланды hy2 / Швейцария hy2)
-hysteria2://ch2f4fu5duejud98@proxyplankton.ru:8443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 Автовыбор локации
+hysteria2://ch2f4fu5duejud98@proxyplankton.ru:443?alpn=http%2F1.1&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 Автовыбор локации
 vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Автовыбор локации резерв
 
 ## Швеция hy2 по ip - fallback
