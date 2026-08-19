@@ -3,5 +3,7 @@ vless://9c72f2d1-bbb5-4e63-86d2-afb029a8febe@proxyplankton.ru:8443?alpn=http%2F1
 
 vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Автовыбор локации резерв
 
+hysteria2://6mkn9dqdez5qhdcc@proxyplankton.ru:10443?alpn=h3&fp=chrome&security=tls&sni=proxyplankton.ru#🇷🇺 Автовыбор локации резерв 2
+
 ## Германия — независимый autolocation
 vless://858a3eee-ba54-4b2d-bc89-df7d17dc63a3@my.proxyplankton.ru:8443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fm=%7B%22tcp%22%3A%5B%7B%22settings%22%3A%7B%22delays%22%3A%5B%5D%2C%22lengths%22%3A%5B%22100-200%22%5D%2C%22maxSplit%22%3A%22%22%2C%22packets%22%3A%221-3%22%7D%2C%22type%22%3A%22fragment%22%7D%5D%7D&fp=chrome&security=tls&sni=my.proxyplankton.ru&type=tcp#🇩🇪 Автовыбор локации · Германия
