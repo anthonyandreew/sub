@@ -8,6 +8,9 @@ wg://149.33.15.213:48382?publicKey=fvwwXEWq2rJTEJQE87y3l9a4U%2B4F8uinn19iZ7TtgAg
 mierus://anton:srtQX2tE7KIgm0rK73xiZhCo@77.238.240.124?profile=Mieru_Netherlands_124&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#🇳🇱 Netherlands · Mieru
 mierus://kEGpuMJI:2XwYUVUD@185.230.143.244?profile=Mieru_Sweden&mtu=1280&multiplexing=MULTIPLEXING_HIGH&handshake-mode=HANDSHAKE_STANDARD&port=9001&protocol=TCP#🇸🇪 Sweden · Mieru
 
+## РУ Автовыбор обход
+vless://10772840-657a-497b-a416-673c892d78ec@proxyplankton.ru:443?alpn=http%2F1.1&encryption=none&flow=xtls-rprx-vision&fp=chrome&security=tls&sni=proxyplankton.ru&type=tcp#🇷🇺 Автовыбор локации · 2
+
 ## TUIC
 tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@185.230.143.244:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#🇸🇪 Sweden · Tuic
 tuic://0cd391bb-879f-4067-b2ac-d1224522e7a3:VJzeehYArLrFuZ4YJD@149.33.15.213:9443?congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#🇨🇭 Switzerland · Tuic
