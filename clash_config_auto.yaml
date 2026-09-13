@@ -40,7 +40,7 @@ proxy-groups:
       - proxyplankton
     url: https://www.gstatic.com/generate_204
     interval: 300
-    tolerance: 100
+    tolerance: 0
 
 rule-providers:
   russia-direct-domains:
