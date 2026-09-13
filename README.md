@@ -13,14 +13,9 @@ individual subscription node, or `DIRECT` from the Stash UI.
 ## Updating the subscription
 
 The `Update Stash provider` GitHub Actions workflow rebuilds
-`stash/providers/proxyplankton.yaml` every six hours. Before enabling it, add
-the original subscription URL as a repository secret named
-`STASH_SUBSCRIPTION_URL`:
-
-1. GitHub repository → **Settings** → **Secrets and variables** → **Actions**.
-2. Create **New repository secret** named `STASH_SUBSCRIPTION_URL`.
-3. Paste the subscription URL as its value.
-4. In **Actions**, run **Update Stash provider** once to verify the secret.
+`stash/providers/proxyplankton.yaml` every six hours. The subscription URL is
+already stored as the `STASH_SUBSCRIPTION_URL` repository secret and the first
+workflow run completed successfully.
 
 The provider YAML contains connection credentials so that Stash can download it.
 Because this repository is public, anyone with the raw provider URL can use
@@ -28,6 +23,4 @@ those nodes. Keep the repository private if that is not acceptable.
 
 ## DNS
 
-The initial configuration uses the device's `system` DNS. To use Google DoH,
-replace `system` in both DNS lists in `clash_config.yaml` with
-`https://dns.google/dns-query` and re-import or update the configuration.
+The configuration uses Google DNS over HTTPS (DoH) for all DNS requests.
