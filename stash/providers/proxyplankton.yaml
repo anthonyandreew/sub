@@ -100,28 +100,6 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-  - name: "🔐 Автовыбор - awg2"
-    type: "wireguard"
-    server: "37.77.106.28"
-    port: 35555
-    ip: "10.8.1.3"
-    private-key: "2AqBhbGosHQ/L88fMxKHa/tz3OnfNhlnemnLYKIOOH4="
-    public-key: "NmvyjBqhD5Lerf14HL9uzdxl407ITzP4XWjXhFj2rz4="
-    dns:
-      - "8.8.8.8"
-      - "8.8.4.4"
-    mtu: 1380
-  - name: "Switzerland - awg2"
-    type: "wireguard"
-    server: "swz.proxyplankton.ru"
-    port: 33575
-    ip: "10.8.3.2"
-    private-key: "sGJrLFpEG7Qac0/tEvvDJPMZQ9QH+OwDLHmZBxdlpH8="
-    public-key: "JOE5QiMUvGN0Gl2DKgcJ6JAL9eIdjYSlsCp9roaO5XM="
-    dns:
-      - "8.8.8.8"
-      - "8.8.4.4"
-    mtu: 1400
   - name: "🇷🇺 Автовыбор - hy2-Auto-select"
     type: "hysteria2"
     server: "37.77.106.28"
@@ -152,7 +130,7 @@ proxies:
     uuid: "6332434f-bc27-4bc5-bd24-8fe56ec63b8e"
     network: "xhttp"
     tls: true
-    sni: "youtube.com"
+    sni: "google.com"
     client-fingerprint: "chrome"
     reality-opts:
       public-key: "dV3pA2zXRutfiIGWjJzkslJYzMrlNZLRPPRniTA1FhQ"
