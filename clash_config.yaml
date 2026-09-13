@@ -15,8 +15,15 @@ dns:
     - 'https://8.8.8.8/dns-query'
   nameserver:
     - 'https://dns.google/dns-query'
-  proxy-server-nameserver:
-    - 'https://dns.google/dns-query'
+# This node makes AUTO usable immediately while Stash fetches the remote
+# provider. The full and automatically updated node list remains below.
+proxies:
+  - name: "BOOTSTRAP · Netherlands hy2"
+    type: "hysteria2"
+    server: "77.238.240.124"
+    port: 443
+    auth: "OrIiY0H0TWccQgynotkJ"
+    sni: "proxyplankton.ru"
 
 proxy-providers:
   proxyplankton:
@@ -27,6 +34,8 @@ proxy-providers:
 proxy-groups:
   - name: AUTO
     type: url-test
+    proxies:
+      - "BOOTSTRAP · Netherlands hy2"
     use:
       - proxyplankton
     url: https://www.gstatic.com/generate_204
