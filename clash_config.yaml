@@ -1,1 +1,75 @@
+#SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config.yaml
+# Stash cloud configuration for the ProxyPlankton subscription.
 
+mode: rule
+log-level: info
+allow-lan: false
+ipv6: true
+unified-delay: true
+
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - system
+  nameserver:
+    - system
+
+proxy-providers:
+  proxyplankton:
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/providers/proxyplankton.yaml
+    path: ./providers/proxyplankton.yaml
+    interval: 3600
+
+proxy-groups:
+  - name: AUTO
+    type: url-test
+    use:
+      - proxyplankton
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 100
+  - name: PROXY
+    type: select
+    use:
+      - proxyplankton
+    proxies:
+      - AUTO
+      - DIRECT
+
+rule-providers:
+  russia-direct-domains:
+    behavior: domain
+    format: text
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-domains.txt
+    path: ./rules/russia-direct-domains.txt
+    interval: 86400
+  russia-direct-ipv4:
+    behavior: ipcidr
+    format: text
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv4.txt
+    path: ./rules/russia-direct-ipv4.txt
+    interval: 86400
+  russia-direct-ipv6:
+    behavior: ipcidr
+    format: text
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv6.txt
+    path: ./rules/russia-direct-ipv6.txt
+    interval: 86400
+
+rules:
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+  - RULE-SET,russia-direct-domains,DIRECT
+  - RULE-SET,russia-direct-ipv4,DIRECT,no-resolve
+  - RULE-SET,russia-direct-ipv6,DIRECT,no-resolve
+  - MATCH,PROXY

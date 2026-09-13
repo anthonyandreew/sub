@@ -1,0 +1,36 @@
+name: Update Stash provider
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  update-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build Stash proxy provider
+        env:
+          STASH_SUBSCRIPTION_URL: ${{ secrets.STASH_SUBSCRIPTION_URL }}
+        run: |
+          test -n "$STASH_SUBSCRIPTION_URL"
+          python scripts/build_stash_provider.py \
+            --subscription-url "$STASH_SUBSCRIPTION_URL" \
+            --output stash/providers/proxyplankton.yaml
+      - name: Commit provider changes
+        run: |
+          if git diff --quiet -- stash/providers/proxyplankton.yaml; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add stash/providers/proxyplankton.yaml
+          git commit -m 'Update Stash proxy provider'
+          git push
