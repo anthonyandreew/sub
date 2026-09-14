@@ -16,13 +16,12 @@ dns:
 
 proxies:
   - name: "BOOTSTRAP · Russia hy2"
-    type: "hysteria2"
-    server: "37.77.106.28"
+    type: hysteria2
+    server: 37.77.106.28
     port: 8443
     auth: "hqo29e7fj3q6pen6"
-    sni: "37.77.106.28"
-    alpn:
-      - h3
+    sni: 37.77.106.28
+    alpn: [h3]
     obfs: salamander
     obfs-password: "4vgqum0henixisub"
 
@@ -35,14 +34,15 @@ proxy-providers:
 proxy-groups:
   - name: AUTO
     type: url-test
-    proxies:
-      - "BOOTSTRAP · Russia hy2"
-    use:
-      - proxyplankton
+    proxies: ["BOOTSTRAP · Russia hy2"]
+    use: [proxyplankton]
     url: http://www.apple.com/library/test/success.html
     interval: 300
     lazy: false
     tolerance: 0
+  - name: PROXY
+    type: select
+    proxies: [AUTO]
 
 rule-providers:
   russia-direct-domains:
@@ -78,4 +78,4 @@ rules:
   - RULE-SET,russia-direct-domains,DIRECT
   - RULE-SET,russia-direct-ipv4,DIRECT,no-resolve
   - RULE-SET,russia-direct-ipv6,DIRECT,no-resolve
-  - MATCH,AUTO
+  - MATCH,PROXY
