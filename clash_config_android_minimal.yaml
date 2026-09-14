@@ -1,26 +1,22 @@
 #SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config_android_minimal.yaml
-# Android diagnostic profile: one explicitly configured proxy and no remote resources.
+# Android diagnostic profile: one Android-compatible proxy and no remote resources.
 
 mode: rule
 log-level: debug
 
 proxies:
-  - name: "BOOTSTRAP · Russia hy2"
+  - name: "BOOTSTRAP · Netherlands hy2"
     type: hysteria2
-    server: 37.77.106.28
-    port: 8443
-    auth: "hqo29e7fj3q6pen6"
-    sni: "37.77.106.28"
-    alpn:
-      - h3
-    obfs: salamander
-    obfs-password: "4vgqum0henixisub"
+    server: 77.238.240.124
+    port: 443
+    auth: "OrIiY0H0TWccQgynotkJ"
+    sni: "proxyplankton.ru"
 
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
-      - "BOOTSTRAP · Russia hy2"
+      - "BOOTSTRAP · Netherlands hy2"
 
 rules:
   - MATCH,PROXY
