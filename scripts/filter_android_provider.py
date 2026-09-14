@@ -16,7 +16,10 @@ def is_android_safe(node: str) -> bool:
             or "reality-opts:" in node
             or "encryption:" in node
         )
-    return not ('type: "hysteria2"' in node and 'obfs: "gecko"' in node)
+    # The Stash protocol reference currently lists both Hysteria2 obfuscation
+    # modes (Salamander and Gecko) only for Apple platforms. Do not emit a
+    # node that asks the Android core to negotiate either mode.
+    return not ('type: "hysteria2"' in node and 'obfs:' in node)
 
 
 def main() -> None:
