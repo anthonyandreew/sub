@@ -128,7 +128,6 @@ jobs:
             - RULE-SET,russia-direct-ipv6,DIRECT,no-resolve
             - MATCH,PROXY
           '''
-          Path("VPN_Stash_Auto.yaml").write_text(config, encoding="utf-8")
           manual_config = config.replace(
               "VPN_Stash_Auto.yaml", "VPN_Stash.yaml", 1
           ).replace(
@@ -140,11 +139,11 @@ jobs:
           PY
       - name: Commit generated provider and Auto profile
         run: |
-          if git diff --quiet -- stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml VPN_Stash.yaml; then
+          if git diff --quiet -- stash/providers/proxyplankton.yaml VPN_Stash.yaml; then
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml VPN_Stash.yaml
+          git add stash/providers/proxyplankton.yaml VPN_Stash.yaml
           git commit -m 'Update Stash provider and Auto profile'
           git push
