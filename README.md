@@ -1,44 +1,23 @@
-# Stash cloud configuration
+# Personal VPN configuration
 
-Import this configuration into Stash:
+## Active Stash profiles for iOS
 
-```text
-https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config.yaml
-```
+- Manual node selection: [VPN_Stash.yaml](https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash.yaml)
+- Automatic lowest-latency node selection: [VPN_Stash_Auto.yaml](https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash_Auto.yaml)
 
-It sends domains and IP ranges from `russia_direct.txt` directly and routes all
-other traffic through the `PROXY` group. `PROXY` lets you choose the bootstrap
-node or any individual subscription node; it deliberately does not offer
-`DIRECT`.
+Both profiles use Google DNS over HTTPS, send the Russian direct-list domains and IP ranges directly, and send all other traffic to the VPN. The manual profile contains only the PROXY group; the auto profile uses AUTO.
 
-## Updating the subscription
+## Clients in use
 
-The `Update Stash provider` GitHub Actions workflow rebuilds
-`stash/providers/proxyplankton.yaml` every six hours. The subscription URL is
-already stored as the `STASH_SUBSCRIPTION_URL` repository secret and the first
-workflow run completed successfully.
+- iOS: Stash is the primary client, including its On-Demand rules. Happ and AmneziaVPN are also retained.
+- Android: Happ and AmneziaVPN. No Android-specific Clash/Stash configuration is maintained in this repository.
 
-The provider YAML contains connection credentials so that Stash can download it.
-Because this repository is public, anyone with the raw provider URL can use
-those nodes. Keep the repository private if that is not acceptable.
+## Automatic subscription updates
 
-## DNS
+The Update Stash provider GitHub Actions workflow rebuilds stash/providers/proxyplankton.yaml every six hours using the repository secret STASH_SUBSCRIPTION_URL. The source subscription must never be committed to this repository.
 
-The configuration uses Google DNS over HTTPS (DoH) for all DNS requests.
+Stash refreshes the provider independently; the root profile normally does not need to change when nodes are added or removed from the subscription.
 
-## Operating notes
+## Repository access
 
-- Add only the root Cloud config URL shown above to Stash. Do not import
-  `stash/providers/proxyplankton.yaml` directly: it is an internal node list
-  without routing, DNS, or policy groups.
-- `clash_config.yaml` is the stable entry point. It provides DNS, direct-route
-  rules, one `PROXY` group, and a bootstrap node so the group is usable while a
-  remote provider is loading.
-- The Action updates only `stash/providers/proxyplankton.yaml`. A changed
-  ProxyPlankton subscription therefore normally reaches GitHub within six
-  hours, then reaches a running Stash profile on its provider refresh interval
-  (five minutes). The root config does not need to change for ordinary node updates.
-- The source subscription is stored only as the GitHub Actions secret
-  `STASH_SUBSCRIPTION_URL`; never put it in this repository or in documentation.
-- Repository publishing is performed through the authenticated GitHub browser
-  session. No personal access token or deploy key is stored in the repository.
+Publishing is performed through the authenticated GitHub browser session. No personal access token or deploy key is stored in this repository.
