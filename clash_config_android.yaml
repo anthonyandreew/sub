@@ -13,24 +13,6 @@ dns:
     - https://dns.google/dns-query
 
 proxies:
-  - name: "🇳🇱 Netherlands · hy2"
-    type: "hysteria2"
-    server: "77.238.240.124"
-    port: 443
-    auth: "OrIiY0H0TWccQgynotkJ"
-    sni: "proxyplankton.ru"
-    benchmark-url: "http://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
-  - name: "🇪🇺 Автовыбор Резерв"
-    type: "hysteria2"
-    server: "proxyplankton.ru"
-    port: 10443
-    auth: "yp801ci4uy6bxq04"
-    sni: "proxyplankton.ru"
-    alpn:
-      - "h3"
-    benchmark-url: "http://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
   - name: "🇳🇱 Netherlands · tcp"
     type: "vless"
     server: "77.238.240.124"
@@ -109,8 +91,6 @@ proxy-groups:
   - name: PROXY
     type: select
     proxies:
-      - "🇳🇱 Netherlands · hy2"
-      - "🇪🇺 Автовыбор Резерв"
       - "🇳🇱 Netherlands · tcp"
       - "🇸🇪 Sweden · tcp"
       - "🇳🇱 Netherlands · обход RU"
