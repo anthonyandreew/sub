@@ -41,7 +41,7 @@ jobs:
           if not names:
               raise SystemExit("No proxies found in generated provider")
 
-          group_nodes = ["BOOTSTRAP · Russia hy2", *names]
+          group_nodes = ["BOOTSTRAP · Auto-select via Russia", *names]
           group_items = "\n".join(
               f"      - {json.dumps(name, ensure_ascii=False)}" for name in group_nodes
           )
@@ -67,11 +67,11 @@ jobs:
               - 'https://dns.google/dns-query'
           
           proxies:
-            - name: "BOOTSTRAP · Russia hy2"
+            - name: "BOOTSTRAP · Auto-select via Russia"
               type: "hysteria2"
               server: "37.77.106.28"
               port: 8443
-              auth: "hqo29e7fj3q6pen6"
+              auth: "z97d7p67c5ivjezz"
               sni: "37.77.106.28"
               alpn:
                 - h3
