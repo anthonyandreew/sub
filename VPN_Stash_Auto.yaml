@@ -18,11 +18,11 @@ dns:
 
 # Keeps the profile usable while the remote provider is loading.
 proxies:
-  - name: "BOOTSTRAP · Russia hy2"
+  - name: "BOOTSTRAP · Auto-select via Russia"
     type: "hysteria2"
     server: "37.77.106.28"
     port: 8443
-    auth: "hqo29e7fj3q6pen6"
+    auth: "z97d7p67c5ivjezz"
     sni: "37.77.106.28"
     alpn:
       - h3
@@ -40,7 +40,7 @@ proxy-groups:
   - name: AUTO
     type: url-test
     proxies:
-      - "BOOTSTRAP · Russia hy2"
+      - "BOOTSTRAP · Auto-select via Russia"
     use:
       - proxyplankton
     url: https://www.gstatic.com/generate_204
