@@ -28,6 +28,24 @@ def read_provider(path: Path) -> tuple[list[str], list[str]]:
     return nodes, names
 
 
+def node_priority(node: str) -> int:
+    """Prefer simple VLESS transports over QUIC while Android is in early access."""
+    if 'type: "vless"' not in node:
+        return 10
+    if 'network: "tcp"' in node:
+        return 0
+    if 'network: "grpc"' in node:
+        return 1
+    return 5
+
+
+def with_benchmark(node: str) -> str:
+    """Use a small 204 endpoint instead of the Android client's default probe."""
+    if "benchmark-url:" in node:
+        return node
+    return node.rstrip() + '\n    benchmark-url: "https://www.gstatic.com/generate_204"\n    benchmark-timeout: 8\n'
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--provider", type=Path, required=True)
@@ -38,6 +56,9 @@ def main() -> None:
     args = parser.parse_args()
 
     nodes, names = read_provider(args.provider)
+    ordered = sorted(zip(nodes, names), key=lambda pair: node_priority(pair[0]))
+    nodes, names = zip(*ordered)
+    nodes, names = [with_benchmark(node) for node in nodes], list(names)
     domain_rules = [f"  - DOMAIN-SUFFIX,{domain.removeprefix('+.')},DIRECT" for domain in nonempty_lines(args.domains)]
     ipv4_rules = [f"  - IP-CIDR,{cidr},DIRECT,no-resolve" for cidr in nonempty_lines(args.ipv4)]
     ipv6_rules = [f"  - IP-CIDR6,{cidr},DIRECT,no-resolve" for cidr in nonempty_lines(args.ipv6)]
@@ -63,22 +84,24 @@ def main() -> None:
     content += "\nproxy-groups:\n  - name: PROXY\n    type: select\n    proxies:\n"
     content += "".join(f"      - {json.dumps(name, ensure_ascii=False)}\n" for name in names)
     content += "\nrules:\n"
-    content += "\n".join([
-        "  - DOMAIN-SUFFIX,local,DIRECT",
-        "  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
-        "  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve",
-        "  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
-        "  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve",
-        "  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
-        "  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
-        "  - IP-CIDR6,::1/128,DIRECT,no-resolve",
-        "  - IP-CIDR6,fc00::/7,DIRECT,no-resolve",
-        "  - IP-CIDR6,fe80::/10,DIRECT,no-resolve",
-        *domain_rules,
-        *ipv4_rules,
-        *ipv6_rules,
-        "  - MATCH,PROXY",
-    ])
+    content += "\n".join(
+        [
+            "  - DOMAIN-SUFFIX,local,DIRECT",
+            "  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
+            "  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve",
+            "  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
+            "  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve",
+            "  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
+            "  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
+            "  - IP-CIDR6,::1/128,DIRECT,no-resolve",
+            "  - IP-CIDR6,fc00::/7,DIRECT,no-resolve",
+            "  - IP-CIDR6,fe80::/10,DIRECT,no-resolve",
+            *domain_rules,
+            *ipv4_rules,
+            *ipv6_rules,
+            "  - MATCH,PROXY",
+        ]
+    )
     args.output.write_text(content + "\n", encoding="utf-8")
     print(f"Generated Android config with {len(names)} nodes and {len(domain_rules) + len(ipv4_rules) + len(ipv6_rules)} direct rules")
 
