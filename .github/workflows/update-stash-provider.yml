@@ -18,7 +18,7 @@ jobs:
           python-version: '3.12'
       - name: Build Stash proxy providers
         env:
-          STASH_SUBSCRIPTION_URL: \${{ secrets.STASH_SUBSCRIPTION_URL }}
+          STASH_SUBSCRIPTION_URL: ${{ secrets.STASH_SUBSCRIPTION_URL }}
         run: |
           test -n "$STASH_SUBSCRIPTION_URL"
           python scripts/build_stash_provider.py \
