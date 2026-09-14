@@ -1,6 +1,3 @@
-#SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config_clashmi.yaml
-# Clash Mi / mihomo Android profile. Nodes and routing lists are managed on GitHub.
-
 mode: rule
 log-level: warning
 ipv6: true
