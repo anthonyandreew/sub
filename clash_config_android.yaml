@@ -1,43 +1,19 @@
-# Stash Android configuration
-# ProxyPlankton
-#
-# Если этот файл заменит:
-# https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config.yaml
-# можно раскомментировать следующую строку:
-#
-#SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config.yaml
-
+#SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config_android.yaml
+# Stash Android (Early Access): ProxyPlankton configuration.
+# The provider deliberately excludes VLESS Reality, XHTTP and VLESS Encryption.
 
 mode: rule
 log-level: warning
 
-
-# =========================================================
-# DNS
-# =========================================================
-#
-# На Android пока оставляем DNS максимально простым.
-# Без fake-ip / enhanced-mode.
-#
-
+# Keep DNS deliberately small for the Android early-access client.
 dns:
+  enable: true
   default-nameserver:
-    - 8.8.8.8
-    - system
-
+    - https://8.8.8.8/dns-query
   nameserver:
     - https://dns.google/dns-query
-    - https://1.1.1.1/dns-query
 
-
-# =========================================================
-# BOOTSTRAP PROXY
-# =========================================================
-#
-# Нужен на случай, если remote provider ещё не успел
-# загрузиться или временно недоступен.
-#
-
+# Provides an immediately usable route while the remote node list is loading.
 proxies:
   - name: "BOOTSTRAP · Netherlands hy2"
     type: hysteria2
@@ -46,113 +22,49 @@ proxies:
     auth: "OrIiY0H0TWccQgynotkJ"
     sni: proxyplankton.ru
 
-
-# =========================================================
-# PROXY PROVIDER
-# =========================================================
-
 proxy-providers:
-  proxyplankton:
-    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/providers/proxyplankton.yaml
+  proxyplankton-android:
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/providers/proxyplankton_android.yaml
     interval: 300
-
-
-# =========================================================
-# PROXY GROUP
-# =========================================================
-#
-# Здесь будут:
-#
-# 1. Bootstrap Netherlands
-# 2. Все подключения из ProxyPlankton
-#
-# Пользователь вручную выбирает нужное подключение.
-#
 
 proxy-groups:
   - name: PROXY
     type: select
-
     proxies:
       - "BOOTSTRAP · Netherlands hy2"
-
     use:
-      - proxyplankton
+      - proxyplankton-android
 
-
-# =========================================================
-# RUSSIAN DIRECT RULE SETS
-# =========================================================
-
+# Text rule sets are indexed efficiently and update independently in background.
 rule-providers:
-
   russia-direct-domains:
     behavior: domain
     format: text
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-domains.txt
     interval: 86400
-
   russia-direct-ipv4:
     behavior: ipcidr
     format: text
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv4.txt
     interval: 86400
-
   russia-direct-ipv6:
     behavior: ipcidr
     format: text
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv6.txt
     interval: 86400
 
-
-# =========================================================
-# ROUTING
-# =========================================================
-
 rules:
-
-  # -----------------------------
-  # LOCAL NETWORK
-  # -----------------------------
-
   - DOMAIN-SUFFIX,local,DIRECT
-
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
   - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
-
   - IP-CIDR6,::1/128,DIRECT,no-resolve
   - IP-CIDR6,fc00::/7,DIRECT,no-resolve
   - IP-CIDR6,fe80::/10,DIRECT,no-resolve
-
-
-  # -----------------------------
-  # RUSSIAN DOMAINS
-  # -----------------------------
-
   - RULE-SET,russia-direct-domains,DIRECT
-
-
-  # -----------------------------
-  # RUSSIAN IP ADDRESSES
-  # -----------------------------
-  #
-  # Специально БЕЗ no-resolve.
-  #
-  # Если домена нет в списке russia-direct-domains,
-  # Stash сможет разрешить его IP и проверить,
-  # находится ли адрес в российском диапазоне.
-  #
-
-  - RULE-SET,russia-direct-ipv4,DIRECT
-  - RULE-SET,russia-direct-ipv6,DIRECT
-
-
-  # -----------------------------
-  # EVERYTHING ELSE
-  # -----------------------------
-
+  - RULE-SET,russia-direct-ipv4,DIRECT,no-resolve
+  - RULE-SET,russia-direct-ipv6,DIRECT,no-resolve
   - MATCH,PROXY
