@@ -13,32 +13,34 @@ dns:
     - https://dns.google/dns-query
 
 proxies:
-  - name: "🇳🇱 Netherlands · hy2"
-    type: "hysteria2"
+  - name: "🇳🇱 Netherlands · tcp"
+    type: "vless"
     server: "77.238.240.124"
-    port: 443
-    auth: "OrIiY0H0TWccQgynotkJ"
-    sni: "proxyplankton.ru"
-  - name: "🇨🇭 Switzerland · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
     port: 8443
-    auth: "j4lbcp5zocftejuc"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
+    uuid: "fa0010d9-7060-4abd-956a-76f15f067d0d"
+    network: "tcp"
+    flow: "xtls-rprx-vision"
+    tls: true
+    sni: "77.238.240.124"
+    client-fingerprint: "chrome"
     alpn:
-      - "h3"
-  - name: "🇸🇪 Sweden · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "dkc9avyilfpjsz0k"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
+      - "http/1.1"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇸🇪 Sweden · tcp"
+    type: "vless"
+    server: "213.165.46.93"
+    port: 5443
+    uuid: "a181bfc9-3cef-47da-aadc-610e1ff7d4b3"
+    network: "tcp"
+    flow: "xtls-rprx-vision"
+    tls: true
+    sni: "213.165.46.93"
+    client-fingerprint: "chrome"
     alpn:
-      - "h3"
+      - "http/1.1"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
   - name: "🇳🇱 Netherlands · обход RU"
     type: "vless"
     server: "37.77.106.28"
@@ -52,38 +54,8 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-  - name: "🇪🇺 Автовыбор Резерв"
-    type: "hysteria2"
-    server: "proxyplankton.ru"
-    port: 10443
-    auth: "yp801ci4uy6bxq04"
-    sni: "proxyplankton.ru"
-    alpn:
-      - "h3"
-  - name: "🇳🇱 Netherlands · tcp"
-    type: "vless"
-    server: "77.238.240.124"
-    port: 8443
-    uuid: "fa0010d9-7060-4abd-956a-76f15f067d0d"
-    network: "tcp"
-    flow: "xtls-rprx-vision"
-    tls: true
-    sni: "77.238.240.124"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-  - name: "🇸🇪 Sweden · tcp"
-    type: "vless"
-    server: "213.165.46.93"
-    port: 5443
-    uuid: "a181bfc9-3cef-47da-aadc-610e1ff7d4b3"
-    network: "tcp"
-    flow: "xtls-rprx-vision"
-    tls: true
-    sni: "213.165.46.93"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
   - name: "🔓 VPN для заблокированных"
     type: "vless"
     server: "37.77.106.28"
@@ -97,16 +69,8 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-  - name: "🇷🇺 Автовыбор - hy2-Auto-select"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "z97d7p67c5ivjezz"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
   - name: "🇷🇺 Автовыбор - grpc"
     type: "vless"
     server: "37.77.106.28"
@@ -120,21 +84,77 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇳🇱 Netherlands · hy2"
+    type: "hysteria2"
+    server: "77.238.240.124"
+    port: 443
+    auth: "OrIiY0H0TWccQgynotkJ"
+    sni: "proxyplankton.ru"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇨🇭 Switzerland · обход RU"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "j4lbcp5zocftejuc"
+    sni: "37.77.106.28"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
+    alpn:
+      - "h3"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇸🇪 Sweden · обход RU"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "dkc9avyilfpjsz0k"
+    sni: "37.77.106.28"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
+    alpn:
+      - "h3"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇪🇺 Автовыбор Резерв"
+    type: "hysteria2"
+    server: "proxyplankton.ru"
+    port: 10443
+    auth: "yp801ci4uy6bxq04"
+    sni: "proxyplankton.ru"
+    alpn:
+      - "h3"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇷🇺 Автовыбор - hy2-Auto-select"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "z97d7p67c5ivjezz"
+    sni: "37.77.106.28"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
+    alpn:
+      - "h3"
+    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
 
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
+      - "🇳🇱 Netherlands · tcp"
+      - "🇸🇪 Sweden · tcp"
+      - "🇳🇱 Netherlands · обход RU"
+      - "🔓 VPN для заблокированных"
+      - "🇷🇺 Автовыбор - grpc"
       - "🇳🇱 Netherlands · hy2"
       - "🇨🇭 Switzerland · обход RU"
       - "🇸🇪 Sweden · обход RU"
-      - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
-      - "🇳🇱 Netherlands · tcp"
-      - "🇸🇪 Sweden · tcp"
-      - "🔓 VPN для заблокированных"
       - "🇷🇺 Автовыбор - hy2-Auto-select"
-      - "🇷🇺 Автовыбор - grpc"
 
 rules:
   - DOMAIN-SUFFIX,local,DIRECT
