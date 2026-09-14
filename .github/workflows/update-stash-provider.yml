@@ -24,13 +24,116 @@ jobs:
           python scripts/build_stash_provider.py \
             --subscription-url "$STASH_SUBSCRIPTION_URL" \
             --output stash/providers/proxyplankton.yaml
-      - name: Commit generated provider
+      - name: Build eager Stash Auto profile
         run: |
-          if git diff --quiet -- stash/providers/proxyplankton.yaml; then
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          provider_path = Path("stash/providers/proxyplankton.yaml")
+          provider = provider_path.read_text(encoding="utf-8")
+          proxy_items = provider.split("proxies:\n", 1)[1]
+          names = [
+              json.loads(match.group(1))
+              for match in re.finditer(r"^\s*-\s+name:\s+(.+)$", proxy_items, re.MULTILINE)
+          ]
+          if not names:
+              raise SystemExit("No proxies found in generated provider")
+
+          group_nodes = ["BOOTSTRAP · Russia hy2", *names]
+          group_items = "\n".join(
+              f"      - {json.dumps(name, ensure_ascii=False)}" for name in group_nodes
+          )
+          config = f'''#SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash_Auto.yaml
+# Generated snapshot: all Stash-compatible subscription nodes are available on first launch.
+
+mode: rule
+log-level: info
+allow-lan: false
+ipv6: true
+unified-delay: true
+
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+    - 'https://8.8.8.8/dns-query'
+  nameserver:
+    - 'https://dns.google/dns-query'
+
+proxies:
+  - name: "BOOTSTRAP · Russia hy2"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "hqo29e7fj3q6pen6"
+    sni: "37.77.106.28"
+    alpn:
+      - h3
+    obfs: salamander
+    obfs-password: "4vgqum0henixisub"
+{proxy_items}
+proxy-groups:
+  - name: AUTO
+    type: url-test
+    proxies:
+{group_items}
+    url: http://www.apple.com/library/test/success.html
+    interval: 300
+    lazy: false
+    tolerance: 0
+  - name: PROXY
+    type: select
+    proxies:
+      - AUTO
+
+rule-providers:
+  russia-direct-domains:
+    behavior: domain
+    format: text
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-domains.txt
+    path: ./rules/russia-direct-domains.txt
+    interval: 86400
+  russia-direct-ipv4:
+    behavior: ipcidr
+    format: text
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv4.txt
+    path: ./rules/russia-direct-ipv4.txt
+    interval: 86400
+  russia-direct-ipv6:
+    behavior: ipcidr
+    format: text
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv6.txt
+    path: ./rules/russia-direct-ipv6.txt
+    interval: 86400
+
+rules:
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+  - RULE-SET,russia-direct-domains,DIRECT
+  - RULE-SET,russia-direct-ipv4,DIRECT,no-resolve
+  - RULE-SET,russia-direct-ipv6,DIRECT,no-resolve
+  - MATCH,PROXY
+'''
+          Path("VPN_Stash_Auto.yaml").write_text(config, encoding="utf-8")
+          PY
+      - name: Commit generated provider and Auto profile
+        run: |
+          if git diff --quiet -- stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml; then
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add stash/providers/proxyplankton.yaml
-          git commit -m 'Update Stash proxy provider'
+          git add stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml
+          git commit -m 'Update Stash provider and Auto profile'
           git push
