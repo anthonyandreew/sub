@@ -6,26 +6,6 @@ proxies:
     port: 443
     auth: "OrIiY0H0TWccQgynotkJ"
     sni: "proxyplankton.ru"
-  - name: "🇨🇭 Switzerland · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "j4lbcp5zocftejuc"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-  - name: "🇸🇪 Sweden · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "dkc9avyilfpjsz0k"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
   - name: "🇳🇱 Netherlands · обход RU"
     type: "vless"
     server: "37.77.106.28"
@@ -84,16 +64,6 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-  - name: "🇷🇺 Автовыбор - hy2-Auto-select"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "z97d7p67c5ivjezz"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
   - name: "🇷🇺 Автовыбор - grpc"
     type: "vless"
     server: "37.77.106.28"

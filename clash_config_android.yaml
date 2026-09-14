@@ -13,6 +13,24 @@ dns:
     - https://dns.google/dns-query
 
 proxies:
+  - name: "🇳🇱 Netherlands · hy2"
+    type: "hysteria2"
+    server: "77.238.240.124"
+    port: 443
+    auth: "OrIiY0H0TWccQgynotkJ"
+    sni: "proxyplankton.ru"
+    benchmark-url: "http://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
+  - name: "🇪🇺 Автовыбор Резерв"
+    type: "hysteria2"
+    server: "proxyplankton.ru"
+    port: 10443
+    auth: "yp801ci4uy6bxq04"
+    sni: "proxyplankton.ru"
+    alpn:
+      - "h3"
+    benchmark-url: "http://www.gstatic.com/generate_204"
+    benchmark-timeout: 8
   - name: "🇳🇱 Netherlands · tcp"
     type: "vless"
     server: "77.238.240.124"
@@ -25,7 +43,7 @@ proxies:
     client-fingerprint: "chrome"
     alpn:
       - "http/1.1"
-    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-url: "http://www.gstatic.com/generate_204"
     benchmark-timeout: 8
   - name: "🇸🇪 Sweden · tcp"
     type: "vless"
@@ -39,7 +57,7 @@ proxies:
     client-fingerprint: "chrome"
     alpn:
       - "http/1.1"
-    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-url: "http://www.gstatic.com/generate_204"
     benchmark-timeout: 8
   - name: "🇳🇱 Netherlands · обход RU"
     type: "vless"
@@ -54,7 +72,7 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-url: "http://www.gstatic.com/generate_204"
     benchmark-timeout: 8
   - name: "🔓 VPN для заблокированных"
     type: "vless"
@@ -69,7 +87,7 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-url: "http://www.gstatic.com/generate_204"
     benchmark-timeout: 8
   - name: "🇷🇺 Автовыбор - grpc"
     type: "vless"
@@ -84,77 +102,20 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-    benchmark-url: "https://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
-  - name: "🇳🇱 Netherlands · hy2"
-    type: "hysteria2"
-    server: "77.238.240.124"
-    port: 443
-    auth: "OrIiY0H0TWccQgynotkJ"
-    sni: "proxyplankton.ru"
-    benchmark-url: "https://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
-  - name: "🇨🇭 Switzerland · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "j4lbcp5zocftejuc"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-    benchmark-url: "https://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
-  - name: "🇸🇪 Sweden · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "dkc9avyilfpjsz0k"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-    benchmark-url: "https://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
-  - name: "🇪🇺 Автовыбор Резерв"
-    type: "hysteria2"
-    server: "proxyplankton.ru"
-    port: 10443
-    auth: "yp801ci4uy6bxq04"
-    sni: "proxyplankton.ru"
-    alpn:
-      - "h3"
-    benchmark-url: "https://www.gstatic.com/generate_204"
-    benchmark-timeout: 8
-  - name: "🇷🇺 Автовыбор - hy2-Auto-select"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "z97d7p67c5ivjezz"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-    benchmark-url: "https://www.gstatic.com/generate_204"
+    benchmark-url: "http://www.gstatic.com/generate_204"
     benchmark-timeout: 8
 
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
+      - "🇳🇱 Netherlands · hy2"
+      - "🇪🇺 Автовыбор Резерв"
       - "🇳🇱 Netherlands · tcp"
       - "🇸🇪 Sweden · tcp"
       - "🇳🇱 Netherlands · обход RU"
       - "🔓 VPN для заблокированных"
       - "🇷🇺 Автовыбор - grpc"
-      - "🇳🇱 Netherlands · hy2"
-      - "🇨🇭 Switzerland · обход RU"
-      - "🇸🇪 Sweden · обход RU"
-      - "🇪🇺 Автовыбор Резерв"
-      - "🇷🇺 Автовыбор - hy2-Auto-select"
 
 rules:
   - DOMAIN-SUFFIX,local,DIRECT
