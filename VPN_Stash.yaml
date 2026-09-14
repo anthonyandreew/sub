@@ -17,11 +17,11 @@ dns:
     - 'https://dns.google/dns-query'
 
 proxies:
-  - name: "BOOTSTRAP · Russia hy2"
+  - name: "BOOTSTRAP · Auto-select via Russia"
     type: "hysteria2"
     server: "37.77.106.28"
     port: 8443
-    auth: "hqo29e7fj3q6pen6"
+    auth: "z97d7p67c5ivjezz"
     sni: "37.77.106.28"
     alpn:
       - h3
@@ -157,7 +157,7 @@ proxies:
     uuid: "6332434f-bc27-4bc5-bd24-8fe56ec63b8e"
     network: "xhttp"
     tls: true
-    sni: "ai.android"
+    sni: "google.com"
     client-fingerprint: "chrome"
     reality-opts:
       public-key: "dV3pA2zXRutfiIGWjJzkslJYzMrlNZLRPPRniTA1FhQ"
@@ -172,7 +172,7 @@ proxy-groups:
   - name: AUTO
     type: url-test
     proxies:
-      - "BOOTSTRAP · Russia hy2"
+      - "BOOTSTRAP · Auto-select via Russia"
       - "🇳🇱 Netherlands · hy2"
       - "🇨🇭 Switzerland · обход RU"
       - "🇸🇪 Sweden · обход RU"
@@ -193,7 +193,7 @@ proxy-groups:
     type: select
     proxies:
       - AUTO
-      - "BOOTSTRAP · Russia hy2"
+      - "BOOTSTRAP · Auto-select via Russia"
       - "🇳🇱 Netherlands · hy2"
       - "🇨🇭 Switzerland · обход RU"
       - "🇸🇪 Sweden · обход RU"
