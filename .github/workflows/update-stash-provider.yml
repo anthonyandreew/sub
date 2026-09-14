@@ -145,6 +145,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml
+          git add stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml VPN_Stash.yaml
           git commit -m 'Update Stash provider and Auto profile'
           git push
