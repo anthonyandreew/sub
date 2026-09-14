@@ -28,7 +28,7 @@ proxies:
 proxy-providers:
   proxyplankton:
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/providers/proxyplankton.yaml
-    path: ./providers/proxyplankton.yaml
+    path: ./providers/proxyplankton_subfam_auto.yaml
     interval: 300
 
 proxy-groups:
