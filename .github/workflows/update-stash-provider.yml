@@ -45,6 +45,9 @@ jobs:
           group_items = "\n".join(
               f"      - {json.dumps(name, ensure_ascii=False)}" for name in group_nodes
           )
+          manual_group_items = "\n".join(
+              f"      - {json.dumps(name, ensure_ascii=False)}" for name in group_nodes
+          )
           config = f'''#SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash_Auto.yaml
           # Generated snapshot: all Stash-compatible subscription nodes are available on first launch.
           
@@ -126,10 +129,18 @@ jobs:
             - MATCH,PROXY
           '''
           Path("VPN_Stash_Auto.yaml").write_text(config, encoding="utf-8")
+          manual_config = config.replace(
+              "VPN_Stash_Auto.yaml", "VPN_Stash.yaml", 1
+          ).replace(
+              "    proxies:\n      - AUTO\n\nrule-providers:",
+              f"    proxies:\n      - AUTO\n{manual_group_items}\n\nrule-providers:",
+              1,
+          )
+          Path("VPN_Stash.yaml").write_text(manual_config, encoding="utf-8")
           PY
       - name: Commit generated provider and Auto profile
         run: |
-          if git diff --quiet -- stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml; then
+          if git diff --quiet -- stash/providers/proxyplankton.yaml VPN_Stash_Auto.yaml VPN_Stash.yaml; then
             exit 0
           fi
           git config user.name 'github-actions[bot]'
