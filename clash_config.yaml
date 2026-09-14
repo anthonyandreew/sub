@@ -19,12 +19,16 @@ dns:
 # This node makes PROXY usable immediately while Stash fetches the remote
 # provider. The full and automatically updated node list remains below.
 proxies:
-  - name: "BOOTSTRAP · Netherlands hy2"
+  - name: "BOOTSTRAP · Russia hy2"
     type: "hysteria2"
-    server: "77.238.240.124"
-    port: 443
-    auth: "OrIiY0H0TWccQgynotkJ"
-    sni: "proxyplankton.ru"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "hqo29e7fj3q6pen6"
+    sni: "37.77.106.28"
+    alpn:
+      - h3
+    obfs: salamander
+    obfs-password: "4vgqum0henixisub"
 
 proxy-providers:
   proxyplankton:
@@ -36,7 +40,7 @@ proxy-groups:
   - name: PROXY
     type: select
     proxies:
-      - "BOOTSTRAP · Netherlands hy2"
+      - "BOOTSTRAP · Russia hy2"
     use:
       - proxyplankton
 
