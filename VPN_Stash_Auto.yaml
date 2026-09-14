@@ -1,5 +1,5 @@
 #SUBSCRIBED https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash_Auto.yaml
-# Generated snapshot: all Stash-compatible subscription nodes are available on first launch.
+# Stash cloud configuration: automatic lowest-latency node selection.
 
 mode: rule
 log-level: info
@@ -16,6 +16,7 @@ dns:
   nameserver:
     - 'https://dns.google/dns-query'
 
+# Keeps the profile usable while the remote provider is loading.
 proxies:
   - name: "BOOTSTRAP · Russia hy2"
     type: "hysteria2"
@@ -27,189 +28,44 @@ proxies:
       - h3
     obfs: salamander
     obfs-password: "4vgqum0henixisub"
-  - name: "🇳🇱 Netherlands · hy2"
-    type: "hysteria2"
-    server: "77.238.240.124"
-    port: 443
-    auth: "OrIiY0H0TWccQgynotkJ"
-    sni: "proxyplankton.ru"
-  - name: "🇨🇭 Switzerland · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "j4lbcp5zocftejuc"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-  - name: "🇸🇪 Sweden · обход RU"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "dkc9avyilfpjsz0k"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-  - name: "🇨🇭 Switzerland"
-    type: "vless"
-    server: "swz.proxyplankton.ru"
-    port: 4443
-    uuid: "e8b77997-0ca3-4753-9703-44138df9a504"
-    network: "xhttp"
-    tls: true
-    sni: "amd.com"
-    client-fingerprint: "safari"
-    reality-opts:
-      public-key: "Zp5sBVeAZhjwtynDd077bfswTUom7aKdR2OJgT1bb14"
-      short-id: "dbad5d73d4d1"
-      spider-x: "/044fd4b4833c5dd"
-    xhttp-opts:
-      mode: "auto"
-      path: "/"
-  - name: "🇳🇱 Netherlands · обход RU"
-    type: "vless"
-    server: "37.77.106.28"
-    port: 8443
-    uuid: "f641c9ee-e102-48a0-8aad-ee03c2e478e9"
-    network: "grpc"
-    tls: true
-    sni: "37.77.106.28"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-    grpc-opts:
-      grpc-service-name: "grpc"
-  - name: "🇪🇺 Автовыбор Резерв"
-    type: "hysteria2"
-    server: "proxyplankton.ru"
-    port: 10443
-    auth: "yp801ci4uy6bxq04"
-    sni: "proxyplankton.ru"
-    alpn:
-      - "h3"
-  - name: "🇳🇱 Netherlands · tcp"
-    type: "vless"
-    server: "77.238.240.124"
-    port: 8443
-    uuid: "fa0010d9-7060-4abd-956a-76f15f067d0d"
-    network: "tcp"
-    flow: "xtls-rprx-vision"
-    tls: true
-    sni: "77.238.240.124"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-  - name: "🇸🇪 Sweden · tcp"
-    type: "vless"
-    server: "213.165.46.93"
-    port: 5443
-    uuid: "a181bfc9-3cef-47da-aadc-610e1ff7d4b3"
-    network: "tcp"
-    flow: "xtls-rprx-vision"
-    tls: true
-    sni: "213.165.46.93"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-  - name: "🔓 VPN для заблокированных"
-    type: "vless"
-    server: "37.77.106.28"
-    port: 8443
-    uuid: "11903eb4-c45b-4e3f-8d2f-1c8336bc8b47"
-    network: "grpc"
-    tls: true
-    sni: "37.77.106.28"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-    grpc-opts:
-      grpc-service-name: "grpc"
-  - name: "🇷🇺 Автовыбор - hy2-Auto-select"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "z97d7p67c5ivjezz"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-  - name: "🇷🇺 Автовыбор - grpc"
-    type: "vless"
-    server: "37.77.106.28"
-    port: 8443
-    uuid: "6332434f-bc27-4bc5-bd24-8fe56ec63b8e"
-    network: "grpc"
-    tls: true
-    sni: "37.77.106.28"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-    grpc-opts:
-      grpc-service-name: "grpc"
-  - name: "🇷🇺 Автовыбор - xhttp"
-    type: "vless"
-    server: "37.77.106.28"
-    port: 443
-    uuid: "6332434f-bc27-4bc5-bd24-8fe56ec63b8e"
-    network: "xhttp"
-    tls: true
-    sni: "g.co"
-    client-fingerprint: "chrome"
-    reality-opts:
-      public-key: "dV3pA2zXRutfiIGWjJzkslJYzMrlNZLRPPRniTA1FhQ"
-      short-id: "c10080c229d192f9"
-      spider-x: "/8e54179882b420e"
-    xhttp-opts:
-      mode: "auto"
-      path: "/"
-      host: "dl.google.com"
+
+proxy-providers:
+  proxyplankton:
+    type: http
+    url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/providers/proxyplankton.yaml
+    path: ./providers/proxyplankton_auto.yaml
+    interval: 300
 
 proxy-groups:
   - name: AUTO
     type: url-test
     proxies:
       - "BOOTSTRAP · Russia hy2"
-      - "🇳🇱 Netherlands · hy2"
-      - "🇨🇭 Switzerland · обход RU"
-      - "🇸🇪 Sweden · обход RU"
-      - "🇨🇭 Switzerland"
-      - "🇳🇱 Netherlands · обход RU"
-      - "🇪🇺 Автовыбор Резерв"
-      - "🇳🇱 Netherlands · tcp"
-      - "🇸🇪 Sweden · tcp"
-      - "🔓 VPN для заблокированных"
-      - "🇷🇺 Автовыбор - hy2-Auto-select"
-      - "🇷🇺 Автовыбор - grpc"
-      - "🇷🇺 Автовыбор - xhttp"
-    url: http://www.apple.com/library/test/success.html
+    use:
+      - proxyplankton
+    url: https://www.gstatic.com/generate_204
     interval: 300
-    lazy: false
     tolerance: 0
-  - name: PROXY
-    type: select
-    proxies:
-      - AUTO
 
 rule-providers:
   russia-direct-domains:
     behavior: domain
     format: text
+    type: http
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-domains.txt
     path: ./rules/russia-direct-domains.txt
     interval: 86400
   russia-direct-ipv4:
     behavior: ipcidr
     format: text
+    type: http
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv4.txt
     path: ./rules/russia-direct-ipv4.txt
     interval: 86400
   russia-direct-ipv6:
     behavior: ipcidr
     format: text
+    type: http
     url: https://raw.githubusercontent.com/anthonyandreew/sub/main/stash/rules/russia-direct-ipv6.txt
     path: ./rules/russia-direct-ipv6.txt
     interval: 86400
@@ -228,4 +84,4 @@ rules:
   - RULE-SET,russia-direct-domains,DIRECT
   - RULE-SET,russia-direct-ipv4,DIRECT,no-resolve
   - RULE-SET,russia-direct-ipv6,DIRECT,no-resolve
-  - MATCH,PROXY
+  - MATCH,AUTO
