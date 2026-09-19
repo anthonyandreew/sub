@@ -157,7 +157,7 @@ proxies:
     uuid: "6332434f-bc27-4bc5-bd24-8fe56ec63b8e"
     network: "xhttp"
     tls: true
-    sni: "youtubeeducation.com"
+    sni: "www.goo.gl"
     client-fingerprint: "chrome"
     reality-opts:
       public-key: "dV3pA2zXRutfiIGWjJzkslJYzMrlNZLRPPRniTA1FhQ"
