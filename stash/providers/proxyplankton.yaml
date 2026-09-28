@@ -130,7 +130,7 @@ proxies:
     uuid: "6332434f-bc27-4bc5-bd24-8fe56ec63b8e"
     network: "xhttp"
     tls: true
-    sni: "youtubekids.com"
+    sni: "google.com"
     client-fingerprint: "chrome"
     reality-opts:
       public-key: "dV3pA2zXRutfiIGWjJzkslJYzMrlNZLRPPRniTA1FhQ"
@@ -140,3 +140,16 @@ proxies:
       mode: "auto"
       path: "/"
       host: "dl.google.com"
+  - name: "🇦🇹 Austria · обход RU"
+    type: "vless"
+    server: "37.77.106.28"
+    port: 8443
+    uuid: "2fc3de71-a71d-4600-a438-1fe38e21072e"
+    network: "grpc"
+    tls: true
+    sni: "37.77.106.28"
+    client-fingerprint: "chrome"
+    alpn:
+      - "http/1.1"
+    grpc-opts:
+      grpc-service-name: "grpc"
