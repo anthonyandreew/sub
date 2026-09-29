@@ -65,13 +65,13 @@ proxies:
       - "h3"
   - name: "🇳🇱 Netherlands · tcp"
     type: "vless"
-    server: "77.238.240.124"
+    server: "alice.proxyplankton.ru"
     port: 8443
     uuid: "fa0010d9-7060-4abd-956a-76f15f067d0d"
     network: "tcp"
     flow: "xtls-rprx-vision"
     tls: true
-    sni: "77.238.240.124"
+    sni: "alice.proxyplankton.ru"
     client-fingerprint: "chrome"
     alpn:
       - "http/1.1"
