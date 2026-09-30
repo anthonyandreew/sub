@@ -54,21 +54,15 @@ proxies:
     alpn:
       - "h3"
   - name: "🇨🇭 Switzerland"
-    type: "vless"
-    server: "swz.proxyplankton.ru"
-    port: 4443
-    uuid: "e8b77997-0ca3-4753-9703-44138df9a504"
-    network: "xhttp"
-    tls: true
-    sni: "amd.com"
-    client-fingerprint: "safari"
-    reality-opts:
-      public-key: "Zp5sBVeAZhjwtynDd077bfswTUom7aKdR2OJgT1bb14"
-      short-id: "dbad5d73d4d1"
-      spider-x: "/044fd4b4833c5dd"
-    xhttp-opts:
-      mode: "auto"
-      path: "/"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "v8mb45ewuztok5nd"
+    sni: "37.77.106.28"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
+    alpn:
+      - "h3"
   - name: "🇳🇱 Netherlands · обход RU"
     type: "vless"
     server: "37.77.106.28"
@@ -83,26 +77,29 @@ proxies:
     grpc-opts:
       grpc-service-name: "grpc"
   - name: "🇪🇺 Автовыбор Резерв"
-    type: "hysteria2"
-    server: "proxyplankton.ru"
-    port: 10443
-    auth: "yp801ci4uy6bxq04"
-    sni: "proxyplankton.ru"
-    alpn:
-      - "h3"
-  - name: "🇳🇱 Netherlands · tcp"
     type: "vless"
-    server: "alice.proxyplankton.ru"
-    port: 8443
-    uuid: "fa0010d9-7060-4abd-956a-76f15f067d0d"
+    server: "proxyplankton.ru"
+    port: 443
+    uuid: "c59c41d8-4882-46ce-9601-e0d49479831e"
     network: "tcp"
     flow: "xtls-rprx-vision"
     tls: true
-    sni: "alice.proxyplankton.ru"
-    client-fingerprint: "chrome"
+    sni: "proxyplankton.ru"
+    client-fingerprint: "firefox"
     alpn:
       - "http/1.1"
-  - name: "🇸🇪 Sweden · tcp"
+      - "h3"
+  - name: "🇳🇱 Netherlands"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "so63kgani26chrek"
+    sni: "37.77.106.28"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
+    alpn:
+      - "h3"
+  - name: "🇸🇪 Sweden"
     type: "vless"
     server: "213.165.46.93"
     port: 5443
@@ -127,7 +124,7 @@ proxies:
       - "http/1.1"
     grpc-opts:
       grpc-service-name: "grpc"
-  - name: "🇷🇺 Автовыбор - hy2-Auto-select"
+  - name: "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
     type: "hysteria2"
     server: "37.77.106.28"
     port: 8443
@@ -190,10 +187,10 @@ proxy-groups:
       - "🇨🇭 Switzerland"
       - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
-      - "🇳🇱 Netherlands · tcp"
-      - "🇸🇪 Sweden · tcp"
+      - "🇳🇱 Netherlands"
+      - "🇸🇪 Sweden"
       - "🔓 VPN для заблокированных"
-      - "🇷🇺 Автовыбор - hy2-Auto-select"
+      - "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
       - "🇷🇺 Автовыбор - grpc"
       - "🇷🇺 Автовыбор - xhttp"
       - "🇦🇹 Austria · обход RU"
@@ -212,10 +209,10 @@ proxy-groups:
       - "🇨🇭 Switzerland"
       - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
-      - "🇳🇱 Netherlands · tcp"
-      - "🇸🇪 Sweden · tcp"
+      - "🇳🇱 Netherlands"
+      - "🇸🇪 Sweden"
       - "🔓 VPN для заблокированных"
-      - "🇷🇺 Автовыбор - hy2-Auto-select"
+      - "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
       - "🇷🇺 Автовыбор - grpc"
       - "🇷🇺 Автовыбор - xhttp"
       - "🇦🇹 Austria · обход RU"
