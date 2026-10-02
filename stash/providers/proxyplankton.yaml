@@ -138,13 +138,25 @@ proxies:
   - name: "🇦🇹 Austria · обход RU"
     type: "vless"
     server: "37.77.106.28"
-    port: 8443
+    port: 443
     uuid: "2fc3de71-a71d-4600-a438-1fe38e21072e"
-    network: "grpc"
+    network: "xhttp"
     tls: true
     sni: "37.77.106.28"
     client-fingerprint: "chrome"
     alpn:
       - "http/1.1"
-    grpc-opts:
-      grpc-service-name: "grpc"
+    xhttp-opts:
+      mode: "auto"
+      path: "/"
+      host: "dl.google.com"
+  - name: "🇦🇹 Austria"
+    type: "hysteria2"
+    server: "37.77.106.28"
+    port: 8443
+    auth: "ygldssfeag7jr1cl"
+    sni: "37.77.106.28"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
+    alpn:
+      - "h3"
