@@ -27,12 +27,6 @@ proxies:
       - h3
     obfs: salamander
     obfs-password: "4vgqum0henixisub"
-  - name: "🇳🇱 Netherlands · hy2"
-    type: "hysteria2"
-    server: "77.238.240.124"
-    port: 443
-    auth: "OrIiY0H0TWccQgynotkJ"
-    sni: "proxyplankton.ru"
   - name: "🇨🇭 Switzerland · обход RU"
     type: "hysteria2"
     server: "37.77.106.28"
@@ -48,16 +42,6 @@ proxies:
     server: "37.77.106.28"
     port: 8443
     auth: "dkc9avyilfpjsz0k"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
-  - name: "🇨🇭 Switzerland"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "v8mb45ewuztok5nd"
     sni: "37.77.106.28"
     obfs: "salamander"
     obfs-password: "4vgqum0henixisub"
@@ -111,19 +95,6 @@ proxies:
     client-fingerprint: "chrome"
     alpn:
       - "http/1.1"
-  - name: "🔓 VPN для заблокированных"
-    type: "vless"
-    server: "37.77.106.28"
-    port: 8443
-    uuid: "11903eb4-c45b-4e3f-8d2f-1c8336bc8b47"
-    network: "grpc"
-    tls: true
-    sni: "37.77.106.28"
-    client-fingerprint: "chrome"
-    alpn:
-      - "http/1.1"
-    grpc-opts:
-      grpc-service-name: "grpc"
   - name: "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
     type: "hysteria2"
     server: "37.77.106.28"
@@ -187,26 +158,37 @@ proxies:
     obfs-password: "4vgqum0henixisub"
     alpn:
       - "h3"
+  - name: "🇰🇿 Kazakhstan"
+    type: "vless"
+    server: "37.77.106.28"
+    port: 8443
+    uuid: "16f0db36-1ab2-4d1d-b705-65edc536779e"
+    network: "grpc"
+    tls: true
+    sni: "37.77.106.28"
+    client-fingerprint: "chrome"
+    alpn:
+      - "http/1.1"
+    grpc-opts:
+      grpc-service-name: "grpc"
 
 proxy-groups:
   - name: AUTO
     type: url-test
     proxies:
       - "BOOTSTRAP · Auto-select via Russia"
-      - "🇳🇱 Netherlands · hy2"
       - "🇨🇭 Switzerland · обход RU"
       - "🇸🇪 Sweden · обход RU"
-      - "🇨🇭 Switzerland"
       - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
       - "🇳🇱 Netherlands"
       - "🇸🇪 Sweden"
-      - "🔓 VPN для заблокированных"
       - "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
       - "🇷🇺 Автовыбор - grpc"
       - "🇷🇺 Автовыбор - xhttp"
       - "🇦🇹 Austria · обход RU"
       - "🇦🇹 Austria"
+      - "🇰🇿 Kazakhstan"
     url: http://www.apple.com/library/test/success.html
     interval: 300
     lazy: false
@@ -216,20 +198,18 @@ proxy-groups:
     proxies:
       - AUTO
       - "BOOTSTRAP · Auto-select via Russia"
-      - "🇳🇱 Netherlands · hy2"
       - "🇨🇭 Switzerland · обход RU"
       - "🇸🇪 Sweden · обход RU"
-      - "🇨🇭 Switzerland"
       - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
       - "🇳🇱 Netherlands"
       - "🇸🇪 Sweden"
-      - "🔓 VPN для заблокированных"
       - "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
       - "🇷🇺 Автовыбор - grpc"
       - "🇷🇺 Автовыбор - xhttp"
       - "🇦🇹 Austria · обход RU"
       - "🇦🇹 Austria"
+      - "🇰🇿 Kazakhstan"
 
 rule-providers:
   russia-direct-domains:
