@@ -131,16 +131,13 @@ proxies:
     obfs-password: "4vgqum0henixisub"
     alpn:
       - "h3"
-  - name: "🇰🇿 Kazakhstan"
-    type: "vless"
+  - name: "🇰🇿 Kazakhstan · обход RU"
+    type: "hysteria2"
     server: "37.77.106.28"
     port: 8443
-    uuid: "16f0db36-1ab2-4d1d-b705-65edc536779e"
-    network: "grpc"
-    tls: true
+    auth: "3iuv9muq57glvw0z"
     sni: "37.77.106.28"
-    client-fingerprint: "chrome"
+    obfs: "salamander"
+    obfs-password: "4vgqum0henixisub"
     alpn:
-      - "http/1.1"
-    grpc-opts:
-      grpc-service-name: "grpc"
+      - "h3"
