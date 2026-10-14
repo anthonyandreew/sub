@@ -121,16 +121,6 @@ proxies:
       mode: "auto"
       path: "/"
       host: "dl.google.com"
-  - name: "🇦🇹 Austria"
-    type: "hysteria2"
-    server: "37.77.106.28"
-    port: 8443
-    auth: "ygldssfeag7jr1cl"
-    sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
-    alpn:
-      - "h3"
   - name: "🇰🇿 Kazakhstan · обход RU"
     type: "hysteria2"
     server: "37.77.106.28"
