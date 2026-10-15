@@ -78,9 +78,31 @@ class MihomoTests(unittest.TestCase):
     def test_happ_routing_metadata_does_not_create_a_proxy(self):
         self.assertEqual(read_subscription(GRPC + "\nhapp://routing/metadata"), read_subscription(GRPC))
 
-    def test_unknown_protocol_fails_instead_of_publishing_partial_list(self):
+    def test_mixed_subscription_selects_only_vless_and_hysteria2(self):
+        excluded = {}
+        extra = ["@_wg://example.com?privateKey=redacted", "amneziawg://example.com",
+                 "mierus://user:password@example.com?port=9001", "vpn://encoded",
+                 "wg://example.com", "tuic://user:password@example.com:443#Unknown",
+                 "happ://routing/metadata"]
+        nodes = read_subscription(GRPC + "\n" + HY2 + "\n" + "\n".join(extra), excluded)
+        self.assertEqual([node["type"] for node in nodes], ["vless", "hysteria2"])
+        self.assertEqual(excluded, {"amneziawg": 2, "mierus": 1, "vpn": 1, "wg": 1, "tuic": 1})
+
+    def test_only_excluded_types_do_not_replace_last_good_profile(self):
+        with self.assertRaisesRegex(ValueError, "No VLESS/Hysteria2"):
+            read_subscription("amneziawg://example.com\nvpn://encoded")
+
+    def test_bad_selected_connection_is_not_silently_removed(self):
         with self.assertRaises(ValueError):
-            read_subscription(GRPC + "\ntuic://user:password@example.com:443#Unknown")
+            read_subscription(GRPC + "\nvless://user@#broken")
+
+    def test_malformed_non_uri_record_is_not_silently_removed(self):
+        with self.assertRaises(ValueError):
+            read_subscription(GRPC + "\ntruncated subscription response")
+
+    def test_hy2_alias_and_case_insensitive_schemes(self):
+        nodes = read_subscription(GRPC.replace("vless://", "VLESS://") + "\n" + HY2.replace("hysteria2://", "HY2://"))
+        self.assertEqual([node["type"] for node in nodes], ["vless", "hysteria2"])
 
     def test_bad_response_does_not_overwrite_last_good_profile(self):
         root = Path(self.directory.name)
