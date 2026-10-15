@@ -1,23 +1,115 @@
-# Personal VPN configuration
+# ProxyPlankton · Mihomo / Clash Mi
 
-## Active Stash profiles for iOS
+Готовая конфигурация для Clash Mi: включить VPN одной кнопкой, дальше телефон
+сам проверяет доступные подключения и выбирает узел. Профили и состав серверов
+автоматически обновляются из исходной подписки.
 
-- Manual node selection: [VPN_Stash.yaml](https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash.yaml)
-- Automatic lowest-latency node selection: [VPN_Stash_Auto.yaml](https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Stash_Auto.yaml)
+## Подключение на iPhone
 
-Both profiles use Google DNS over HTTPS, send the Russian direct-list domains and IP ranges directly, and send all other traffic to the VPN. The manual profile contains only the PROXY group; the auto profile uses AUTO.
+В Clash Mi добавьте **удалённый профиль по URL**:
 
-## Clients in use
+```text
+https://raw.githubusercontent.com/anthonyandreew/sub/main/VPN_Mihomo_Auto.yaml
+```
 
-- iOS: Stash is the primary client, including its On-Demand rules. Happ and AmneziaVPN are also retained.
-- Android: Happ and AmneziaVPN. No Android-specific Clash/Stash configuration is maintained in this repository.
+Для уже импортированного имени оставлен эквивалентный адрес:
 
-## Automatic subscription updates
+```text
+https://raw.githubusercontent.com/anthonyandreew/sub/main/clash_config_clashmi.yaml
+```
 
-The Update Stash provider GitHub Actions workflow rebuilds stash/providers/proxyplankton.yaml every six hours using the repository secret STASH_SUBSCRIPTION_URL. The source subscription must never be committed to this repository.
+Включите автоматическое обновление удалённого профиля в приложении, например
+раз в час. Импорт отдельного скачанного файла не обеспечивает обновление всей
+конфигурации. Включайте режим **Rule / Правила**, затем VPN. Выбирать сервер не нужно:
+в профиле единственная группа `AUTO`.
 
-Stash refreshes the provider independently; the root profile normally does not need to change when nodes are added or removed from the subscription.
+## Как обновляется список
 
-## Repository access
+1. GitHub Actions читает исходную подписку из секрета `MIHOMO_SUBSCRIPTION_URL`.
+   Запуск по расписанию каждые 30 минут (`:17` и `:47`); возможны задержки GitHub.
+2. Генератор полностью заменяет состав узлов: добавляет новые, меняет параметры
+   существующих и убирает удалённые. Он не проверяет доступность с компьютера/CI:
+   мобильная сеть может пропускать другие подключения.
+3. После тестов и проверки настоящим ядром Mihomo публикуются провайдер
+   `mihomo/providers/subfam.yaml` и два эквивалентных полных профиля.
+4. Работающее ядро на телефоне запрашивает обновление провайдера раз в 5 минут.
+   Это обновляет узлы без повторного импорта всего профиля.
+5. Полное обновление профиля средствами Clash Mi обновляет также правила и
+   встроенный запасной список для первого запуска.
 
-Publishing is performed through the authenticated GitHub browser session. No personal access token or deploy key is stored in this repository.
+Обновление узлов обычно доходит за следующий запуск Actions плюс до 5 минут
+работающего ядра. Это не гарантия точного срока: расписание GitHub и фоновые
+ограничения iOS могут задержать обновление.
+
+При первом запуске без доступа к GitHub используется встроенный список узлов.
+Далее ядро сохраняет скачанный провайдер в своём кэше. После успешного обновления
+удалённые узлы не остаются отдельными статическими кандидатами `AUTO`.
+Ошибочный/пустой ответ подписки, неизвестный протокол или ошибка проверки
+останавливают публикацию, сохраняя последние рабочие файлы. Если изменений нет,
+новый коммит не создаётся.
+
+## Автовыбор и маршрутизация
+
+| Параметр | Значение | Назначение |
+| --- | --- | --- |
+| Группа | `url-test` | Выбор по HTTP-проверкам с самого устройства |
+| Проверка | `https://www.gstatic.com/generate_204` | Проверяет путь через каждый узел |
+| Интервал | 30 секунд | Периодические проверки при работающем ядре |
+| Таймаут | 5 секунд | Максимальное ожидание одной проверки |
+| Tolerance | 200 мс | Уменьшает переключения из-за небольших колебаний |
+| Неудачные подключения | `max-failed-times: 2` | Повод для внеочередной проверки группы |
+| Пустая группа | `REJECT` | Не отправляет весь зарубежный трафик напрямую |
+
+Успешная проверка означает доступность тестового URL, а не гарантию работы
+каждого сайта. При смене узла существующее соединение может оборваться;
+новые соединения используют выбранный узел.
+
+Локальные сети и российские назначения из правил идут `DIRECT`, остальное —
+через `AUTO`. DNS российских доменов использует Яндекс; остальной DNS —
+Cloudflare DoH через `AUTO`. Для запуска проверок и загрузки провайдера
+используется системное разрешение имён соответствующих служебных доменов.
+
+Правила встроены в полный профиль. Их исходники остаются в `stash/rules/`:
+это общий набор данных, название каталога не означает зависимость от Stash.
+
+## Настройка GitHub Actions
+
+В **Settings → Secrets and variables → Actions** задайте repository secret:
+
+```text
+MIHOMO_SUBSCRIPTION_URL = полный HTTPS-адрес исходной подписки
+```
+
+Старый секрет `STASH_SUBSCRIPTION_URL` поддерживается как запасной источник,
+если новый ещё не задан. Не удаляйте его до настройки нового.
+Затем **Actions → Update Mihomo profiles → Run workflow → main**.
+Для записи сгенерированных файлов workflow использует `GITHUB_TOKEN`
+с разрешением `contents: write`.
+
+Исходный URL не включается в сгенерированные файлы. Но **сами YAML содержат
+UUID/пароли узлов**: в публичном репозитории они доступны всем читателям.
+Секрет Actions скрывает URL источника, но не делает опубликованные узлы приватными.
+Публикация семейных подключений требует решения владельца об этом доступе.
+
+## Локальная проверка
+
+Нужен Python 3.10+ без сторонних библиотек:
+
+```sh
+python3 -m unittest discover -s tests -v
+python3 scripts/build_mihomo.py --input /path/to/subscription.txt --output-dir .private/preview
+```
+
+Или передайте URL через переменную окружения `MIHOMO_SUBSCRIPTION_URL`.
+Для проверки ядром используйте `mihomo -t -d /tmp/mihomo-check -f
+.private/preview/VPN_Mihomo_Auto.yaml` (одной строкой).
+CI использует закреплённый Mihomo v1.19.32 и сверяет SHA-256 архива.
+
+Поддерживаются URI VLESS, Hysteria2 (`hysteria2://` и `hy2://`) и обычного WireGuard.
+Служебные метаданные Happ/Incy пропускаются. Прочие неподдерживаемые записи
+останавливают сборку: частичный список не публикуется. Для TLS gRPC ALPN
+нормализуется в `h2`, необходимый этому транспорту.
+
+`scripts/build_stash_provider.py` используется как библиотека разбора URI.
+Старые `VPN_Stash*.yaml` и `stash/providers/` оставлены как исторические файлы;
+старый workflow Stash удалён и больше их не обновляет.
