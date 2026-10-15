@@ -54,7 +54,20 @@
       "proxy": "DIRECT",
       "payload": [
         {
-          "name": "🇸🇪 Швеция · обход RU",
+          "name": "🇨🇭 Switzerland · обход RU",
+          "type": "hysteria2",
+          "server": "37.77.106.28",
+          "port": 8443,
+          "sni": "37.77.106.28",
+          "obfs": "salamander",
+          "obfs-password": "4vgqum0henixisub",
+          "alpn": [
+            "h3"
+          ],
+          "password": "j4lbcp5zocftejuc"
+        },
+        {
+          "name": "🇸🇪 Sweden · обход RU",
           "type": "hysteria2",
           "server": "37.77.106.28",
           "port": 8443,
@@ -67,7 +80,102 @@
           "password": "dkc9avyilfpjsz0k"
         },
         {
-          "name": "🇪🇺 Автовыбор 1",
+          "name": "🇳🇱 Netherlands · обход RU",
+          "type": "vless",
+          "server": "37.77.106.28",
+          "port": 8443,
+          "uuid": "f641c9ee-e102-48a0-8aad-ee03c2e478e9",
+          "network": "grpc",
+          "tls": true,
+          "client-fingerprint": "chrome",
+          "alpn": [
+            "h2"
+          ],
+          "grpc-opts": {
+            "grpc-service-name": "grpc"
+          },
+          "servername": "37.77.106.28",
+          "udp": true
+        },
+        {
+          "name": "🇪🇺 Автовыбор Резерв",
+          "type": "vless",
+          "server": "proxyplankton.ru",
+          "port": 443,
+          "uuid": "c59c41d8-4882-46ce-9601-e0d49479831e",
+          "network": "tcp",
+          "flow": "xtls-rprx-vision",
+          "tls": true,
+          "client-fingerprint": "firefox",
+          "alpn": [
+            "http/1.1",
+            "h3"
+          ],
+          "servername": "proxyplankton.ru",
+          "udp": true
+        },
+        {
+          "name": "🇳🇱 Netherlands",
+          "type": "hysteria2",
+          "server": "37.77.106.28",
+          "port": 8443,
+          "sni": "37.77.106.28",
+          "obfs": "salamander",
+          "obfs-password": "4vgqum0henixisub",
+          "alpn": [
+            "h3"
+          ],
+          "password": "so63kgani26chrek"
+        },
+        {
+          "name": "🇸🇪 Sweden · raw",
+          "type": "vless",
+          "server": "213.165.46.93",
+          "port": 5443,
+          "uuid": "a181bfc9-3cef-47da-aadc-610e1ff7d4b3",
+          "network": "tcp",
+          "flow": "xtls-rprx-vision",
+          "tls": true,
+          "client-fingerprint": "chrome",
+          "alpn": [
+            "http/1.1"
+          ],
+          "servername": "213.165.46.93",
+          "udp": true
+        },
+        {
+          "name": "🇫🇮 Finland · raw",
+          "type": "vless",
+          "server": "177.3.214.133",
+          "port": 443,
+          "uuid": "9d899bc3-5838-4f06-a147-1dd70bc2c675",
+          "network": "grpc",
+          "tls": true,
+          "client-fingerprint": "chrome",
+          "alpn": [
+            "h2"
+          ],
+          "grpc-opts": {
+            "grpc-service-name": "grpc"
+          },
+          "servername": "177.3.214.133",
+          "udp": true
+        },
+        {
+          "name": "🇷🇺 Автовыбор - hy2-RU28-Auto-Select",
+          "type": "hysteria2",
+          "server": "37.77.106.28",
+          "port": 8443,
+          "sni": "37.77.106.28",
+          "obfs": "salamander",
+          "obfs-password": "4vgqum0henixisub",
+          "alpn": [
+            "h3"
+          ],
+          "password": "z97d7p67c5ivjezz"
+        },
+        {
+          "name": "🇷🇺 Автовыбор - grpc",
           "type": "vless",
           "server": "37.77.106.28",
           "port": 8443,
@@ -85,50 +193,47 @@
           "udp": true
         },
         {
-          "name": "🇪🇺 Автовыбор 2",
-          "type": "hysteria2",
-          "server": "37.77.106.28",
-          "port": 8443,
-          "sni": "37.77.106.28",
-          "obfs": "salamander",
-          "obfs-password": "4vgqum0henixisub",
-          "alpn": [
-            "h3"
-          ],
-          "password": "z97d7p67c5ivjezz"
-        },
-        {
-          "name": "🇪🇺 Автовыбор 3",
+          "name": "🇷🇺 Автовыбор - xhttp",
           "type": "vless",
-          "server": "proxyplankton.ru",
+          "server": "37.77.106.28",
           "port": 443,
-          "uuid": "c59c41d8-4882-46ce-9601-e0d49479831e",
-          "network": "tcp",
-          "flow": "xtls-rprx-vision",
+          "uuid": "6332434f-bc27-4bc5-bd24-8fe56ec63b8e",
+          "network": "xhttp",
           "tls": true,
-          "client-fingerprint": "firefox",
+          "client-fingerprint": "chrome",
           "alpn": [
-            "http/1.1",
-            "h3"
+            "http/1.1"
           ],
-          "servername": "proxyplankton.ru",
+          "xhttp-opts": {
+            "mode": "auto",
+            "path": "/",
+            "host": "dl.google.com"
+          },
+          "servername": "37.77.106.28",
           "udp": true
         },
         {
-          "name": "🇳🇱 Нидерланды · обход RU",
-          "type": "hysteria2",
+          "name": "🇦🇹 Austria · обход RU",
+          "type": "vless",
           "server": "37.77.106.28",
-          "port": 8443,
-          "sni": "37.77.106.28",
-          "obfs": "salamander",
-          "obfs-password": "4vgqum0henixisub",
+          "port": 443,
+          "uuid": "2fc3de71-a71d-4600-a438-1fe38e21072e",
+          "network": "xhttp",
+          "tls": true,
+          "client-fingerprint": "chrome",
           "alpn": [
-            "h3"
+            "http/1.1"
           ],
-          "password": "2yen3z0f7j9e036h"
+          "xhttp-opts": {
+            "mode": "auto",
+            "path": "/",
+            "host": "dl.google.com"
+          },
+          "servername": "37.77.106.28",
+          "udp": true
         },
         {
-          "name": "🇫🇮 Финляндия · обход RU",
+          "name": "🇫🇮 Finland · обход RU",
           "type": "vless",
           "server": "37.77.106.28",
           "port": 8443,
