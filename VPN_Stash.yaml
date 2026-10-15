@@ -83,7 +83,7 @@ proxies:
     obfs-password: "4vgqum0henixisub"
     alpn:
       - "h3"
-  - name: "🇸🇪 Sweden"
+  - name: "🇸🇪 Sweden · raw"
     type: "vless"
     server: "213.165.46.93"
     port: 5443
@@ -95,6 +95,19 @@ proxies:
     client-fingerprint: "chrome"
     alpn:
       - "http/1.1"
+  - name: "🇫🇮 Finland · raw"
+    type: "vless"
+    server: "177.3.214.133"
+    port: 443
+    uuid: "9d899bc3-5838-4f06-a147-1dd70bc2c675"
+    network: "grpc"
+    tls: true
+    sni: "177.3.214.133"
+    client-fingerprint: "chrome"
+    alpn:
+      - "http/1.1"
+    grpc-opts:
+      grpc-service-name: "grpc"
   - name: "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
     type: "hysteria2"
     server: "37.77.106.28"
@@ -148,16 +161,19 @@ proxies:
       mode: "auto"
       path: "/"
       host: "dl.google.com"
-  - name: "🇰🇿 Kazakhstan · обход RU"
-    type: "hysteria2"
+  - name: "🇫🇮 Finland · обход RU"
+    type: "vless"
     server: "37.77.106.28"
     port: 8443
-    auth: "3iuv9muq57glvw0z"
+    uuid: "006b11d0-4337-477e-a632-4957531a3a38"
+    network: "grpc"
+    tls: true
     sni: "37.77.106.28"
-    obfs: "salamander"
-    obfs-password: "4vgqum0henixisub"
+    client-fingerprint: "chrome"
     alpn:
-      - "h3"
+      - "http/1.1"
+    grpc-opts:
+      grpc-service-name: "grpc"
 
 proxy-groups:
   - name: AUTO
@@ -169,12 +185,13 @@ proxy-groups:
       - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
       - "🇳🇱 Netherlands"
-      - "🇸🇪 Sweden"
+      - "🇸🇪 Sweden · raw"
+      - "🇫🇮 Finland · raw"
       - "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
       - "🇷🇺 Автовыбор - grpc"
       - "🇷🇺 Автовыбор - xhttp"
       - "🇦🇹 Austria · обход RU"
-      - "🇰🇿 Kazakhstan · обход RU"
+      - "🇫🇮 Finland · обход RU"
     url: http://www.apple.com/library/test/success.html
     interval: 300
     lazy: false
@@ -189,12 +206,13 @@ proxy-groups:
       - "🇳🇱 Netherlands · обход RU"
       - "🇪🇺 Автовыбор Резерв"
       - "🇳🇱 Netherlands"
-      - "🇸🇪 Sweden"
+      - "🇸🇪 Sweden · raw"
+      - "🇫🇮 Finland · raw"
       - "🇷🇺 Автовыбор - hy2-RU28-Auto-Select"
       - "🇷🇺 Автовыбор - grpc"
       - "🇷🇺 Автовыбор - xhttp"
       - "🇦🇹 Austria · обход RU"
-      - "🇰🇿 Kazakhstan · обход RU"
+      - "🇫🇮 Finland · обход RU"
 
 rule-providers:
   russia-direct-domains:
