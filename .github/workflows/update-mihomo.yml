@@ -1,0 +1,75 @@
+name: Update Mihomo profiles
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17,47 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-mihomo.yml'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'stash/rules/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mihomo-refresh-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned Mihomo validator
+        run: |
+          curl --fail --location --retry 3 \
+            https://github.com/MetaCubeX/mihomo/releases/download/v1.19.32/mihomo-linux-amd64-compatible-v1.19.32.gz \
+            -o "$RUNNER_TEMP/mihomo.gz"
+          echo 'ba3ce607747a07f948fc35780e108a4a7c7f552a38b9bd4d115f313ebcb89c20  '"$RUNNER_TEMP/mihomo.gz" | sha256sum --check
+          gzip -dc "$RUNNER_TEMP/mihomo.gz" > "$RUNNER_TEMP/mihomo"
+          chmod +x "$RUNNER_TEMP/mihomo"
+      - name: Test generator and live provider replacement
+        run: MIHOMO_BINARY="$RUNNER_TEMP/mihomo" python -m unittest discover -s tests -v
+      - name: Build and validate before replacing published files
+        env:
+          MIHOMO_SUBSCRIPTION_URL: ${{ secrets.MIHOMO_SUBSCRIPTION_URL || secrets.STASH_SUBSCRIPTION_URL }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          test -n "$MIHOMO_SUBSCRIPTION_URL"
+          preview_dir=$(mktemp -d)
+          python scripts/build_mihomo.py --output-dir "$preview_dir" --repository "$REPOSITORY"
+          "$RUNNER_TEMP/mihomo" -t -d "$RUNNER_TEMP/mihomo-test" -f "$preview_dir/VPN_Mihomo_Auto.yaml"
+          python - "$preview_dir" <<'PY'
+          import shutil
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from build_mihomo import OUTPUT_PATHS
+          for relative in OUTPUT_PATHS:
+              target = Path(relative)
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(Path(sys.argv[1]) / relative, target)
+          PY
+      - name: Commit only changed generated files
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- VPN_Mihomo_Auto.yaml clash_config_clashmi.yaml mihomo/providers/subfam.yaml
+          if git diff --cached --quiet; then
+            echo 'Subscription unchanged; no commit needed.'
+            exit 0
+          fi
+          git commit -m 'Update Mihomo subscription profiles'
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin "HEAD:$TARGET_BRANCH"
