@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Build deterministic Mihomo profiles without publishing the source subscription URL.
 
-Use MIHOMO_SUBSCRIPTION_URL or --input. Failed/partial parsing never overwrites
-the last working output. Nodes are not filtered by this machine's connectivity.
+Use MIHOMO_SUBSCRIPTION_URL or --input. Only VLESS and Hysteria2 are selected;
+malformed selected entries never overwrite the last working output. Nodes are
+not filtered by this machine's connectivity.
 """
 
 from __future__ import annotations
@@ -27,9 +28,11 @@ OUTPUT_PATHS = (
     "mihomo/providers/subfam.yaml",
 )
 TEST_URL = "https://www.gstatic.com/generate_204"
+ALLOWED_SCHEMES = {"vless", "hysteria2", "hy2"}
+METADATA_SCHEMES = {"happ", "incy"}
 
 
-def read_subscription(text: str) -> list[dict]:
+def read_subscription(text: str, excluded: dict[str, int] | None = None) -> list[dict]:
     text = text.strip()
     if not text:
         raise ValueError("Empty subscription; keeping the previous profile")
@@ -41,14 +44,28 @@ def read_subscription(text: str) -> list[dict]:
                                     validate=True).decode("utf-8")
         except (ValueError, UnicodeError) as exc:
             raise ValueError("Subscription is neither URI text nor valid Base64") from exc
-    text = re.sub(r"(?m)^hy2://", "hysteria2://", text)
-    nodes, skipped = parse_subscription(text)
-    errors = [entry for entry in skipped if not entry.startswith(("happ:", "incy:"))]
-    if errors:
-        # Never log raw links, credentials, or source URLs.
-        raise ValueError("Unsupported or invalid connection in subscription: " + "; ".join(errors))
+    selected = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        match = re.match(r"^([A-Za-z][A-Za-z0-9+.-]*|@_wg)://", line)
+        if not match:
+            raise ValueError("Invalid subscription record; keeping the previous profile")
+        scheme = match[1].lower()
+        if scheme not in ALLOWED_SCHEMES:
+            if excluded is not None and scheme not in METADATA_SCHEMES:
+                label = "amneziawg" if scheme == "@_wg" else scheme
+                excluded[label] = excluded.get(label, 0) + 1
+            continue
+        scheme = "hysteria2" if scheme == "hy2" else scheme
+        selected.append(scheme + "://" + line.split("://", 1)[1])
+    nodes, skipped = parse_subscription("\n".join(selected))
+    if skipped:
+        # Do not log raw links, credentials, or parser exceptions containing them.
+        raise ValueError("Invalid VLESS/Hysteria2 connection; keeping the previous profile")
     if not nodes:
-        raise ValueError("No supported connections; keeping the previous profile")
+        raise ValueError("No VLESS/Hysteria2 connections; keeping the previous profile")
     result = []
     for item in nodes:
         node = copy.deepcopy(item)
@@ -158,8 +175,9 @@ def yaml_document(value: dict, profile_url: str | None = None) -> str:
     return header + json.dumps(value, ensure_ascii=False, indent=2) + "\n"
 
 
-def build_outputs(text: str, rules: Path, repository: str) -> dict[str, str]:
-    nodes = read_subscription(text)
+def build_outputs(text: str, rules: Path, repository: str,
+                  excluded: dict[str, int] | None = None) -> dict[str, str]:
+    nodes = read_subscription(text, excluded)
     config = build_profile(nodes, read_rules(rules), repository)
     raw = f"https://raw.githubusercontent.com/{repository}/main"
     profile = yaml_document(config, f"{raw}/VPN_Mihomo_Auto.yaml")
@@ -208,7 +226,8 @@ def main() -> None:
             text = download(source_url)
         else:
             parser.error("Provide --input or MIHOMO_SUBSCRIPTION_URL")
-        outputs = build_outputs(text, args.rules_dir, args.repository)
+        excluded = {}
+        outputs = build_outputs(text, args.rules_dir, args.repository, excluded)
         if source_url and any(source_url in value for value in outputs.values()):
             raise ValueError("Refusing to publish the private source subscription URL")
         write_outputs(outputs, args.output_dir)
@@ -217,6 +236,9 @@ def main() -> None:
         message = str(exc).replace(source_url, "[subscription]") if source_url else str(exc)
         raise SystemExit(f"Build failed; previous files kept: {message}") from None
     nodes = read_subscription(text)
+    if excluded:
+        summary = ", ".join(f"{scheme}: {count}" for scheme, count in sorted(excluded.items()))
+        print(f"Excluded connection types ({sum(excluded.values())}): {summary}; only VLESS/Hysteria2 are selected")
     print(f"Built {len(nodes)} connections and {len(outputs)} Mihomo files; source URL omitted")
 
 
