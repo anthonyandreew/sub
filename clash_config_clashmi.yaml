@@ -62,7 +62,7 @@
           "password": "OrIiY0H0TWccQgynotkJ"
         },
         {
-          "name": "🇰🇿 Kazakhstan · обход RU",
+          "name": "🇸🇪 Швеция · обход RU",
           "type": "hysteria2",
           "server": "37.77.106.28",
           "port": 8443,
@@ -72,7 +72,7 @@
           "alpn": [
             "h3"
           ],
-          "password": "3iuv9muq57glvw0z"
+          "password": "dkc9avyilfpjsz0k"
         },
         {
           "name": "🇪🇺 Автовыбор 2",
