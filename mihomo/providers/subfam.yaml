@@ -2,7 +2,7 @@
 {
   "proxies": [
     {
-      "name": "🇳🇱 Netherlands · hy2",
+      "name": "🇳🇱 Нидерланды · hy2",
       "type": "hysteria2",
       "server": "77.238.240.124",
       "port": 443,
@@ -53,7 +53,7 @@
       "udp": true
     },
     {
-      "name": "🇨🇭 Switzerland · обход RU",
+      "name": "🇨🇭 Швейцария · обход RU",
       "type": "hysteria2",
       "server": "37.77.106.28",
       "port": 8443,
@@ -66,21 +66,19 @@
       "password": "j4lbcp5zocftejuc"
     },
     {
-      "name": "🇫🇮 Finland · обход RU",
+      "name": "🇫🇮 Финляндия · обход RU",
       "type": "vless",
       "server": "37.77.106.28",
-      "port": 443,
+      "port": 8443,
       "uuid": "006b11d0-4337-477e-a632-4957531a3a38",
-      "network": "xhttp",
+      "network": "grpc",
       "tls": true,
       "client-fingerprint": "chrome",
       "alpn": [
-        "http/1.1"
+        "h2"
       ],
-      "xhttp-opts": {
-        "mode": "auto",
-        "path": "/",
-        "host": "dl.google.com"
+      "grpc-opts": {
+        "grpc-service-name": "grpc"
       },
       "servername": "37.77.106.28",
       "udp": true
