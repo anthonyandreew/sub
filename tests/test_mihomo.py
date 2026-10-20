@@ -157,10 +157,19 @@ class MihomoTests(unittest.TestCase):
         uri = "vless://22222222-2222-4222-8222-222222222222@cdn.example.com:443?type=xhttp&mode=auto&path=%2Ftest#CDN"
         self.assertEqual(read_subscription(uri)[0]["xhttp-opts"], {"mode": "auto", "path": "/test"})
 
+    def test_xhttp_padding_bytes_is_preserved_for_xui_subscriptions(self):
+        for value in (100, "100-1000"):
+            with self.subTest(value=value):
+                uri = xhttp({"mode": "auto", "xPaddingBytes": value}).replace("mode=packet-up", "mode=auto")
+                node = read_subscription(uri)[0]
+                self.assertEqual(node["xhttp-opts"]["mode"], "auto")
+                self.assertEqual(node["xhttp-opts"]["x-padding-bytes"], str(value))
+
     def test_invalid_or_unsupported_extra_stops_the_build(self):
         for extra in [None, [], {"unknownField": 1}, {"xmux": []}, {"xmux": {"unknown": 1}},
                       {"uplinkChunkSize": True}, {"scMinPostsIntervalMs": -1}, {"uplinkHTTPMethod": []},
-                      {"mode": "stream-up"}]:
+                      {"mode": "stream-up"}, {"xPaddingBytes": True}, {"xPaddingBytes": []},
+                      {"xPaddingBytes": "invalid"}]:
             with self.subTest(extra=extra), self.assertRaises(ValueError):
                 read_subscription(xhttp(extra))
         with self.assertRaises(ValueError):
