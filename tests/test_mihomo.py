@@ -6,14 +6,29 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
+from urllib.parse import urlencode
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from build_mihomo import build_outputs, read_subscription
+from build_mihomo import build_outputs, read_sources, read_subscription
 
 GRPC = ("vless://11111111-1111-4111-8111-111111111111@192.0.2.1:443?"
         "type=grpc&security=tls&sni=example.com&serviceName=grpc&alpn=http%2F1.1#Primary")
 HY2 = ("hysteria2://test-password@192.0.2.2:8443?"
        "sni=example.net&obfs=salamander&obfs-password=obfs-test#Backup")
+XHTTP_EXTRA = {
+    "mode": "packet-up", "uplinkHTTPMethod": "GET", "uplinkDataPlacement": "header",
+    "uplinkDataKey": "X-Data", "uplinkChunkSize": 2048, "scMaxEachPostBytes": 32768,
+    "scMinPostsIntervalMs": 10, "serverMaxHeaderBytes": 65536,
+    "xmux": {"maxConcurrency": 0, "maxConnections": 1},
+}
+
+
+def xhttp(extra=XHTTP_EXTRA, name="CDN"):
+    query = {"type": "xhttp", "security": "tls", "sni": "cdn.example.com", "fp": "firefox",
+             "host": "cdn.example.com", "path": "/assets/config.json", "mode": "packet-up", "alpn": "h2",
+             "extra": json.dumps(extra)}
+    return "vless://22222222-2222-4222-8222-222222222222@cdn.example.com:443?" + urlencode(query) + "#" + name
 
 
 def document(text):
@@ -65,7 +80,10 @@ class MihomoTests(unittest.TestCase):
         profile = document(self.build(GRPC + "\n" + HY2)["VPN_Mihomo_Auto.yaml"])
         self.assertEqual(len(profile["proxy-providers"]["subfam"]["payload"]), 2)
         self.assertEqual(profile["proxy-groups"][0]["empty-fallback"], "REJECT")
-        self.assertEqual(profile["rules"][-1], "MATCH,AUTO")
+        self.assertEqual(profile["rules"][-1], "MATCH,PROXY")
+        manual = profile["proxy-groups"][1]
+        self.assertEqual((manual["name"], manual["type"], manual["proxies"], manual["use"]),
+                         ("PROXY", "select", ["AUTO"], ["subfam"]))
 
     def test_provider_refresh_and_self_contained_rules(self):
         profile = document(self.build(GRPC)["VPN_Mihomo_Auto.yaml"])
@@ -73,6 +91,7 @@ class MihomoTests(unittest.TestCase):
         self.assertEqual(provider["url"], "https://raw.githubusercontent.com/owner/repo/main/mihomo/providers/subfam.yaml")
         self.assertEqual(provider["interval"], 300)
         self.assertTrue(provider["health-check"]["enable"])
+        self.assertEqual(provider["proxy"], "PROXY")
         self.assertTrue(all(rule["type"] == "inline" for rule in profile["rule-providers"].values()))
 
     def test_happ_routing_metadata_does_not_create_a_proxy(self):
@@ -121,6 +140,53 @@ class MihomoTests(unittest.TestCase):
                      base64.b64encode(b"https://example.com/error").decode()):
             with self.subTest(text=text), self.assertRaises(ValueError):
                 read_subscription(text)
+
+    def test_complete_cdn_extra_translation(self):
+        node = read_subscription(xhttp())[0]
+        self.assertEqual(node["client-fingerprint"], "firefox")
+        self.assertEqual(node["alpn"], ["h2"])
+        self.assertEqual(node["xhttp-opts"], {
+            "host": "cdn.example.com", "path": "/assets/config.json", "mode": "packet-up",
+            "uplink-http-method": "GET", "uplink-data-placement": "header", "uplink-data-key": "X-Data",
+            "uplink-chunk-size": "2048", "sc-max-each-post-bytes": "32768", "sc-min-posts-interval-ms": "10",
+            "reuse-settings": {"max-concurrency": "0", "max-connections": "1"},
+        })
+        self.assertNotIn("serverMaxHeaderBytes", json.dumps(node))
+
+    def test_xhttp_without_extra_is_preserved(self):
+        uri = "vless://22222222-2222-4222-8222-222222222222@cdn.example.com:443?type=xhttp&mode=auto&path=%2Ftest#CDN"
+        self.assertEqual(read_subscription(uri)[0]["xhttp-opts"], {"mode": "auto", "path": "/test"})
+
+    def test_invalid_or_unsupported_extra_stops_the_build(self):
+        for extra in [None, [], {"unknownField": 1}, {"xmux": []}, {"xmux": {"unknown": 1}},
+                      {"uplinkChunkSize": True}, {"scMinPostsIntervalMs": -1}, {"uplinkHTTPMethod": []},
+                      {"mode": "stream-up"}]:
+            with self.subTest(extra=extra), self.assertRaises(ValueError):
+                read_subscription(xhttp(extra))
+        with self.assertRaises(ValueError):
+            read_subscription(xhttp().replace("extra=", "extra=%7Bbroken"))
+
+    def test_multiple_https_and_inline_sources_share_the_converter(self):
+        bodies = {"https://one.example/sub/private": base64.b64encode((GRPC + "\n" + xhttp()).encode()).decode(),
+                  "https://two.example/sub/private": HY2 + "\n" + xhttp(name="Same-node-other-label")}
+        with patch("build_mihomo.download", side_effect=bodies.__getitem__) as download:
+            nodes = read_sources("\n".join([*bodies, xhttp(), *bodies, ""]))
+        self.assertEqual(download.call_count, 2)
+        self.assertEqual([node["name"] for node in nodes], ["Primary", "CDN", "Backup"])
+
+    def test_different_nodes_with_equal_names_and_reserved_names(self):
+        nodes = read_sources("\n".join([GRPC, HY2.replace("#Backup", "#Primary"), xhttp(name="AUTO")]))
+        self.assertEqual([node["name"] for node in nodes], ["Primary", "Primary (2)", "AUTO (2)"])
+
+    def test_a_failed_source_does_not_publish_a_partial_list(self):
+        private = "https://one.example/sub/secret-token"
+        with patch("build_mihomo.download", side_effect=OSError(private)), self.assertRaises(ValueError) as error:
+            read_sources(GRPC + "\n" + private)
+        self.assertNotIn(private, str(error.exception))
+        with patch("build_mihomo.download", return_value="<html>Unavailable</html>"), self.assertRaises(ValueError):
+            read_sources(GRPC + "\n" + private)
+        with self.assertRaises(ValueError):
+            read_sources(GRPC + "\nhttp://insecure.example/sub")
 
 
 if __name__ == "__main__":
