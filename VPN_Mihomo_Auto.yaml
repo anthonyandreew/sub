@@ -191,7 +191,7 @@
       "url": "https://www.gstatic.com/generate_204",
       "interval": 60,
       "timeout": 5000,
-      "tolerance": 100,
+      "tolerance": 50,
       "lazy": true,
       "max-failed-times": 2,
       "expected-status": "204",
