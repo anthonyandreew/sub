@@ -217,7 +217,7 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
         "proxy-groups": [{
             "name": "AUTO", "type": "url-test", "use": ["proxyplankton_sub_clash"],
             "url": TEST_URL, "interval": 60, "timeout": 5000,
-            "tolerance": 100, "lazy": True, "max-failed-times": 2,
+            "tolerance": 50, "lazy": True, "max-failed-times": 2,
             "expected-status": "204", "empty-fallback": "REJECT",
         }, {
             "name": "PROXY", "type": "select", "proxies": ["AUTO"],
