@@ -43,6 +43,7 @@ class RuntimeTests(unittest.TestCase):
         profile["rules"] = ["MATCH,AUTO"]
         profile["dns"] = {"enable": False}
         profile["proxy-providers"]["subfam"]["url"] = f"http://127.0.0.1:{server.server_port}/provider"
+        profile["proxy-providers"]["subfam"]["proxy"] = "DIRECT"
         # Membership tests do not probe the documentation-only test IP addresses.
         profile["proxy-providers"]["subfam"]["health-check"]["enable"] = False
         profile["proxy-groups"][0]["lazy"] = True
@@ -110,3 +111,85 @@ class RuntimeTests(unittest.TestCase):
             self.assertEqual(api("/proxies/AUTO")["all"], ["Primary"])
 
         run_core(profile, offline_check)
+
+    def test_provider_bootstraps_through_embedded_proxy_and_preserves_manual_selection(self):
+        requests = []
+        body = {}
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_CONNECT(self):
+                requests.append("CONNECT " + self.path)
+                self.send_response(200)
+                self.end_headers()
+                self.close_connection = False
+                self.handle_one_request()
+
+            def do_GET(self):
+                # CONNECT to the unresolvable origin proves the embedded HTTP
+                # proxy is used; this fixture supplies the tunnel's response.
+                requests.append(self.path)
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps(body).encode())
+
+            def log_message(self, *args):
+                pass
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+        node = {"name": "Bootstrap", "type": "http", "server": "127.0.0.1", "port": server.server_port}
+        second = dict(node, name="Second")
+        body["proxies"] = [node, second]
+        config = build_profile([node, second], {}, "owner/repo")
+        config["rules"] = ["MATCH,PROXY"]
+        provider = config["proxy-providers"]["subfam"]
+        provider["url"] = "http://subscription.invalid/provider"
+        provider["health-check"]["enable"] = False
+        config["proxy-groups"][0]["lazy"] = True
+        config["dns"] = {"enable": False}
+        with tempfile.TemporaryDirectory() as directory:
+            with socket.socket() as probe:
+                probe.bind(("127.0.0.1", 0))
+                port = probe.getsockname()[1]
+            secret = secrets.token_hex(24)
+            config.update({"external-controller": f"127.0.0.1:{port}", "secret": secret})
+            path = Path(directory) / "config.json"
+            path.write_text(json.dumps(config))
+
+            def api(endpoint, method="GET", data=None):
+                request = urllib.request.Request(f"http://127.0.0.1:{port}{endpoint}", method=method,
+                    data=json.dumps(data).encode() if data is not None else None,
+                    headers={"Authorization": f"Bearer {secret}", "Content-Type": "application/json"})
+                opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+                with opener.open(request, timeout=10) as response:
+                    content = response.read()
+                    return json.loads(content) if content else {}
+
+            with (Path(directory) / "core.log").open("w") as log:
+                process = subprocess.Popen([os.environ["MIHOMO_BINARY"], "-d", directory, "-f", str(path)],
+                                           stdout=log, stderr=log)
+                try:
+                    for _ in range(100):
+                        try:
+                            api("/version")
+                            break
+                        except OSError:
+                            if process.poll() is not None:
+                                self.fail("Mihomo stopped before its API became ready")
+                            time.sleep(.05)
+                    api("/providers/proxies/subfam", "PUT")
+                    self.assertTrue(any(url == "CONNECT subscription.invalid:80" for url in requests))
+                    api("/proxies/PROXY", "PUT", {"name": "Second"})
+                    body["proxies"] = [second]
+                    api("/providers/proxies/subfam", "PUT")
+                    self.assertEqual(api("/proxies/PROXY")["now"], "Second")
+                    self.assertEqual(api("/proxies/AUTO")["all"], ["Second"])
+                finally:
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                        process.wait()
