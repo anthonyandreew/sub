@@ -89,7 +89,7 @@ class MihomoTests(unittest.TestCase):
         profile = document(self.build(GRPC)["VPN_Mihomo_Auto.yaml"])
         provider = profile["proxy-providers"]["proxyplankton_sub_clash"]
         self.assertEqual(provider["url"], "https://raw.githubusercontent.com/owner/repo/main/mihomo/providers/proxyplankton_sub_clash.yaml")
-        self.assertEqual(provider["interval"], 300)
+        self.assertEqual(provider["interval"], 3600)
         self.assertTrue(provider["health-check"]["enable"])
         self.assertEqual(provider["proxy"], "PROXY")
         self.assertTrue(all(rule["type"] == "inline" for rule in profile["rule-providers"].values()))
