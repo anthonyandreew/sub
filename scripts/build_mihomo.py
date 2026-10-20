@@ -185,8 +185,8 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
         raise ValueError("Repository must be OWNER/REPO")
     raw = f"https://raw.githubusercontent.com/{repository}/main"
     health_check = {
-        "enable": True, "url": TEST_URL, "interval": 30,
-        "timeout": 5000, "lazy": False, "expected-status": "204",
+        "enable": True, "url": TEST_URL, "interval": 60,
+        "timeout": 5000, "lazy": True, "expected-status": "204",
     }
     return {
         "mode": "rule", "log-level": "warning", "allow-lan": False,
@@ -209,15 +209,15 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
         "proxy-providers": {
             "proxyplankton_sub_clash": {
                 "type": "http", "url": f"{raw}/mihomo/providers/proxyplankton_sub_clash.yaml",
-                "path": "./providers/proxyplankton_sub_clash.yaml", "interval": 300,
+                "path": "./providers/proxyplankton_sub_clash.yaml", "interval": 3600,
                 "proxy": "PROXY", "payload": copy.deepcopy(nodes),
                 "health-check": health_check,
             },
         },
         "proxy-groups": [{
             "name": "AUTO", "type": "url-test", "use": ["proxyplankton_sub_clash"],
-            "url": TEST_URL, "interval": 30, "timeout": 5000,
-            "tolerance": 200, "lazy": False, "max-failed-times": 2,
+            "url": TEST_URL, "interval": 60, "timeout": 5000,
+            "tolerance": 100, "lazy": True, "max-failed-times": 2,
             "expected-status": "204", "empty-fallback": "REJECT",
         }, {
             "name": "PROXY", "type": "select", "proxies": ["AUTO"],
