@@ -67,10 +67,10 @@ class MihomoTests(unittest.TestCase):
         replacement = HY2.replace("192.0.2.2", "192.0.2.3").replace("#Backup", "#Replacement")
         new = self.build(replacement)
         self.assertNotEqual(old, new)
-        provider = document(new["mihomo/providers/subfam.yaml"])["proxies"]
+        provider = document(new["mihomo/providers/proxyplankton_sub_clash.yaml"])["proxies"]
         self.assertEqual([node["name"] for node in provider], ["Replacement"])
         profile = document(new["VPN_Mihomo_Auto.yaml"])
-        self.assertEqual(profile["proxy-providers"]["subfam"]["payload"], provider)
+        self.assertEqual(profile["proxy-providers"]["proxyplankton_sub_clash"]["payload"], provider)
         self.assertEqual(new["VPN_Mihomo_Auto.yaml"], new["clash_config_clashmi.yaml"])
 
     def test_unchanged_subscription_does_not_create_spurious_changes(self):
@@ -78,17 +78,17 @@ class MihomoTests(unittest.TestCase):
 
     def test_candidates_are_not_filtered_by_local_network(self):
         profile = document(self.build(GRPC + "\n" + HY2)["VPN_Mihomo_Auto.yaml"])
-        self.assertEqual(len(profile["proxy-providers"]["subfam"]["payload"]), 2)
+        self.assertEqual(len(profile["proxy-providers"]["proxyplankton_sub_clash"]["payload"]), 2)
         self.assertEqual(profile["proxy-groups"][0]["empty-fallback"], "REJECT")
         self.assertEqual(profile["rules"][-1], "MATCH,PROXY")
         manual = profile["proxy-groups"][1]
         self.assertEqual((manual["name"], manual["type"], manual["proxies"], manual["use"]),
-                         ("PROXY", "select", ["AUTO"], ["subfam"]))
+                         ("PROXY", "select", ["AUTO"], ["proxyplankton_sub_clash"]))
 
     def test_provider_refresh_and_self_contained_rules(self):
         profile = document(self.build(GRPC)["VPN_Mihomo_Auto.yaml"])
-        provider = profile["proxy-providers"]["subfam"]
-        self.assertEqual(provider["url"], "https://raw.githubusercontent.com/owner/repo/main/mihomo/providers/subfam.yaml")
+        provider = profile["proxy-providers"]["proxyplankton_sub_clash"]
+        self.assertEqual(provider["url"], "https://raw.githubusercontent.com/owner/repo/main/mihomo/providers/proxyplankton_sub_clash.yaml")
         self.assertEqual(provider["interval"], 300)
         self.assertTrue(provider["health-check"]["enable"])
         self.assertEqual(provider["proxy"], "PROXY")
