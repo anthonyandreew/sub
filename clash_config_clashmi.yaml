@@ -121,19 +121,23 @@
           "name": "🇫🇮 Финляндия · обход RU",
           "type": "vless",
           "server": "37.77.106.28",
-          "port": 8443,
+          "port": 443,
           "uuid": "006b11d0-4337-477e-a632-4957531a3a38",
-          "network": "grpc",
+          "network": "xhttp",
           "tls": true,
           "client-fingerprint": "chrome",
           "alpn": [
-            "h2"
+            "http/1.1"
           ],
-          "grpc-opts": {
-            "grpc-service-name": "grpc"
+          "xhttp-opts": {
+            "mode": "auto",
+            "path": "/",
+            "host": "dl.google.com",
+            "x-padding-bytes": "100-1000"
           },
           "servername": "37.77.106.28",
-          "udp": true
+          "udp": true,
+          "skip-cert-verify": false
         },
         {
           "name": "🇫🇮 Финляндия · обход БС",
