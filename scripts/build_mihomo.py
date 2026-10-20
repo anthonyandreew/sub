@@ -17,7 +17,7 @@ import os
 from pathlib import Path
 import re
 import tempfile
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 import urllib.request
 
 from build_stash_provider import parse_subscription
@@ -30,6 +30,76 @@ OUTPUT_PATHS = (
 TEST_URL = "https://www.gstatic.com/generate_204"
 ALLOWED_SCHEMES = {"vless", "hysteria2", "hy2"}
 METADATA_SCHEMES = {"happ", "incy"}
+RESERVED_NAMES = {"AUTO", "PROXY", "DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL"}
+
+
+def xhttp_options(uri: str, original: dict) -> dict:
+    """Translate Xray's URL-encoded extra into native Mihomo transport fields."""
+    query = parse_qs(urlsplit(uri).query, keep_blank_values=True)
+    values = query.get("extra", [])
+    options = copy.deepcopy(original)
+    if not values:
+        return options
+    try:
+        if len(values) != 1:
+            raise ValueError()
+        extra = json.loads(values[0])
+        if not isinstance(extra, dict):
+            raise ValueError()
+    except (TypeError, ValueError):
+        raise ValueError("Invalid XHTTP extra JSON; keeping the previous profile") from None
+    strings = {"mode": "mode", "host": "host", "path": "path",
+               "uplinkHTTPMethod": "uplink-http-method", "uplinkDataPlacement": "uplink-data-placement",
+               "uplinkDataKey": "uplink-data-key"}
+    numbers = {"uplinkChunkSize": "uplink-chunk-size", "scMaxEachPostBytes": "sc-max-each-post-bytes",
+               "scMinPostsIntervalMs": "sc-min-posts-interval-ms"}
+    # This is an inbound/server setting, not a Mihomo client transport field.
+    allowed = set(strings) | set(numbers) | {"xmux", "serverMaxHeaderBytes"}
+    if set(extra) - allowed:
+        raise ValueError("Unsupported XHTTP extra fields; keeping the previous profile")
+    for source, target in strings.items():
+        if source in extra:
+            value = extra[source]
+            if not isinstance(value, str) or not value:
+                raise ValueError("Invalid XHTTP text setting")
+            if target in options and options[target] != value:
+                raise ValueError("Conflicting XHTTP URI and extra settings")
+            options[target] = value
+
+    def scalar(value):
+        if isinstance(value, bool) or not isinstance(value, (str, int)) or not re.fullmatch(r"\d+(?:-\d+)?", str(value)):
+            raise ValueError("Invalid XHTTP numeric/range setting")
+        return str(value)
+
+    for source, target in numbers.items():
+        if source in extra:
+            options[target] = scalar(extra[source])
+    if "xmux" in extra:
+        xmux = extra["xmux"]
+        mapping = {"maxConcurrency": "max-concurrency", "maxConnections": "max-connections"}
+        if not isinstance(xmux, dict) or set(xmux) - set(mapping):
+            raise ValueError("Unsupported XHTTP XMUX settings")
+        options["reuse-settings"] = {mapping[key]: scalar(value) for key, value in xmux.items()}
+    return options
+
+
+def merge_nodes(groups: list[list[dict]]) -> list[dict]:
+    """Deduplicate equal connections, preserving different nodes with equal labels."""
+    result, seen, names = [], set(), set(RESERVED_NAMES)
+    for group in groups:
+        for item in group:
+            identity = json.dumps({key: value for key, value in item.items() if key != "name"}, sort_keys=True)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            node = copy.deepcopy(item)
+            label, number = node["name"], 2
+            while node["name"] in names:
+                node["name"] = f"{label} ({number})"
+                number += 1
+            names.add(node["name"])
+            result.append(node)
+    return result
 
 
 def read_subscription(text: str, excluded: dict[str, int] | None = None) -> list[dict]:
@@ -67,7 +137,7 @@ def read_subscription(text: str, excluded: dict[str, int] | None = None) -> list
     if not nodes:
         raise ValueError("No VLESS/Hysteria2 connections; keeping the previous profile")
     result = []
-    for item in nodes:
+    for item, uri in zip(nodes, selected):
         node = copy.deepcopy(item)
         if node["type"] == "hysteria2":
             node["password"] = node.pop("auth")
@@ -84,8 +154,11 @@ def read_subscription(text: str, excluded: dict[str, int] | None = None) -> list
             if node.get("network") == "grpc" and node.get("tls"):
                 node["alpn"] = ["h2"]
             node["udp"] = True
+            if node.get("network") == "xhttp":
+                node.setdefault("skip-cert-verify", False)
+                node["xhttp-opts"] = xhttp_options(uri, node.get("xhttp-opts", {}))
         result.append(node)
-    return result
+    return merge_nodes([result])
 
 
 def read_rules(directory: Path) -> dict:
@@ -136,7 +209,7 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
             "subfam": {
                 "type": "http", "url": f"{raw}/mihomo/providers/subfam.yaml",
                 "path": "./providers/subfam-mihomo.yaml", "interval": 300,
-                "proxy": "DIRECT", "payload": copy.deepcopy(nodes),
+                "proxy": "PROXY", "payload": copy.deepcopy(nodes),
                 "health-check": health_check,
             },
         },
@@ -145,6 +218,9 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
             "url": TEST_URL, "interval": 30, "timeout": 5000,
             "tolerance": 200, "lazy": False, "max-failed-times": 2,
             "expected-status": "204", "empty-fallback": "REJECT",
+        }, {
+            "name": "PROXY", "type": "select", "proxies": ["AUTO"],
+            "use": ["subfam"], "empty-fallback": "REJECT",
         }],
         "rule-providers": copy.deepcopy(rule_providers),
         "rules": [
@@ -163,7 +239,7 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
             "RULE-SET,russia-direct-domains,DIRECT",
             "RULE-SET,russia-direct-ipv4,DIRECT,no-resolve",
             "RULE-SET,russia-direct-ipv6,DIRECT,no-resolve",
-            "MATCH,AUTO",
+            "MATCH,PROXY",
         ],
     }
 
@@ -178,6 +254,10 @@ def yaml_document(value: dict, profile_url: str | None = None) -> str:
 def build_outputs(text: str, rules: Path, repository: str,
                   excluded: dict[str, int] | None = None) -> dict[str, str]:
     nodes = read_subscription(text, excluded)
+    return outputs_from_nodes(nodes, rules, repository)
+
+
+def outputs_from_nodes(nodes: list[dict], rules: Path, repository: str) -> dict[str, str]:
     config = build_profile(nodes, read_rules(rules), repository)
     raw = f"https://raw.githubusercontent.com/{repository}/main"
     profile = yaml_document(config, f"{raw}/VPN_Mihomo_Auto.yaml")
@@ -211,6 +291,26 @@ def download(url: str) -> str:
         return response.read(8 * 1024 * 1024).decode("utf-8")
 
 
+def read_sources(sources: str, excluded: dict[str, int] | None = None) -> list[dict]:
+    """Each line is an HTTPS subscription or one VLESS/HY2 connection."""
+    records = list(dict.fromkeys(line.strip() for line in sources.splitlines() if line.strip()))
+    if not records:
+        raise ValueError("No subscription sources configured")
+    groups = []
+    for index, source in enumerate(records, 1):
+        if source.lower().startswith("https://"):
+            try:
+                content = download(source)
+            except Exception:
+                raise ValueError(f"Cannot download subscription source {index}; keeping the previous profile") from None
+        elif source.split(":", 1)[0].lower() in ALLOWED_SCHEMES and "://" in source:
+            content = source
+        else:
+            raise ValueError(f"Invalid subscription source {index}; use HTTPS, VLESS or Hysteria2")
+        groups.append(read_subscription(content, excluded))
+    return merge_nodes(groups)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, help="Saved Base64/plain URI subscription")
@@ -218,24 +318,28 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=Path("."))
     parser.add_argument("--repository", default="anthonyandreew/sub")
     args = parser.parse_args()
-    source_url = os.environ.get("MIHOMO_SUBSCRIPTION_URL", "")
+    source_inputs = "\n".join(os.environ.get(key, "") for key in
+                              ("MIHOMO_SUBSCRIPTION_URL", "MIHOMO_ADDITIONAL_SOURCES"))
+    private_urls = [line.strip() for line in source_inputs.splitlines() if line.strip().lower().startswith("https://")]
     try:
+        excluded = {}
         if args.input:
-            text = args.input.read_text(encoding="utf-8")
-        elif source_url:
-            text = download(source_url)
+            nodes = read_subscription(args.input.read_text(encoding="utf-8"), excluded)
+        elif source_inputs.strip():
+            nodes = read_sources(source_inputs, excluded)
         else:
             parser.error("Provide --input or MIHOMO_SUBSCRIPTION_URL")
-        excluded = {}
-        outputs = build_outputs(text, args.rules_dir, args.repository, excluded)
-        if source_url and any(source_url in value for value in outputs.values()):
+        outputs = outputs_from_nodes(nodes, args.rules_dir, args.repository)
+        if any(url in value for url in private_urls for value in outputs.values()):
             raise ValueError("Refusing to publish the private source subscription URL")
         write_outputs(outputs, args.output_dir)
     except Exception as exc:
         # Downloader exception strings may contain a private URL; redact it.
-        message = str(exc).replace(source_url, "[subscription]") if source_url else str(exc)
+        message = str(exc)
+        for source in source_inputs.splitlines():
+            if source.strip():
+                message = message.replace(source.strip(), "[subscription]")
         raise SystemExit(f"Build failed; previous files kept: {message}") from None
-    nodes = read_subscription(text)
     if excluded:
         summary = ", ".join(f"{scheme}: {count}" for scheme, count in sorted(excluded.items()))
         print(f"Excluded connection types ({sum(excluded.values())}): {summary}; only VLESS/Hysteria2 are selected")
