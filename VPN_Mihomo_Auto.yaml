@@ -51,7 +51,7 @@
       "url": "https://raw.githubusercontent.com/anthonyandreew/sub/main/mihomo/providers/subfam.yaml",
       "path": "./providers/subfam-mihomo.yaml",
       "interval": 300,
-      "proxy": "DIRECT",
+      "proxy": "PROXY",
       "payload": [
         {
           "name": "🇳🇱 Нидерланды · hy2",
@@ -134,6 +134,69 @@
           },
           "servername": "37.77.106.28",
           "udp": true
+        },
+        {
+          "name": "🇫🇮 Финляндия · vless",
+          "type": "vless",
+          "server": "planktonmanager.xyz",
+          "port": 443,
+          "uuid": "4023b626-ce42-4a8f-a1c4-93e263118e7c",
+          "network": "xhttp",
+          "tls": true,
+          "client-fingerprint": "chrome",
+          "alpn": [
+            "h2"
+          ],
+          "xhttp-opts": {
+            "mode": "auto",
+            "path": "/assets/e4e35f44b368/3eaeda2dcb5e/index.html",
+            "host": "planktonmanager.xyz"
+          },
+          "servername": "planktonmanager.xyz",
+          "udp": true,
+          "skip-cert-verify": false
+        },
+        {
+          "name": "🇫🇮 Финляндия · hy2",
+          "type": "hysteria2",
+          "server": "planktonmanager.xyz",
+          "port": 8443,
+          "sni": "planktonmanager.xyz",
+          "alpn": [
+            "h3"
+          ],
+          "password": "b180c1a2-742d-4514-9fa2-e7377d708714"
+        },
+        {
+          "name": "🇫🇮 Финляндия · обход БС",
+          "type": "vless",
+          "server": "cdn.planktonmanager.xyz",
+          "port": 443,
+          "uuid": "28f9ed88-6776-4608-98a7-8034e3261156",
+          "network": "xhttp",
+          "tls": true,
+          "client-fingerprint": "firefox",
+          "alpn": [
+            "h2"
+          ],
+          "xhttp-opts": {
+            "mode": "packet-up",
+            "path": "/assets/e4e35f44b368/3eaeda2dcb5e/config.json",
+            "host": "cdn.planktonmanager.xyz",
+            "uplink-http-method": "GET",
+            "uplink-data-placement": "header",
+            "uplink-data-key": "X-Data",
+            "uplink-chunk-size": "2048",
+            "sc-max-each-post-bytes": "32768",
+            "sc-min-posts-interval-ms": "10",
+            "reuse-settings": {
+              "max-concurrency": "0",
+              "max-connections": "1"
+            }
+          },
+          "servername": "cdn.planktonmanager.xyz",
+          "udp": true,
+          "skip-cert-verify": false
         }
       ],
       "health-check": {
@@ -160,6 +223,17 @@
       "lazy": false,
       "max-failed-times": 2,
       "expected-status": "204",
+      "empty-fallback": "REJECT"
+    },
+    {
+      "name": "PROXY",
+      "type": "select",
+      "proxies": [
+        "AUTO"
+      ],
+      "use": [
+        "subfam"
+      ],
       "empty-fallback": "REJECT"
     }
   ],
@@ -1950,6 +2024,6 @@
     "RULE-SET,russia-direct-domains,DIRECT",
     "RULE-SET,russia-direct-ipv4,DIRECT,no-resolve",
     "RULE-SET,russia-direct-ipv6,DIRECT,no-resolve",
-    "MATCH,AUTO"
+    "MATCH,PROXY"
   ]
 }
