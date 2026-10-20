@@ -84,43 +84,11 @@
       "udp": true
     },
     {
-      "name": "🇫🇮 Финляндия · vless",
-      "type": "vless",
-      "server": "planktonmanager.xyz",
-      "port": 443,
-      "uuid": "4023b626-ce42-4a8f-a1c4-93e263118e7c",
-      "network": "xhttp",
-      "tls": true,
-      "client-fingerprint": "chrome",
-      "alpn": [
-        "h2"
-      ],
-      "xhttp-opts": {
-        "mode": "auto",
-        "path": "/assets/e4e35f44b368/3eaeda2dcb5e/index.html",
-        "host": "planktonmanager.xyz"
-      },
-      "servername": "planktonmanager.xyz",
-      "udp": true,
-      "skip-cert-verify": false
-    },
-    {
-      "name": "🇫🇮 Финляндия · hy2",
-      "type": "hysteria2",
-      "server": "planktonmanager.xyz",
-      "port": 8443,
-      "sni": "planktonmanager.xyz",
-      "alpn": [
-        "h3"
-      ],
-      "password": "b180c1a2-742d-4514-9fa2-e7377d708714"
-    },
-    {
       "name": "🇫🇮 Финляндия · обход БС",
       "type": "vless",
       "server": "cdn.planktonmanager.xyz",
       "port": 443,
-      "uuid": "28f9ed88-6776-4608-98a7-8034e3261156",
+      "uuid": "ceca769d-2648-4537-905b-217dd603d1de",
       "network": "xhttp",
       "tls": true,
       "client-fingerprint": "firefox",
