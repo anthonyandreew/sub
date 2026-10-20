@@ -42,10 +42,10 @@ class RuntimeTests(unittest.TestCase):
         profile["rule-providers"] = {}
         profile["rules"] = ["MATCH,AUTO"]
         profile["dns"] = {"enable": False}
-        profile["proxy-providers"]["subfam"]["url"] = f"http://127.0.0.1:{server.server_port}/provider"
-        profile["proxy-providers"]["subfam"]["proxy"] = "DIRECT"
+        profile["proxy-providers"]["proxyplankton_sub_clash"]["url"] = f"http://127.0.0.1:{server.server_port}/provider"
+        profile["proxy-providers"]["proxyplankton_sub_clash"]["proxy"] = "DIRECT"
         # Membership tests do not probe the documentation-only test IP addresses.
-        profile["proxy-providers"]["subfam"]["health-check"]["enable"] = False
+        profile["proxy-providers"]["proxyplankton_sub_clash"]["health-check"]["enable"] = False
         profile["proxy-groups"][0]["lazy"] = True
 
         def run_core(config, check):
@@ -74,7 +74,7 @@ class RuntimeTests(unittest.TestCase):
                                 # The controller starts before configuration and
                                 # provider registration finish. /version alone
                                 # can be ready while provider PUT still returns 404.
-                                api("/providers/proxies/subfam")
+                                api("/providers/proxies/proxyplankton_sub_clash")
                                 break
                             except (OSError, urllib.error.URLError):
                                 if process.poll() is not None:
@@ -92,22 +92,22 @@ class RuntimeTests(unittest.TestCase):
                             process.wait()
 
         def names(api):
-            return [node["name"] for node in api("/providers/proxies/subfam")["proxies"]]
+            return [node["name"] for node in api("/providers/proxies/proxyplankton_sub_clash")["proxies"]]
 
         def replacement_check(api):
-            api("/providers/proxies/subfam", "PUT")
+            api("/providers/proxies/proxyplankton_sub_clash", "PUT")
             self.assertEqual(names(api), ["Primary"])
             current["body"] = json.dumps({"proxies": replacement}).encode()
-            api("/providers/proxies/subfam", "PUT")
+            api("/providers/proxies/proxyplankton_sub_clash", "PUT")
             self.assertEqual(names(api), ["Backup"])
             self.assertEqual(api("/proxies/AUTO")["all"], ["Backup"])
             current["body"] = b"<!doctype html><html>Unavailable</html>"
             with self.assertRaises(urllib.error.HTTPError):
-                api("/providers/proxies/subfam", "PUT")
+                api("/providers/proxies/proxyplankton_sub_clash", "PUT")
             self.assertEqual(names(api), ["Backup"])
 
         run_core(profile, replacement_check)
-        profile["proxy-providers"]["subfam"]["url"] = "http://127.0.0.1:9/unavailable"
+        profile["proxy-providers"]["proxyplankton_sub_clash"]["url"] = "http://127.0.0.1:9/unavailable"
 
         def offline_check(api):
             self.assertEqual(names(api), ["Primary"])
@@ -147,7 +147,7 @@ class RuntimeTests(unittest.TestCase):
         body["proxies"] = [node, second]
         config = build_profile([node, second], {}, "owner/repo")
         config["rules"] = ["MATCH,PROXY"]
-        provider = config["proxy-providers"]["subfam"]
+        provider = config["proxy-providers"]["proxyplankton_sub_clash"]
         provider["url"] = "http://subscription.invalid/provider"
         provider["health-check"]["enable"] = False
         config["proxy-groups"][0]["lazy"] = True
@@ -176,7 +176,7 @@ class RuntimeTests(unittest.TestCase):
                 try:
                     for _ in range(100):
                         try:
-                            api("/providers/proxies/subfam")
+                            api("/providers/proxies/proxyplankton_sub_clash")
                             break
                         except OSError:
                             if process.poll() is not None:
@@ -184,11 +184,11 @@ class RuntimeTests(unittest.TestCase):
                             time.sleep(.05)
                     else:
                         self.fail("Mihomo provider did not become ready")
-                    api("/providers/proxies/subfam", "PUT")
+                    api("/providers/proxies/proxyplankton_sub_clash", "PUT")
                     self.assertTrue(any(url == "CONNECT subscription.invalid:80" for url in requests))
                     api("/proxies/PROXY", "PUT", {"name": "Second"})
                     body["proxies"] = [second]
-                    api("/providers/proxies/subfam", "PUT")
+                    api("/providers/proxies/proxyplankton_sub_clash", "PUT")
                     self.assertEqual(api("/proxies/PROXY")["now"], "Second")
                     self.assertEqual(api("/proxies/AUTO")["all"], ["Second"])
                 finally:
