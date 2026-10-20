@@ -51,7 +51,8 @@ def xhttp_options(uri: str, original: dict) -> dict:
     strings = {"mode": "mode", "host": "host", "path": "path",
                "uplinkHTTPMethod": "uplink-http-method", "uplinkDataPlacement": "uplink-data-placement",
                "uplinkDataKey": "uplink-data-key"}
-    numbers = {"uplinkChunkSize": "uplink-chunk-size", "scMaxEachPostBytes": "sc-max-each-post-bytes",
+    numbers = {"xPaddingBytes": "x-padding-bytes", "uplinkChunkSize": "uplink-chunk-size",
+               "scMaxEachPostBytes": "sc-max-each-post-bytes",
                "scMinPostsIntervalMs": "sc-min-posts-interval-ms"}
     # This is an inbound/server setting, not a Mihomo client transport field.
     allowed = set(strings) | set(numbers) | {"xmux", "serverMaxHeaderBytes"}
