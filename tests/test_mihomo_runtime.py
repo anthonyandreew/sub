@@ -71,7 +71,10 @@ class RuntimeTests(unittest.TestCase):
                     try:
                         for _ in range(100):
                             try:
-                                api("/version")
+                                # The controller starts before configuration and
+                                # provider registration finish. /version alone
+                                # can be ready while provider PUT still returns 404.
+                                api("/providers/proxies/subfam")
                                 break
                             except (OSError, urllib.error.URLError):
                                 if process.poll() is not None:
@@ -173,12 +176,14 @@ class RuntimeTests(unittest.TestCase):
                 try:
                     for _ in range(100):
                         try:
-                            api("/version")
+                            api("/providers/proxies/subfam")
                             break
                         except OSError:
                             if process.poll() is not None:
                                 self.fail("Mihomo stopped before its API became ready")
                             time.sleep(.05)
+                    else:
+                        self.fail("Mihomo provider did not become ready")
                     api("/providers/proxies/subfam", "PUT")
                     self.assertTrue(any(url == "CONNECT subscription.invalid:80" for url in requests))
                     api("/proxies/PROXY", "PUT", {"name": "Second"})
