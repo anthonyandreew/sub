@@ -66,7 +66,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- VPN_Mihomo_Auto.yaml clash_config_clashmi.yaml mihomo/providers/subfam.yaml
+          git add -- VPN_Mihomo_Auto.yaml clash_config_clashmi.yaml mihomo/providers/proxyplankton_sub_clash.yaml
           if git diff --cached --quiet; then
             echo 'Subscription unchanged; no commit needed.'
             exit 0

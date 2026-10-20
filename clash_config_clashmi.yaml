@@ -46,10 +46,10 @@
     }
   },
   "proxy-providers": {
-    "subfam": {
+    "proxyplankton_sub_clash": {
       "type": "http",
-      "url": "https://raw.githubusercontent.com/anthonyandreew/sub/main/mihomo/providers/subfam.yaml",
-      "path": "./providers/subfam-mihomo.yaml",
+      "url": "https://raw.githubusercontent.com/anthonyandreew/sub/main/mihomo/providers/proxyplankton_sub_clash.yaml",
+      "path": "./providers/proxyplankton_sub_clash.yaml",
       "interval": 300,
       "proxy": "PROXY",
       "payload": [
@@ -182,7 +182,7 @@
       "name": "AUTO",
       "type": "url-test",
       "use": [
-        "subfam"
+        "proxyplankton_sub_clash"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": 30,
@@ -200,7 +200,7 @@
         "AUTO"
       ],
       "use": [
-        "subfam"
+        "proxyplankton_sub_clash"
       ],
       "empty-fallback": "REJECT"
     }

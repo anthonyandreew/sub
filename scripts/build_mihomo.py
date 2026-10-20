@@ -25,7 +25,7 @@ from build_stash_provider import parse_subscription
 OUTPUT_PATHS = (
     "VPN_Mihomo_Auto.yaml",
     "clash_config_clashmi.yaml",
-    "mihomo/providers/subfam.yaml",
+    "mihomo/providers/proxyplankton_sub_clash.yaml",
 )
 TEST_URL = "https://www.gstatic.com/generate_204"
 ALLOWED_SCHEMES = {"vless", "hysteria2", "hy2"}
@@ -206,21 +206,21 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
             },
         },
         "proxy-providers": {
-            "subfam": {
-                "type": "http", "url": f"{raw}/mihomo/providers/subfam.yaml",
-                "path": "./providers/subfam-mihomo.yaml", "interval": 300,
+            "proxyplankton_sub_clash": {
+                "type": "http", "url": f"{raw}/mihomo/providers/proxyplankton_sub_clash.yaml",
+                "path": "./providers/proxyplankton_sub_clash.yaml", "interval": 300,
                 "proxy": "PROXY", "payload": copy.deepcopy(nodes),
                 "health-check": health_check,
             },
         },
         "proxy-groups": [{
-            "name": "AUTO", "type": "url-test", "use": ["subfam"],
+            "name": "AUTO", "type": "url-test", "use": ["proxyplankton_sub_clash"],
             "url": TEST_URL, "interval": 30, "timeout": 5000,
             "tolerance": 200, "lazy": False, "max-failed-times": 2,
             "expected-status": "204", "empty-fallback": "REJECT",
         }, {
             "name": "PROXY", "type": "select", "proxies": ["AUTO"],
-            "use": ["subfam"], "empty-fallback": "REJECT",
+            "use": ["proxyplankton_sub_clash"], "empty-fallback": "REJECT",
         }],
         "rule-providers": copy.deepcopy(rule_providers),
         "rules": [
