@@ -41,6 +41,7 @@ jobs:
       - name: Build and validate before replacing published files
         env:
           MIHOMO_SUBSCRIPTION_URL: ${{ secrets.MIHOMO_SUBSCRIPTION_URL || secrets.STASH_SUBSCRIPTION_URL }}
+          MIHOMO_ADDITIONAL_SOURCES: ${{ secrets.MIHOMO_ADDITIONAL_SOURCES }}
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
