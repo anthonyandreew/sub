@@ -71,7 +71,7 @@ class MihomoTests(unittest.TestCase):
         self.assertEqual([node["name"] for node in provider], ["Replacement"])
         profile = document(new["VPN_Mihomo_Auto.yaml"])
         self.assertEqual(profile["proxy-providers"]["proxyplankton_sub_clash"]["payload"], provider)
-        self.assertEqual(new["VPN_Mihomo_Auto.yaml"], new["clash_config_clashmi.yaml"])
+        self.assertEqual(set(new), {"VPN_Mihomo_Auto.yaml", "mihomo/providers/proxyplankton_sub_clash.yaml"})
 
     def test_unchanged_subscription_does_not_create_spurious_changes(self):
         self.assertEqual(self.build(GRPC + "\n" + HY2), self.build(GRPC + "\n" + HY2))

@@ -24,7 +24,6 @@ from build_stash_provider import parse_subscription
 
 OUTPUT_PATHS = (
     "VPN_Mihomo_Auto.yaml",
-    "clash_config_clashmi.yaml",
     "mihomo/providers/proxyplankton_sub_clash.yaml",
 )
 TEST_URL = "https://www.gstatic.com/generate_204"
@@ -264,8 +263,7 @@ def outputs_from_nodes(nodes: list[dict], rules: Path, repository: str) -> dict[
     profile = yaml_document(config, f"{raw}/VPN_Mihomo_Auto.yaml")
     return {
         OUTPUT_PATHS[0]: profile,
-        OUTPUT_PATHS[1]: profile,
-        OUTPUT_PATHS[2]: yaml_document({"proxies": nodes}),
+        OUTPUT_PATHS[1]: yaml_document({"proxies": nodes}),
     }
 
 
