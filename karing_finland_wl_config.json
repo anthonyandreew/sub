@@ -1,0 +1,36 @@
+{
+  "outbounds": [
+    {
+      "server": "cdn.planktonmanager.xyz",
+      "server_port": 443,
+      "tag": "🇫🇮 Финляндия - обход БС Karing",
+      "type": "vless",
+      "uuid": "28f9ed88-6776-4608-98a7-8034e3261156",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "cdn.planktonmanager.xyz",
+        "insecure": false,
+        "alpn": [
+          "h2"
+        ],
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        }
+      },
+      "transport": {
+        "type": "xhttp",
+        "mode": "packet-up",
+        "host": "cdn.planktonmanager.xyz",
+        "path": "/assets/e4e35f44b368/3eaeda2dcb5e/config.json",
+        "sc_max_each_post_bytes": "32768",
+        "sc_min_posts_interval_ms": "10",
+        "uplink_http_method": "GET",
+        "uplink_data_placement": "header",
+        "uplink_data_key": "X-Data",
+        "uplink_chunk_size": "2048"
+      }
+    }
+  ]
+}
