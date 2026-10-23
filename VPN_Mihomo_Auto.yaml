@@ -88,23 +88,6 @@
           "password": "z97d7p67c5ivjezz"
         },
         {
-          "name": "🇪🇺 Автовыбор 3",
-          "type": "vless",
-          "server": "proxyplankton.ru",
-          "port": 443,
-          "uuid": "c59c41d8-4882-46ce-9601-e0d49479831e",
-          "network": "tcp",
-          "flow": "xtls-rprx-vision",
-          "tls": true,
-          "client-fingerprint": "firefox",
-          "alpn": [
-            "http/1.1",
-            "h3"
-          ],
-          "servername": "proxyplankton.ru",
-          "udp": true
-        },
-        {
           "name": "🇨🇭 Швейцария · обход RU",
           "type": "hysteria2",
           "server": "37.77.106.28",
