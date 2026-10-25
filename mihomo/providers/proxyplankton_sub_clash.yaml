@@ -71,6 +71,28 @@
       "skip-cert-verify": false
     },
     {
+      "name": "🇳🇱 Нидерланды · обход RU",
+      "type": "vless",
+      "server": "37.77.106.28",
+      "port": 443,
+      "uuid": "f641c9ee-e102-48a0-8aad-ee03c2e478e9",
+      "network": "xhttp",
+      "tls": true,
+      "client-fingerprint": "chrome",
+      "alpn": [
+        "http/1.1"
+      ],
+      "xhttp-opts": {
+        "mode": "auto",
+        "path": "/",
+        "host": "dl.google.com",
+        "x-padding-bytes": "100-1000"
+      },
+      "servername": "37.77.106.28",
+      "udp": true,
+      "skip-cert-verify": false
+    },
+    {
       "name": "🇫🇮 Финляндия · обход БС",
       "type": "vless",
       "server": "cdn.planktonmanager.xyz",
