@@ -2,15 +2,7 @@
 {
   "proxies": [
     {
-      "name": "🇳🇱 Нидерланды · hy2",
-      "type": "hysteria2",
-      "server": "77.238.240.124",
-      "port": 443,
-      "sni": "proxyplankton.ru",
-      "password": "OrIiY0H0TWccQgynotkJ"
-    },
-    {
-      "name": "🇸🇪 Швеция · обход RU",
+      "name": "🇸🇪 Швеция",
       "type": "hysteria2",
       "server": "37.77.106.28",
       "port": 8443,
@@ -36,7 +28,7 @@
       "password": "z97d7p67c5ivjezz"
     },
     {
-      "name": "🇨🇭 Швейцария · обход RU",
+      "name": "🇨🇭 Швейцария",
       "type": "hysteria2",
       "server": "37.77.106.28",
       "port": 8443,
@@ -49,7 +41,7 @@
       "password": "j4lbcp5zocftejuc"
     },
     {
-      "name": "🇫🇮 Финляндия · обход RU",
+      "name": "🇫🇮 Финляндия",
       "type": "vless",
       "server": "37.77.106.28",
       "port": 443,
@@ -71,7 +63,7 @@
       "skip-cert-verify": false
     },
     {
-      "name": "🇳🇱 Нидерланды · обход RU",
+      "name": "🇳🇱 Нидерланды",
       "type": "vless",
       "server": "37.77.106.28",
       "port": 443,
