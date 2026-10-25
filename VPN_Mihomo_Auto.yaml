@@ -54,6 +54,22 @@
       "proxy": "PROXY",
       "payload": [
         {
+          "name": "🇳🇱 Нидерланды · резерв",
+          "type": "vless",
+          "server": "proxyplankton.ru",
+          "port": 443,
+          "uuid": "2e23bf2d-df88-4204-9063-df2329b05079",
+          "network": "tcp",
+          "tls": true,
+          "client-fingerprint": "firefox",
+          "alpn": [
+            "http/1.1",
+            "h3"
+          ],
+          "servername": "proxyplankton.ru",
+          "udp": true
+        },
+        {
           "name": "🇸🇪 Швеция",
           "type": "hysteria2",
           "server": "37.77.106.28",
