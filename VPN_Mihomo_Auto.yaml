@@ -54,7 +54,7 @@
       "proxy": "PROXY",
       "payload": [
         {
-          "name": "🇳🇱 Нидерланды · резерв",
+          "name": "🇨🇦 Канада · резерв",
           "type": "vless",
           "server": "proxyplankton.ru",
           "port": 443,
