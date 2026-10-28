@@ -57,6 +57,19 @@
       "password": "j4lbcp5zocftejuc"
     },
     {
+      "name": "🇰🇿 Казахстан",
+      "type": "hysteria2",
+      "server": "37.77.106.28",
+      "port": 8443,
+      "sni": "37.77.106.28",
+      "obfs": "salamander",
+      "obfs-password": "4vgqum0henixisub",
+      "alpn": [
+        "h3"
+      ],
+      "password": "3iuv9muq57glvw0z"
+    },
+    {
       "name": "🇫🇮 Финляндия",
       "type": "vless",
       "server": "37.77.106.28",
