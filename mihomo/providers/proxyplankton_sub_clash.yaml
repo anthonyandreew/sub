@@ -44,30 +44,26 @@
       "password": "z97d7p67c5ivjezz"
     },
     {
-      "name": "🇨🇭 Швейцария",
-      "type": "hysteria2",
+      "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Англия",
+      "type": "vless",
       "server": "37.77.106.28",
-      "port": 8443,
-      "sni": "37.77.106.28",
-      "obfs": "salamander",
-      "obfs-password": "4vgqum0henixisub",
+      "port": 443,
+      "uuid": "0be71ef8-d780-45a9-9515-4626917ac616",
+      "network": "xhttp",
+      "tls": true,
+      "client-fingerprint": "chrome",
       "alpn": [
-        "h3"
+        "http/1.1"
       ],
-      "password": "j4lbcp5zocftejuc"
-    },
-    {
-      "name": "🇰🇿 Казахстан",
-      "type": "hysteria2",
-      "server": "37.77.106.28",
-      "port": 8443,
-      "sni": "37.77.106.28",
-      "obfs": "salamander",
-      "obfs-password": "4vgqum0henixisub",
-      "alpn": [
-        "h3"
-      ],
-      "password": "3iuv9muq57glvw0z"
+      "xhttp-opts": {
+        "mode": "auto",
+        "path": "/",
+        "host": "dl.google.com",
+        "x-padding-bytes": "100-1000"
+      },
+      "servername": "37.77.106.28",
+      "udp": true,
+      "skip-cert-verify": false
     },
     {
       "name": "🇫🇮 Финляндия",
