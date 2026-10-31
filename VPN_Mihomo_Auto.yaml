@@ -118,28 +118,6 @@
           "skip-cert-verify": false
         },
         {
-          "name": "🇫🇮 Финляндия",
-          "type": "vless",
-          "server": "37.77.106.28",
-          "port": 443,
-          "uuid": "006b11d0-4337-477e-a632-4957531a3a38",
-          "network": "xhttp",
-          "tls": true,
-          "client-fingerprint": "chrome",
-          "alpn": [
-            "http/1.1"
-          ],
-          "xhttp-opts": {
-            "mode": "auto",
-            "path": "/",
-            "host": "dl.google.com",
-            "x-padding-bytes": "100-1000"
-          },
-          "servername": "37.77.106.28",
-          "udp": true,
-          "skip-cert-verify": false
-        },
-        {
           "name": "🇳🇱 Нидерланды",
           "type": "vless",
           "server": "37.77.106.28",
