@@ -40,7 +40,7 @@ class RuntimeTests(unittest.TestCase):
         self.addCleanup(server.shutdown)
         profile = build_profile(original, {}, "owner/repo")
         profile["rule-providers"] = {}
-        profile["rules"] = ["MATCH,AUTO"]
+        profile["rules"] = ["MATCH,Auto Pre"]
         profile["dns"] = {"enable": False}
         profile["proxy-providers"]["proxyplankton_sub_clash"]["url"] = f"http://127.0.0.1:{server.server_port}/provider"
         profile["proxy-providers"]["proxyplankton_sub_clash"]["proxy"] = "DIRECT"
@@ -100,7 +100,7 @@ class RuntimeTests(unittest.TestCase):
             current["body"] = json.dumps({"proxies": replacement}).encode()
             api("/providers/proxies/proxyplankton_sub_clash", "PUT")
             self.assertEqual(names(api), ["Backup"])
-            self.assertEqual(api("/proxies/AUTO")["all"], ["Backup"])
+            self.assertEqual(api("/proxies/Auto%20Pre")["all"], ["Backup"])
             current["body"] = b"<!doctype html><html>Unavailable</html>"
             with self.assertRaises(urllib.error.HTTPError):
                 api("/providers/proxies/proxyplankton_sub_clash", "PUT")
@@ -111,7 +111,7 @@ class RuntimeTests(unittest.TestCase):
 
         def offline_check(api):
             self.assertEqual(names(api), ["Primary"])
-            self.assertEqual(api("/proxies/AUTO")["all"], ["Primary"])
+            self.assertEqual(api("/proxies/Auto%20Pre")["all"], ["Primary"])
 
         run_core(profile, offline_check)
 
@@ -146,7 +146,7 @@ class RuntimeTests(unittest.TestCase):
         second = dict(node, name="Second")
         body["proxies"] = [node, second]
         config = build_profile([node, second], {}, "owner/repo")
-        config["rules"] = ["MATCH,PROXY"]
+        config["rules"] = ["MATCH,Proxy"]
         provider = config["proxy-providers"]["proxyplankton_sub_clash"]
         provider["url"] = "http://subscription.invalid/provider"
         provider["health-check"]["enable"] = False
@@ -186,11 +186,11 @@ class RuntimeTests(unittest.TestCase):
                         self.fail("Mihomo provider did not become ready")
                     api("/providers/proxies/proxyplankton_sub_clash", "PUT")
                     self.assertTrue(any(url == "CONNECT subscription.invalid:80" for url in requests))
-                    api("/proxies/PROXY", "PUT", {"name": "Second"})
+                    api("/proxies/Proxy", "PUT", {"name": "Second"})
                     body["proxies"] = [second]
                     api("/providers/proxies/proxyplankton_sub_clash", "PUT")
-                    self.assertEqual(api("/proxies/PROXY")["now"], "Second")
-                    self.assertEqual(api("/proxies/AUTO")["all"], ["Second"])
+                    self.assertEqual(api("/proxies/Proxy")["now"], "Second")
+                    self.assertEqual(api("/proxies/Auto%20Pre")["all"], ["Second"])
                 finally:
                     process.terminate()
                     try:
@@ -250,7 +250,7 @@ class RuntimeTests(unittest.TestCase):
 
         from build_mihomo import PRIMARY_AUTO
         config = build_profile(nodes[:2], {}, "owner/repo", nodes[2:])
-        config.update({"dns": {"enable": False}, "rules": ["MATCH,PROXY"], "rule-providers": {}})
+        config.update({"dns": {"enable": False}, "rules": ["MATCH,Proxy"], "rule-providers": {}})
         health = {"url": "http://health.invalid/health", "interval": 1, "timeout": 500,
                   "lazy": False, "expected-status": "204"}
         for provider in config["proxy-providers"].values():
@@ -280,7 +280,7 @@ class RuntimeTests(unittest.TestCase):
                 except OSError:
                     pass
                 time.sleep(.2)
-            self.fail("Mihomo selection timeout: " + json.dumps({name: api(endpoint) for name, endpoint in (("auto", "/proxies/AUTO"), ("normal", "/proxies/AUTO%201"), ("provider", "/providers/proxies/proxyplankton_sub_clash"))}))
+            self.fail("Mihomo selection timeout: " + json.dumps({name: api(endpoint) for name, endpoint in (("auto", "/proxies/Auto%20Pre"), ("normal", "/proxies/Auto%20Final"), ("provider", "/providers/proxies/proxyplankton_sub_clash"))}))
 
         def traffic():
             # Set the local proxy explicitly; urllib may bypass localhost otherwise.
@@ -302,7 +302,7 @@ class RuntimeTests(unittest.TestCase):
                     reserve = api("/providers/proxies/proxyplankton_whitelist")["proxies"][0]
                     self.assertGreater(normal[1]["extra"][health["url"]]["history"][-1]["delay"],
                                        reserve["extra"][health["url"]]["history"][-1]["delay"])
-                    self.assertEqual(api("/proxies/AUTO")["now"], PRIMARY_AUTO)
+                    self.assertEqual(api("/proxies/Auto%20Pre")["now"], PRIMARY_AUTO)
                     self.assertIn(traffic(), ["0", "1"])
                     self.assertEqual(states[2]["traffic"], 0)
                     states[0]["alive"] = False
@@ -310,11 +310,11 @@ class RuntimeTests(unittest.TestCase):
                     self.assertEqual(traffic(), "1")
                     self.assertEqual(states[2]["traffic"], 0)
                     states[1]["alive"] = False
-                    wait_for(lambda: api("/proxies/AUTO")["now"] == "Node 2")
+                    wait_for(lambda: api("/proxies/Auto%20Pre")["now"] == "Node 2")
                     self.assertEqual(traffic(), "2")
                     paid_traffic = states[2]["traffic"]
                     states[0]["alive"] = True
-                    wait_for(lambda: api("/proxies/AUTO")["now"] == PRIMARY_AUTO)
+                    wait_for(lambda: api("/proxies/Auto%20Pre")["now"] == PRIMARY_AUTO)
                     self.assertEqual(traffic(), "0")
                     self.assertEqual(states[2]["traffic"], paid_traffic)
                 finally:

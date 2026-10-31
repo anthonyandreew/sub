@@ -76,7 +76,7 @@ class MihomoTests(unittest.TestCase):
 
     def test_paid_reserve_is_separate_and_cannot_win_on_latency(self):
         paid = read_subscription(xhttp())
-        # A duplicate from the main source must also be excluded from ordinary AUTO.
+        # A duplicate from the main source must also be excluded from ordinary Auto Pre.
         normal = read_subscription(GRPC + "\n" + xhttp(name="Duplicate"))
         result = outputs_from_nodes(normal, self.rules, "owner/repo", paid)
         profile = document(result["VPN_Mihomo_Auto.yaml"])
@@ -85,14 +85,14 @@ class MihomoTests(unittest.TestCase):
         self.assertEqual([p["name"] for p in ordinary], ["Primary"])
         self.assertEqual([p["name"] for p in reserve], ["CDN"])
         groups = {g["name"]: g for g in profile["proxy-groups"]}
-        self.assertEqual(groups["AUTO"]["type"], "fallback")
-        self.assertEqual(groups["AUTO"]["proxies"], ["AUTO 1"])
-        self.assertEqual(groups["AUTO 1"]["use"], ["proxyplankton_sub_clash"])
-        self.assertEqual(groups["AUTO"]["use"], ["proxyplankton_sub_clash", "proxyplankton_whitelist"])
-        self.assertEqual(groups["PROXY"]["proxies"], ["AUTO"])
+        self.assertEqual(groups["Auto Pre"]["type"], "fallback")
+        self.assertEqual(groups["Auto Pre"]["proxies"], ["Auto Final"])
+        self.assertEqual(groups["Auto Final"]["use"], ["proxyplankton_sub_clash"])
+        self.assertEqual(groups["Auto Pre"]["use"], ["proxyplankton_sub_clash", "proxyplankton_whitelist"])
+        self.assertEqual(groups["Proxy"]["proxies"], ["Auto Pre"])
         for name, proxies in (("proxyplankton_sub_clash", ordinary), ("proxyplankton_whitelist", reserve)):
             self.assertEqual(profile["proxy-providers"][name]["payload"], proxies)
-        self.assertEqual(profile["rules"][-1], "MATCH,PROXY")
+        self.assertEqual(profile["rules"][-1], "MATCH,Proxy")
 
     def test_reserve_name_collisions_and_missing_ordinary_pool(self):
         normal = read_subscription(GRPC)
@@ -110,10 +110,10 @@ class MihomoTests(unittest.TestCase):
         profile = document(self.build(GRPC + "\n" + HY2)["VPN_Mihomo_Auto.yaml"])
         self.assertEqual(len(profile["proxy-providers"]["proxyplankton_sub_clash"]["payload"]), 2)
         self.assertEqual(profile["proxy-groups"][0]["empty-fallback"], "REJECT")
-        self.assertEqual(profile["rules"][-1], "MATCH,PROXY")
+        self.assertEqual(profile["rules"][-1], "MATCH,Proxy")
         manual = profile["proxy-groups"][1]
         self.assertEqual((manual["name"], manual["type"], manual["proxies"], manual["use"]),
-                         ("PROXY", "select", ["AUTO"], ["proxyplankton_sub_clash"]))
+                         ("Proxy", "select", ["Auto Pre"], ["proxyplankton_sub_clash"]))
 
     def test_provider_refresh_and_self_contained_rules(self):
         profile = document(self.build(GRPC)["VPN_Mihomo_Auto.yaml"])
@@ -121,7 +121,7 @@ class MihomoTests(unittest.TestCase):
         self.assertEqual(provider["url"], "https://raw.githubusercontent.com/owner/repo/main/mihomo/providers/proxyplankton_sub_clash.yaml")
         self.assertEqual(provider["interval"], 3600)
         self.assertTrue(provider["health-check"]["enable"])
-        self.assertEqual(provider["proxy"], "PROXY")
+        self.assertEqual(provider["proxy"], "Proxy")
         self.assertTrue(all(rule["type"] == "inline" for rule in profile["rule-providers"].values()))
 
     def test_happ_routing_metadata_does_not_create_a_proxy(self):
@@ -250,8 +250,8 @@ class MihomoTests(unittest.TestCase):
         self.assertEqual([node["name"] for node in nodes], ["Primary", "CDN", "Backup"])
 
     def test_different_nodes_with_equal_names_and_reserved_names(self):
-        nodes = read_sources("\n".join([GRPC, HY2.replace("#Backup", "#Primary"), xhttp(name="AUTO")]))
-        self.assertEqual([node["name"] for node in nodes], ["Primary", "Primary (2)", "AUTO (2)"])
+        nodes = read_sources("\n".join([GRPC, HY2.replace("#Backup", "#Primary"), xhttp(name="Auto Pre")]))
+        self.assertEqual([node["name"] for node in nodes], ["Primary", "Primary (2)", "Auto Pre (2)"])
 
     def test_a_failed_source_does_not_publish_a_partial_list(self):
         private = "https://one.example/sub/secret-token"

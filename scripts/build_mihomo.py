@@ -27,11 +27,11 @@ OUTPUT_PATHS = (
     "mihomo/providers/proxyplankton_sub_clash.yaml",
     "mihomo/providers/proxyplankton_whitelist.yaml",
 )
-PRIMARY_AUTO = "AUTO 1"
+PRIMARY_AUTO = "Auto Final"
 TEST_URL = "https://www.gstatic.com/generate_204"
 ALLOWED_SCHEMES = {"vless", "hysteria2", "hy2"}
 METADATA_SCHEMES = {"happ", "incy"}
-RESERVED_NAMES = {"AUTO", "PROXY", "DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL",
+RESERVED_NAMES = {"Auto Pre", "Proxy", "DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL",
                   PRIMARY_AUTO}
 
 
@@ -228,10 +228,10 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str,
             "fake-ip-filter": ["*.lan", "*.local", "+.home.arpa"],
             "default-nameserver": ["77.88.8.8", "1.1.1.1"],
             "proxy-server-nameserver": ["system"],
-            "nameserver": ["https://1.1.1.1/dns-query#AUTO", "https://1.0.0.1/dns-query#AUTO"],
+            "nameserver": ["https://1.1.1.1/dns-query#Auto Pre", "https://1.0.0.1/dns-query#Auto Pre"],
             "nameserver-policy": {
                 "rule-set:russia-direct-domains": ["77.88.8.8", "77.88.8.1"],
-                # Health checks must not depend on AUTO already being usable.
+                # Health checks must not depend on Auto Pre already being usable.
                 "www.gstatic.com": ["system"],
                 "raw.githubusercontent.com": ["system"],
             },
@@ -240,17 +240,17 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str,
             "proxyplankton_sub_clash": {
                 "type": "http", "url": f"{raw}/mihomo/providers/proxyplankton_sub_clash.yaml",
                 "path": "./providers/proxyplankton_sub_clash.yaml", "interval": 3600,
-                "proxy": "PROXY", "payload": copy.deepcopy(nodes),
+                "proxy": "Proxy", "payload": copy.deepcopy(nodes),
                 "health-check": health_check,
             },
         },
         "proxy-groups": [{
-            "name": "AUTO", "type": "url-test", "use": ["proxyplankton_sub_clash"],
+            "name": "Auto Pre", "type": "url-test", "use": ["proxyplankton_sub_clash"],
             "url": TEST_URL, "interval": 60, "timeout": 5000,
             "tolerance": 50, "lazy": True, "max-failed-times": 2,
             "expected-status": "204", "empty-fallback": "REJECT",
         }, {
-            "name": "PROXY", "type": "select", "proxies": ["AUTO"],
+            "name": "Proxy", "type": "select", "proxies": ["Auto Pre"],
             "use": ["proxyplankton_sub_clash"], "empty-fallback": "REJECT",
         }],
         "rule-providers": copy.deepcopy(rule_providers),
@@ -270,23 +270,22 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str,
             "RULE-SET,russia-direct-domains,DIRECT",
             "RULE-SET,russia-direct-ipv4,DIRECT,no-resolve",
             "RULE-SET,russia-direct-ipv6,DIRECT,no-resolve",
-            "MATCH,PROXY",
+            "MATCH,Proxy",
         ],
     }
     if whitelist:
         config["proxy-providers"]["proxyplankton_whitelist"] = {
             "type": "http", "url": f"{raw}/{OUTPUT_PATHS[2]}",
             "path": "./providers/proxyplankton_whitelist.yaml", "interval": 3600,
-            "proxy": "PROXY", "payload": copy.deepcopy(whitelist),
+            "proxy": "Proxy", "payload": copy.deepcopy(whitelist),
             "health-check": copy.deepcopy(health_check),
         }
         primary = config["proxy-groups"][0]
         primary["name"] = PRIMARY_AUTO
         # fallback chooses by priority/availability, never by relative latency.
-        # Keeping AUTO as the outer group's name preserves existing PROXY selections
-        # and the DNS route through AUTO.
+        # Proxy and DNS reference the same outer fallback group.
         config["proxy-groups"] = [{
-            "name": "AUTO", "type": "fallback", "proxies": [PRIMARY_AUTO],
+            "name": "Auto Pre", "type": "fallback", "proxies": [PRIMARY_AUTO],
             # Check ordinary nodes individually before paying for the reserve:
             # the nested url-test can still cache a failed node for 10 seconds.
             "use": ["proxyplankton_sub_clash", "proxyplankton_whitelist"],
