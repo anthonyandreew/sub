@@ -182,7 +182,24 @@
           "servername": "37.77.106.28",
           "udp": true,
           "skip-cert-verify": false
-        },
+        }
+      ],
+      "health-check": {
+        "enable": true,
+        "url": "https://www.gstatic.com/generate_204",
+        "interval": 60,
+        "timeout": 5000,
+        "lazy": true,
+        "expected-status": "204"
+      }
+    },
+    "proxyplankton_whitelist": {
+      "type": "http",
+      "url": "https://raw.githubusercontent.com/anthonyandreew/sub/main/mihomo/providers/proxyplankton_whitelist.yaml",
+      "path": "./providers/proxyplankton_whitelist.yaml",
+      "interval": 3600,
+      "proxy": "PROXY",
+      "payload": [
         {
           "name": "🇷🇺 Автовыбор · обход БС",
           "type": "vless",
@@ -232,14 +249,17 @@
   "proxy-groups": [
     {
       "name": "AUTO",
-      "type": "url-test",
+      "type": "fallback",
+      "proxies": [
+        "AUTO 1"
+      ],
       "use": [
-        "proxyplankton_sub_clash"
+        "proxyplankton_sub_clash",
+        "proxyplankton_whitelist"
       ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": 60,
       "timeout": 5000,
-      "tolerance": 50,
       "lazy": true,
       "max-failed-times": 2,
       "expected-status": "204",
@@ -254,6 +274,21 @@
       "use": [
         "proxyplankton_sub_clash"
       ],
+      "empty-fallback": "REJECT"
+    },
+    {
+      "name": "AUTO 1",
+      "type": "url-test",
+      "use": [
+        "proxyplankton_sub_clash"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 60,
+      "timeout": 5000,
+      "tolerance": 50,
+      "lazy": true,
+      "max-failed-times": 2,
+      "expected-status": "204",
       "empty-fallback": "REJECT"
     }
   ],
