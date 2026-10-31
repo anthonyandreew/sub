@@ -29,8 +29,8 @@
       "system"
     ],
     "nameserver": [
-      "https://1.1.1.1/dns-query#AUTO",
-      "https://1.0.0.1/dns-query#AUTO"
+      "https://1.1.1.1/dns-query#Auto Pre",
+      "https://1.0.0.1/dns-query#Auto Pre"
     ],
     "nameserver-policy": {
       "rule-set:russia-direct-domains": [
@@ -51,7 +51,7 @@
       "url": "https://raw.githubusercontent.com/anthonyandreew/sub/main/mihomo/providers/proxyplankton_sub_clash.yaml",
       "path": "./providers/proxyplankton_sub_clash.yaml",
       "interval": 3600,
-      "proxy": "PROXY",
+      "proxy": "Proxy",
       "payload": [
         {
           "name": "🇨🇦 Канада · резерв",
@@ -198,7 +198,7 @@
       "url": "https://raw.githubusercontent.com/anthonyandreew/sub/main/mihomo/providers/proxyplankton_whitelist.yaml",
       "path": "./providers/proxyplankton_whitelist.yaml",
       "interval": 3600,
-      "proxy": "PROXY",
+      "proxy": "Proxy",
       "payload": [
         {
           "name": "🇷🇺 Автовыбор · обход БС",
@@ -248,10 +248,10 @@
   },
   "proxy-groups": [
     {
-      "name": "AUTO",
+      "name": "Auto Pre",
       "type": "fallback",
       "proxies": [
-        "AUTO 1"
+        "Auto Final"
       ],
       "use": [
         "proxyplankton_sub_clash",
@@ -266,10 +266,10 @@
       "empty-fallback": "REJECT"
     },
     {
-      "name": "PROXY",
+      "name": "Proxy",
       "type": "select",
       "proxies": [
-        "AUTO"
+        "Auto Pre"
       ],
       "use": [
         "proxyplankton_sub_clash"
@@ -277,7 +277,7 @@
       "empty-fallback": "REJECT"
     },
     {
-      "name": "AUTO 1",
+      "name": "Auto Final",
       "type": "url-test",
       "use": [
         "proxyplankton_sub_clash"
@@ -2079,6 +2079,6 @@
     "RULE-SET,russia-direct-domains,DIRECT",
     "RULE-SET,russia-direct-ipv4,DIRECT,no-resolve",
     "RULE-SET,russia-direct-ipv6,DIRECT,no-resolve",
-    "MATCH,PROXY"
+    "MATCH,Proxy"
   ]
 }
