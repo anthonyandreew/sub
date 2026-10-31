@@ -8,6 +8,8 @@ import copy
 import json
 from pathlib import Path
 
+from build_mihomo import read_rules
+
 XHTTP_FIELDS = {
     "mode": "mode", "host": "host", "path": "path",
     "uplink-http-method": "uplink_http_method",
@@ -103,6 +105,7 @@ def clash_yaml_document(config, url):
 def main():
     root = Path(__file__).resolve().parents[1]
     profile = read_document(root / "VPN_Mihomo_Auto.yaml")
+    profile["rule-providers"] = read_rules(root / "stash/rules")
     reserve = profile["proxy-providers"]["proxyplankton_whitelist"]["payload"]
     if len(reserve) != 1:
         raise ValueError("The single-node Karing test expects exactly one CDN node")

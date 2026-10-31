@@ -93,6 +93,7 @@
 +.podberi.ru
 +.punto-switcher.ru
 +.punto.ru
++.pushserver.edna.id
 +.qsrapp.ru
 +.questa.ru
 +.rendez-vous.ru
