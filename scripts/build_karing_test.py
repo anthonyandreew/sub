@@ -8,8 +8,6 @@ import copy
 import json
 from pathlib import Path
 
-from build_mihomo import yaml_document
-
 XHTTP_FIELDS = {
     "mode": "mode", "host": "host", "path": "path",
     "uplink-http-method": "uplink_http_method",
@@ -71,6 +69,37 @@ def flatten_profile(profile):
     return config
 
 
+def clash_yaml_document(config, url):
+    """Emit block YAML: a JSON object may be misidentified as sing-box on import."""
+    def scalar(value):
+        return json.dumps(value, ensure_ascii=False)
+
+    def block(value, indent=0):
+        padding = " " * indent
+        lines = []
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if isinstance(item, (dict, list)) and item:
+                    lines.append(f"{padding}{scalar(key)}:")
+                    lines.extend(block(item, indent + 2))
+                else:
+                    lines.append(f"{padding}{scalar(key)}: {scalar(item)}")
+        else:
+            for item in value:
+                if isinstance(item, (dict, list)) and item:
+                    lines.append(f"{padding}-")
+                    lines.extend(block(item, indent + 2))
+                else:
+                    lines.append(f"{padding}- {scalar(item)}")
+        return lines
+
+    # Start with the Clash server list, rather than an ambiguous JSON object.
+    nodes = block(config["proxies"], 2)
+    rest = block({k: v for k, v in config.items() if k != "proxies"})
+    return "\n".join([f"#SUBSCRIBED {url}", "# Experimental Karing Clash import.",
+                       "proxies:", *nodes, *rest]) + "\n"
+
+
 def main():
     root = Path(__file__).resolve().parents[1]
     profile = read_document(root / "VPN_Mihomo_Auto.yaml")
@@ -85,7 +114,7 @@ def main():
     path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n")
     url = "https://raw.githubusercontent.com/anthonyandreew/sub/refs/heads/main/VPN_Karing_Auto_Test.yaml"
     flat = flatten_profile(profile)
-    (root / "VPN_Karing_Auto_Test.yaml").write_text(yaml_document(flat, url))
+    (root / "VPN_Karing_Auto_Test.yaml").write_text(clash_yaml_document(flat, url))
     print(f"Prepared Karing import candidates: one native CDN node and {len(flat['proxies'])} Clash nodes")
 
 

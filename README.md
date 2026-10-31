@@ -211,7 +211,9 @@ https://raw.githubusercontent.com/anthonyandreew/sub/refs/heads/main/karing_finl
 https://raw.githubusercontent.com/anthonyandreew/sub/refs/heads/main/VPN_Karing_Auto_Test.yaml
 ```
 
-В ней все подключения находятся в верхнеуровневом `proxies`, а `use` заменены
+Копия записана в обычном YAML с разделом `proxies:` в начале, чтобы избежать
+неоднозначного определения JSON как sing-box. Все подключения находятся
+в верхнеуровневом `proxies`, а `use` заменены
 явными списками. Это устраняет зависимость импорта от поддержки встроенного
 `proxy-providers.payload`; параметры XHTTP сохранены полностью. Основной профиль
 Mihomo при этом не изменяется. В копии записан приоритет обычных узлов перед CDN,
