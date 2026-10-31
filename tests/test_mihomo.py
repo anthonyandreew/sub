@@ -10,7 +10,7 @@ from unittest.mock import patch
 from urllib.parse import urlencode
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from build_mihomo import build_outputs, read_sources, read_subscription
+from build_mihomo import build_outputs, outputs_from_nodes, read_sources, read_subscription
 
 GRPC = ("vless://11111111-1111-4111-8111-111111111111@192.0.2.1:443?"
         "type=grpc&security=tls&sni=example.com&serviceName=grpc&alpn=http%2F1.1#Primary")
@@ -71,7 +71,37 @@ class MihomoTests(unittest.TestCase):
         self.assertEqual([node["name"] for node in provider], ["Replacement"])
         profile = document(new["VPN_Mihomo_Auto.yaml"])
         self.assertEqual(profile["proxy-providers"]["proxyplankton_sub_clash"]["payload"], provider)
-        self.assertEqual(set(new), {"VPN_Mihomo_Auto.yaml", "mihomo/providers/proxyplankton_sub_clash.yaml"})
+        self.assertEqual(set(new), {"VPN_Mihomo_Auto.yaml", "mihomo/providers/proxyplankton_sub_clash.yaml",
+                                    "mihomo/providers/proxyplankton_whitelist.yaml"})
+
+    def test_paid_reserve_is_separate_and_cannot_win_on_latency(self):
+        paid = read_subscription(xhttp())
+        # A duplicate from the main source must also be excluded from ordinary AUTO.
+        normal = read_subscription(GRPC + "\n" + xhttp(name="Duplicate"))
+        result = outputs_from_nodes(normal, self.rules, "owner/repo", paid)
+        profile = document(result["VPN_Mihomo_Auto.yaml"])
+        ordinary = document(result["mihomo/providers/proxyplankton_sub_clash.yaml"])["proxies"]
+        reserve = document(result["mihomo/providers/proxyplankton_whitelist.yaml"])["proxies"]
+        self.assertEqual([p["name"] for p in ordinary], ["Primary"])
+        self.assertEqual([p["name"] for p in reserve], ["CDN"])
+        groups = {g["name"]: g for g in profile["proxy-groups"]}
+        self.assertEqual(groups["AUTO"]["type"], "fallback")
+        self.assertEqual(groups["AUTO"]["proxies"], ["AUTO 1"])
+        self.assertEqual(groups["AUTO 1"]["use"], ["proxyplankton_sub_clash"])
+        self.assertEqual(groups["AUTO"]["use"], ["proxyplankton_sub_clash", "proxyplankton_whitelist"])
+        self.assertEqual(groups["PROXY"]["proxies"], ["AUTO"])
+        for name, proxies in (("proxyplankton_sub_clash", ordinary), ("proxyplankton_whitelist", reserve)):
+            self.assertEqual(profile["proxy-providers"][name]["payload"], proxies)
+        self.assertEqual(profile["rules"][-1], "MATCH,PROXY")
+
+    def test_reserve_name_collisions_and_missing_ordinary_pool(self):
+        normal = read_subscription(GRPC)
+        reserve = read_subscription(HY2.replace("#Backup", "#Primary"))
+        result = outputs_from_nodes(normal, self.rules, "owner/repo", reserve)
+        profile = document(result["VPN_Mihomo_Auto.yaml"])
+        self.assertEqual(profile["proxy-providers"]["proxyplankton_whitelist"]["payload"][0]["name"], "Primary (2)")
+        with self.assertRaisesRegex(ValueError, "No ordinary connections"):
+            outputs_from_nodes(normal, self.rules, "owner/repo", normal)
 
     def test_unchanged_subscription_does_not_create_spurious_changes(self):
         self.assertEqual(self.build(GRPC + "\n" + HY2), self.build(GRPC + "\n" + HY2))

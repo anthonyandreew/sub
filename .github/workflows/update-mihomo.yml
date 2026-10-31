@@ -41,7 +41,7 @@ jobs:
       - name: Build and validate before replacing published files
         env:
           MIHOMO_SUBSCRIPTION_URL: ${{ secrets.MIHOMO_SUBSCRIPTION_URL || secrets.STASH_SUBSCRIPTION_URL }}
-          MIHOMO_ADDITIONAL_SOURCES: ${{ secrets.MIHOMO_ADDITIONAL_SOURCES }}
+          MIHOMO_WHITELIST_SOURCE: ${{ secrets.MIHOMO_WHITELIST_SOURCE }}
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
@@ -66,7 +66,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- VPN_Mihomo_Auto.yaml mihomo/providers/proxyplankton_sub_clash.yaml
+          git add -- VPN_Mihomo_Auto.yaml mihomo/providers/proxyplankton_sub_clash.yaml mihomo/providers/proxyplankton_whitelist.yaml
           if git diff --cached --quiet; then
             echo 'Subscription unchanged; no commit needed.'
             exit 0

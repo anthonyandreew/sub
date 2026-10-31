@@ -198,3 +198,129 @@ class RuntimeTests(unittest.TestCase):
                     except subprocess.TimeoutExpired:
                         process.kill()
                         process.wait()
+
+    def test_paid_reserve_priority_failover_and_recovery(self):
+        # Real HTTP tunnels distinguish health probes from application traffic.
+        states = [{"alive": True, "traffic": 0, "delay": .08},
+                  {"alive": True, "traffic": 0, "delay": .12},
+                  {"alive": True, "traffic": 0, "delay": 0}]
+        nodes = []
+        for index, state in enumerate(states):
+            def handler_for(state, index):
+                class Handler(BaseHTTPRequestHandler):
+                    def do_CONNECT(self):
+                        self.send_response(200)
+                        self.end_headers()
+                        self.close_connection = False
+                        self.handle_one_request()
+
+                    def do_GET(self):
+                        if "health" in self.path:
+                            time.sleep(state["delay"])
+                            if not state["alive"]:
+                                self.close_connection = True
+                                return
+                            self.send_response(204)
+                            self.end_headers()
+                        else:
+                            state["traffic"] += 1
+                            data = str(index).encode()
+                            self.send_response(200)
+                            self.send_header("Content-Length", str(len(data)))
+                            self.end_headers()
+                            self.wfile.write(data)
+
+                    do_HEAD = do_GET
+
+                    def log_message(self, *args):
+                        pass
+                return Handler
+
+            server = ThreadingHTTPServer(("127.0.0.1", 0), handler_for(state, index))
+            threading.Thread(target=server.serve_forever, daemon=True).start()
+            self.addCleanup(server.server_close)
+            self.addCleanup(server.shutdown)
+            nodes.append({"name": f"Node {index}", "type": "http", "server": "127.0.0.1",
+                          "port": server.server_port})
+
+        def free_port():
+            with socket.socket() as probe:
+                probe.bind(("127.0.0.1", 0))
+                return probe.getsockname()[1]
+
+        from build_mihomo import PRIMARY_AUTO
+        config = build_profile(nodes[:2], {}, "owner/repo", nodes[2:])
+        config.update({"dns": {"enable": False}, "rules": ["MATCH,PROXY"], "rule-providers": {}})
+        health = {"url": "http://health.invalid/health", "interval": 1, "timeout": 500,
+                  "lazy": False, "expected-status": "204"}
+        for provider in config["proxy-providers"].values():
+            provider.update({"type": "inline", "health-check": dict(health, enable=True)})
+            for key in ("url", "path", "interval", "proxy"):
+                provider.pop(key, None)
+        for group in config["proxy-groups"]:
+            if group["type"] != "select":
+                group.update(health)
+        port, mixed = free_port(), free_port()
+        secret = secrets.token_hex(24)
+        config.update({"external-controller": f"127.0.0.1:{port}", "secret": secret, "mixed-port": mixed})
+        direct = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+        def api(endpoint):
+            request = urllib.request.Request(f"http://127.0.0.1:{port}{endpoint}",
+                                             headers={"Authorization": f"Bearer {secret}"})
+            with direct.open(request, timeout=3) as response:
+                return json.load(response)
+
+        def wait_for(predicate):
+            deadline = time.monotonic() + 25
+            while time.monotonic() < deadline:
+                try:
+                    if predicate():
+                        return
+                except OSError:
+                    pass
+                time.sleep(.2)
+            self.fail("Mihomo selection timeout: " + json.dumps({name: api(endpoint) for name, endpoint in (("auto", "/proxies/AUTO"), ("normal", "/proxies/AUTO%201"), ("provider", "/providers/proxies/proxyplankton_sub_clash"))}))
+
+        def traffic():
+            # Set the local proxy explicitly; urllib may bypass localhost otherwise.
+            request = urllib.request.Request("http://traffic.invalid/traffic")
+            request.set_proxy(f"127.0.0.1:{mixed}", "http")
+            with direct.open(request, timeout=5) as response:
+                return response.read().decode()
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.json"
+            path.write_text(json.dumps(config))
+            with (Path(directory) / "core.log").open("w") as log:
+                process = subprocess.Popen([os.environ["MIHOMO_BINARY"], "-d", directory, "-f", str(path)],
+                                           stdout=log, stderr=log)
+                try:
+                    wait_for(lambda: api("/providers/proxies/proxyplankton_sub_clash")["proxies"][1].get("extra", {}).get(health["url"], {}).get("alive", False))
+                    wait_for(lambda: api("/providers/proxies/proxyplankton_whitelist")["proxies"][0].get("extra", {}).get(health["url"], {}).get("alive", False))
+                    normal = api("/providers/proxies/proxyplankton_sub_clash")["proxies"]
+                    reserve = api("/providers/proxies/proxyplankton_whitelist")["proxies"][0]
+                    self.assertGreater(normal[1]["extra"][health["url"]]["history"][-1]["delay"],
+                                       reserve["extra"][health["url"]]["history"][-1]["delay"])
+                    self.assertEqual(api("/proxies/AUTO")["now"], PRIMARY_AUTO)
+                    self.assertIn(traffic(), ["0", "1"])
+                    self.assertEqual(states[2]["traffic"], 0)
+                    states[0]["alive"] = False
+                    wait_for(lambda: not api("/providers/proxies/proxyplankton_sub_clash")["proxies"][0]["extra"][health["url"]]["alive"])
+                    self.assertEqual(traffic(), "1")
+                    self.assertEqual(states[2]["traffic"], 0)
+                    states[1]["alive"] = False
+                    wait_for(lambda: api("/proxies/AUTO")["now"] == "Node 2")
+                    self.assertEqual(traffic(), "2")
+                    paid_traffic = states[2]["traffic"]
+                    states[0]["alive"] = True
+                    wait_for(lambda: api("/proxies/AUTO")["now"] == PRIMARY_AUTO)
+                    self.assertEqual(traffic(), "0")
+                    self.assertEqual(states[2]["traffic"], paid_traffic)
+                finally:
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                        process.wait()

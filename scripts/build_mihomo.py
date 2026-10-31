@@ -25,11 +25,14 @@ from build_stash_provider import parse_subscription
 OUTPUT_PATHS = (
     "VPN_Mihomo_Auto.yaml",
     "mihomo/providers/proxyplankton_sub_clash.yaml",
+    "mihomo/providers/proxyplankton_whitelist.yaml",
 )
+PRIMARY_AUTO = "AUTO 1"
 TEST_URL = "https://www.gstatic.com/generate_204"
 ALLOWED_SCHEMES = {"vless", "hysteria2", "hy2"}
 METADATA_SCHEMES = {"happ", "incy"}
-RESERVED_NAMES = {"AUTO", "PROXY", "DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL"}
+RESERVED_NAMES = {"AUTO", "PROXY", "DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE", "GLOBAL",
+                  PRIMARY_AUTO}
 
 
 def xhttp_options(uri: str, original: dict) -> dict:
@@ -193,7 +196,21 @@ def read_rules(directory: Path) -> dict:
     return providers
 
 
-def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> dict:
+def separate_sources(nodes: list[dict], whitelist: list[dict]) -> tuple[list[dict], list[dict]]:
+    """A connection designated as paid reserve must never compete in the normal pool."""
+    identity = lambda node: json.dumps({k: v for k, v in node.items() if k != "name"}, sort_keys=True)
+    paid = {identity(node) for node in whitelist}
+    normal = [node for node in merge_nodes([nodes]) if identity(node) not in paid]
+    if not normal:
+        raise ValueError("No ordinary connections remain; keeping the previous profile")
+    merged = merge_nodes([normal, whitelist])
+    return merged[:len(normal)], merged[len(normal):]
+
+
+def build_profile(nodes: list[dict], rule_providers: dict, repository: str,
+                  whitelist: list[dict] | None = None) -> dict:
+    whitelist = whitelist or []
+    nodes, whitelist = separate_sources(nodes, whitelist)
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
         raise ValueError("Repository must be OWNER/REPO")
     raw = f"https://raw.githubusercontent.com/{repository}/main"
@@ -201,7 +218,7 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
         "enable": True, "url": TEST_URL, "interval": 60,
         "timeout": 5000, "lazy": True, "expected-status": "204",
     }
-    return {
+    config = {
         "mode": "rule", "log-level": "warning", "allow-lan": False,
         "ipv6": True, "unified-delay": True, "tcp-concurrent": True,
         "profile": {"store-selected": True, "store-fake-ip": True},
@@ -256,6 +273,27 @@ def build_profile(nodes: list[dict], rule_providers: dict, repository: str) -> d
             "MATCH,PROXY",
         ],
     }
+    if whitelist:
+        config["proxy-providers"]["proxyplankton_whitelist"] = {
+            "type": "http", "url": f"{raw}/{OUTPUT_PATHS[2]}",
+            "path": "./providers/proxyplankton_whitelist.yaml", "interval": 3600,
+            "proxy": "PROXY", "payload": copy.deepcopy(whitelist),
+            "health-check": copy.deepcopy(health_check),
+        }
+        primary = config["proxy-groups"][0]
+        primary["name"] = PRIMARY_AUTO
+        # fallback chooses by priority/availability, never by relative latency.
+        # Keeping AUTO as the outer group's name preserves existing PROXY selections
+        # and the DNS route through AUTO.
+        config["proxy-groups"] = [{
+            "name": "AUTO", "type": "fallback", "proxies": [PRIMARY_AUTO],
+            # Check ordinary nodes individually before paying for the reserve:
+            # the nested url-test can still cache a failed node for 10 seconds.
+            "use": ["proxyplankton_sub_clash", "proxyplankton_whitelist"],
+            "url": TEST_URL, "interval": 60, "timeout": 5000, "lazy": True,
+            "max-failed-times": 2, "expected-status": "204", "empty-fallback": "REJECT",
+        }, config["proxy-groups"][1], primary]
+    return config
 
 
 def yaml_document(value: dict, profile_url: str | None = None) -> str:
@@ -271,13 +309,16 @@ def build_outputs(text: str, rules: Path, repository: str,
     return outputs_from_nodes(nodes, rules, repository)
 
 
-def outputs_from_nodes(nodes: list[dict], rules: Path, repository: str) -> dict[str, str]:
-    config = build_profile(nodes, read_rules(rules), repository)
+def outputs_from_nodes(nodes: list[dict], rules: Path, repository: str,
+                       whitelist: list[dict] | None = None) -> dict[str, str]:
+    nodes, whitelist = separate_sources(nodes, whitelist or [])
+    config = build_profile(nodes, read_rules(rules), repository, whitelist)
     raw = f"https://raw.githubusercontent.com/{repository}/main"
     profile = yaml_document(config, f"{raw}/VPN_Mihomo_Auto.yaml")
     return {
         OUTPUT_PATHS[0]: profile,
         OUTPUT_PATHS[1]: yaml_document({"proxies": nodes}),
+        OUTPUT_PATHS[2]: yaml_document({"proxies": whitelist}),
     }
 
 
@@ -332,17 +373,20 @@ def main() -> None:
     parser.add_argument("--repository", default="anthonyandreew/sub")
     args = parser.parse_args()
     source_inputs = "\n".join(os.environ.get(key, "") for key in
-                              ("MIHOMO_SUBSCRIPTION_URL", "MIHOMO_ADDITIONAL_SOURCES"))
+                              ("MIHOMO_SUBSCRIPTION_URL", "MIHOMO_WHITELIST_SOURCE"))
     private_urls = [line.strip() for line in source_inputs.splitlines() if line.strip().lower().startswith("https://")]
     try:
         excluded = {}
         if args.input:
             nodes = read_subscription(args.input.read_text(encoding="utf-8"), excluded)
-        elif source_inputs.strip():
-            nodes = read_sources(source_inputs, excluded)
+        elif os.environ.get("MIHOMO_SUBSCRIPTION_URL", "").strip():
+            nodes = read_sources(os.environ["MIHOMO_SUBSCRIPTION_URL"], excluded)
         else:
             parser.error("Provide --input or MIHOMO_SUBSCRIPTION_URL")
-        outputs = outputs_from_nodes(nodes, args.rules_dir, args.repository)
+        whitelist_source = os.environ.get("MIHOMO_WHITELIST_SOURCE", "").strip()
+        whitelist = read_sources(whitelist_source, excluded) if whitelist_source else []
+        nodes, whitelist = separate_sources(nodes, whitelist)
+        outputs = outputs_from_nodes(nodes, args.rules_dir, args.repository, whitelist)
         if any(url in value for url in private_urls for value in outputs.values()):
             raise ValueError("Refusing to publish the private source subscription URL")
         write_outputs(outputs, args.output_dir)
@@ -356,7 +400,7 @@ def main() -> None:
     if excluded:
         summary = ", ".join(f"{scheme}: {count}" for scheme, count in sorted(excluded.items()))
         print(f"Excluded connection types ({sum(excluded.values())}): {summary}; only VLESS/Hysteria2 are selected")
-    print(f"Built {len(nodes)} connections and {len(outputs)} Mihomo files; source URL omitted")
+    print(f"Built {len(nodes)} ordinary and {len(whitelist)} reserve connections; source URL omitted")
 
 
 if __name__ == "__main__":
