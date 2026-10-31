@@ -184,33 +184,37 @@
           "skip-cert-verify": false
         },
         {
-          "name": "🇫🇮 Финляндия · обход БС",
+          "name": "Yandex CDN · planktonmanager.xyz-RU28-Auto-Select",
           "type": "vless",
           "server": "cdn.planktonmanager.xyz",
           "port": 443,
-          "uuid": "ceca769d-2648-4537-905b-217dd603d1de",
+          "uuid": "6332434f-bc27-4bc5-bd24-8fe56ec63b8e",
           "network": "xhttp",
           "tls": true,
-          "client-fingerprint": "firefox",
-          "alpn": [
-            "h2"
-          ],
           "xhttp-opts": {
             "mode": "packet-up",
             "path": "/assets/e4e35f44b368/3eaeda2dcb5e/config.json",
-            "host": "cdn.planktonmanager.xyz",
             "uplink-http-method": "GET",
             "uplink-data-placement": "header",
             "uplink-data-key": "X-Data",
-            "uplink-chunk-size": "2048",
-            "sc-max-each-post-bytes": "32768",
-            "sc-min-posts-interval-ms": "10",
+            "session-placement": "header",
+            "session-key": "X-Auth-Token",
+            "session-table": "base36",
+            "seq-placement": "query",
+            "seq-key": "page",
+            "x-padding-key": "_rupl",
+            "x-padding-header": "X-Cache",
+            "x-padding-placement": "queryInHeader",
+            "x-padding-method": "tokenish",
+            "x-padding-obfs-mode": true,
+            "x-padding-bytes": "100-1000",
+            "uplink-chunk-size": "3000-4000",
+            "session-length": "8-12",
             "reuse-settings": {
               "max-concurrency": "0",
               "max-connections": "1"
             }
           },
-          "servername": "cdn.planktonmanager.xyz",
           "udp": true,
           "skip-cert-verify": false
         }
