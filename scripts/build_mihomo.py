@@ -49,12 +49,20 @@ def xhttp_options(uri: str, original: dict) -> dict:
         raise ValueError("Invalid XHTTP extra JSON; keeping the previous profile") from None
     strings = {"mode": "mode", "host": "host", "path": "path",
                "uplinkHTTPMethod": "uplink-http-method", "uplinkDataPlacement": "uplink-data-placement",
-               "uplinkDataKey": "uplink-data-key"}
+               "uplinkDataKey": "uplink-data-key",
+               "sessionPlacement": "session-placement", "sessionIDPlacement": "session-placement",
+               "sessionKey": "session-key", "sessionIDKey": "session-key",
+               "sessionIDTable": "session-table",
+               "seqPlacement": "seq-placement", "seqKey": "seq-key",
+               "xPaddingKey": "x-padding-key", "xPaddingHeader": "x-padding-header",
+               "xPaddingPlacement": "x-padding-placement", "xPaddingMethod": "x-padding-method"}
     numbers = {"xPaddingBytes": "x-padding-bytes", "uplinkChunkSize": "uplink-chunk-size",
+               "sessionIDLength": "session-length",
                "scMaxEachPostBytes": "sc-max-each-post-bytes",
                "scMinPostsIntervalMs": "sc-min-posts-interval-ms"}
+    booleans = {"xPaddingObfsMode": "x-padding-obfs-mode"}
     # This is an inbound/server setting, not a Mihomo client transport field.
-    allowed = set(strings) | set(numbers) | {"xmux", "serverMaxHeaderBytes"}
+    allowed = set(strings) | set(numbers) | set(booleans) | {"xmux", "serverMaxHeaderBytes"}
     if set(extra) - allowed:
         raise ValueError("Unsupported XHTTP extra fields; keeping the previous profile")
     for source, target in strings.items():
@@ -65,6 +73,12 @@ def xhttp_options(uri: str, original: dict) -> dict:
             if target in options and options[target] != value:
                 raise ValueError("Conflicting XHTTP URI and extra settings")
             options[target] = value
+
+    for source, target in booleans.items():
+        if source in extra:
+            if not isinstance(extra[source], bool):
+                raise ValueError("Invalid XHTTP boolean setting")
+            options[target] = extra[source]
 
     def scalar(value):
         if isinstance(value, bool) or not isinstance(value, (str, int)) or not re.fullmatch(r"\d+(?:-\d+)?", str(value)):

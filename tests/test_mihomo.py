@@ -157,6 +157,42 @@ class MihomoTests(unittest.TestCase):
         uri = "vless://22222222-2222-4222-8222-222222222222@cdn.example.com:443?type=xhttp&mode=auto&path=%2Ftest#CDN"
         self.assertEqual(read_subscription(uri)[0]["xhttp-opts"], {"mode": "auto", "path": "/test"})
 
+    def test_cdn_session_aliases_and_padding_obfuscation(self):
+        # Modern x-ui emits both sessionID* names and their legacy aliases.
+        extra = {
+            "mode": "packet-up", "seqKey": "page", "seqPlacement": "query",
+            "sessionIDKey": "X-Auth-Token", "sessionKey": "X-Auth-Token",
+            "sessionIDPlacement": "header", "sessionPlacement": "header",
+            "sessionIDLength": "8-12", "sessionIDTable": "base36",
+            "uplinkHTTPMethod": "GET", "uplinkDataKey": "X-Data",
+            "uplinkDataPlacement": "header", "uplinkChunkSize": "3000-4000",
+            "xPaddingBytes": "100-1000", "xPaddingHeader": "X-Cache",
+            "xPaddingKey": "_padding", "xPaddingMethod": "tokenish",
+            "xPaddingObfsMode": True, "xPaddingPlacement": "queryInHeader",
+            "xmux": {"maxConcurrency": 0, "maxConnections": 1},
+        }
+        options = read_subscription(xhttp(extra))[0]["xhttp-opts"]
+        self.assertEqual(options, {
+            "host": "cdn.example.com", "path": "/assets/config.json", "mode": "packet-up",
+            "seq-key": "page", "seq-placement": "query", "session-key": "X-Auth-Token",
+            "session-placement": "header", "session-length": "8-12", "session-table": "base36",
+            "uplink-http-method": "GET", "uplink-data-key": "X-Data",
+            "uplink-data-placement": "header", "uplink-chunk-size": "3000-4000",
+            "x-padding-bytes": "100-1000", "x-padding-header": "X-Cache",
+            "x-padding-key": "_padding", "x-padding-method": "tokenish",
+            "x-padding-obfs-mode": True, "x-padding-placement": "queryInHeader",
+            "reuse-settings": {"max-concurrency": "0", "max-connections": "1"},
+        })
+        # New-only and legacy-only session names must describe the same transport.
+        for removed in (("sessionKey", "sessionPlacement"), ("sessionIDKey", "sessionIDPlacement")):
+            with self.subTest(removed=removed):
+                self.assertEqual(read_subscription(xhttp({k: v for k, v in extra.items() if k not in removed}))[0]["xhttp-opts"], options)
+        for change in ({"sessionKey": "different"}, {"sessionPlacement": "cookie"},
+                       {"sessionIDLength": True}, {"sessionIDTable": []},
+                       {"xPaddingObfsMode": "true"}, {"xPaddingPlacement": []}):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                read_subscription(xhttp(dict(extra, **change)))
+
     def test_xhttp_padding_bytes_is_preserved_for_xui_subscriptions(self):
         for value in (100, "100-1000"):
             with self.subTest(value=value):
