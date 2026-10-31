@@ -132,7 +132,7 @@
       "skip-cert-verify": false
     },
     {
-      "name": "Yandex CDN · planktonmanager.xyz-RU28-Auto-Select",
+      "name": "🇷🇺 Автовыбор · обход БС",
       "type": "vless",
       "server": "cdn.planktonmanager.xyz",
       "port": 443,
